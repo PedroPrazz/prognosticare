@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:prognosticare/cadastro.dart';
-import 'package:prognosticare/recuperarsenha.dart';
-import 'home.dart';
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+import 'package:prognosticare/home.dart';
+
+class NovaSenha extends StatelessWidget {
+  const NovaSenha({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +15,7 @@ class LoginPage extends StatelessWidget {
               Container(
                   margin: EdgeInsets.all(25),
                   child: Text(
-                    'Login',
+                    'Recuperar Senha',
                     style: TextStyle(fontSize: 37, fontWeight: FontWeight.bold),
                   )),
               SizedBox(height: 30),
@@ -24,7 +23,7 @@ class LoginPage extends StatelessWidget {
                 width: 500,
                 child: TextFormField(
                   decoration: InputDecoration(
-                      labelText: 'CPF',
+                      labelText: 'Nova senha',
                       labelStyle: TextStyle(color: Colors.black),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10)),
@@ -34,7 +33,7 @@ class LoginPage extends StatelessWidget {
                   cursorColor: Color.fromRGBO(255, 143, 171, 1),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'CPF is required';
+                      return 'Senha is required';
                     }
                     // You can add more validation for CPF format if needed
                     return null;
@@ -49,7 +48,7 @@ class LoginPage extends StatelessWidget {
               SizedBox(height: 30),
               TextFormField(
                 decoration: InputDecoration(
-                    labelText: 'Email',
+                    labelText: 'Confirmar Nova Senha',
                     labelStyle: TextStyle(color: Colors.black),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10)),
@@ -59,7 +58,7 @@ class LoginPage extends StatelessWidget {
                 cursorColor: Color.fromRGBO(255, 143, 171, 1),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Email is required';
+                    return 'Senha is required';
                   }
                   // You can add more validation for email format if needed
                   return null;
@@ -87,40 +86,8 @@ class LoginPage extends StatelessWidget {
                 child: Container(
                     width: 500,
                     height: 39,
-                    child: Center(child: Text('ENTRAR'))),
+                    child: Center(child: Text('CONFIRMAR'))),
               ),
-              SizedBox(height: 30),
-              TextButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => RecuperarSenha(),
-                      ));
-                },
-                child: Text(
-                  'ESQUECEU SUA SENHA?',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontSize: 15, color: Color.fromRGBO(255, 143, 171, 1)),
-                ),
-              ),
-              SizedBox(height: 30),
-              TextButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CadastroPage(),
-                      ));
-                },
-                child: Text(
-                  'PRIMEIRO ACESSO?',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontSize: 15, color: Color.fromRGBO(255, 143, 171, 1)),
-                ),
-              )
             ]
           )
         )

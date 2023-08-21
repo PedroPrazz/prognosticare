@@ -51,7 +51,6 @@ class _CadastroPageState extends State<CadastroPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        reverse: true,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Form(

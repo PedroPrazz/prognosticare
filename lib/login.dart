@@ -6,9 +6,10 @@ import 'home.dart';
 import 'package:http/http.dart' as http;
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+  LoginPage({super.key});
 
-  Future<void> getLogin(String email, String password) async {
+  Future<void> getLogin(
+      BuildContext context, String email, String password) async {
     var url = Uri.parse('http://localhost:8080/login');
 
     try {
@@ -26,6 +27,18 @@ class LoginPage extends StatelessWidget {
         print('Aqui é o TOKEN: ' + dados['token']);
 
         print('AQUI é o ID PESSOA: ' + dados['pessoaEntity']);
+
+        getFindById(id){
+
+          
+        }
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => HomePage(),
+          ),
+        );
       } else {
         print('Código de Status da Resposta: ${response.statusCode}');
       }
@@ -36,6 +49,8 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController _email = TextEditingController();
+    TextEditingController _senha = TextEditingController();
     return Scaffold(
         body: SingleChildScrollView(
       reverse: true,
@@ -53,6 +68,7 @@ class LoginPage extends StatelessWidget {
             Container(
               width: 500,
               child: TextFormField(
+                controller: _email,
                 decoration: InputDecoration(
                     labelText: 'Email',
                     labelStyle: TextStyle(color: Colors.black),
@@ -78,6 +94,7 @@ class LoginPage extends StatelessWidget {
             ),
             SizedBox(height: 30),
             TextFormField(
+              controller: _senha,
               decoration: InputDecoration(
                   labelText: 'Senha',
                   labelStyle: TextStyle(color: Colors.black),
@@ -103,12 +120,9 @@ class LoginPage extends StatelessWidget {
             SizedBox(height: 30),
             ElevatedButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => HomePage(),
-                  ),
-                );
+                //aQUI
+
+                getLogin(context, _email.text, _senha.text);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color.fromRGBO(255, 143, 171, 1),

@@ -6,11 +6,7 @@ class HomePage extends StatelessWidget {
   final String? password;
   final String? datanasc;
 
-  HomePage(
-      {this.cpf,
-       this.email,
-       this.password,
-       this.datanasc});
+  HomePage({this.cpf, this.email, this.password, this.datanasc});
 
   @override
   Widget build(BuildContext context) {

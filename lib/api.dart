@@ -18,14 +18,19 @@ postLogin(email, password) async {
   return data;
 }
 
-// postLogin(email, password) async {
-//   var url = Uri.parse(urLBase / '+findbyId');
-
+// postCadastro(cpf, email, datanas, password) async {
+//   var url = Uri.parse(urLBase + '/cadastro');
 //   var http;
-
 //   var response = await http.get(url);
-
 //   var data = await jsonDecode(response.body);
-
 //   return data;
 // }
+
+// postFindbyId(id) async {
+//   var url = Uri.parse(urLBase + '/findbyId');
+//   var http;
+//   var response = await http.get(url);
+//   var data = await jsonDecode(response.body);
+//   return data;
+// }
+

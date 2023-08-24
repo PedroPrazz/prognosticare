@@ -23,7 +23,7 @@ class LoginPage extends StatelessWidget {
         var responseBody = response.body;
 
         var dados = json.decode(responseBody);
-
+        
         print('Aqui é o TOKEN: ' + dados['token']);
 
         print('AQUI é o ID PESSOA: ' + dados['pessoaEntity']);

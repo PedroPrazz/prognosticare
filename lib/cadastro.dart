@@ -61,6 +61,7 @@ class _CadastroPageState extends State<CadastroPage> {
 
       } else {
         print('Código de Status da Resposta: ${response.statusCode}');
+        print({response.body});
       }
     } catch (e) {
       print('Erro: $e');

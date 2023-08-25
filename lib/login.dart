@@ -27,16 +27,11 @@ class LoginPage extends StatelessWidget {
         var responseBody = response.body;
         var dados = json.decode(responseBody);
 
-        final token = dados['token'] as String;
-        final userId = dados['user_id'] as String;
+
         
-        await storage.write(key: 'token', value: token);
-        await storage.write(key: 'user_id', value: userId);
-
-        print('Login realizado com sucesso! Token: $token');
-        print('Id $userId');
-
-        getFindById(id) {}
+        await storage.write(key: 'token', value: dados['token']);
+        await storage.write(key: 'user_id', value: dados['user_id']);  
+   
 
         Navigator.push(
           context,
@@ -76,7 +71,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TextEditingController _email = TextEditingController();
-    TextEditingController _senha = TextEditingController();
+    TextEditingController _password = TextEditingController();
     return Scaffold(
         body: SingleChildScrollView(
       reverse: true,
@@ -118,7 +113,7 @@ class LoginPage extends StatelessWidget {
               Container(
                 width: 500,
                 child: TextFormField(
-                  controller: _senha,
+                  controller: _password,
                   decoration: InputDecoration(
                       labelText: 'Senha',
                       labelStyle: TextStyle(color: Colors.black),
@@ -142,7 +137,7 @@ class LoginPage extends StatelessWidget {
                 onPressed: () {
                   //aQUI
 
-                  getLogin(context, _email.text, _senha.text);
+                  getLogin(context, _email.text, _password.text);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color.fromRGBO(255, 143, 171, 1),

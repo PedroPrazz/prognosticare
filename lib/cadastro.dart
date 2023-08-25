@@ -16,7 +16,7 @@ class CadastroPage extends StatefulWidget {
 }
 
 class _CadastroPageState extends State<CadastroPage> {
-  Future<void> getCadastro(BuildContext context, String cpf, String email,
+  Future<void> getCadastro(BuildContext context,String nome, String cpf, String email,
       String data, String password) async {
     var url = Uri.parse('http://localhost:8080/register-person/save');
 
@@ -24,22 +24,19 @@ class _CadastroPageState extends State<CadastroPage> {
       var response = await http.post(
         url,
         body: json.encode({
+          'nome': nome,
           'cpf': cpf,
           'email': email,
-          "dataNascimento": data,
+          'dataNascimento': data,
           'password': password
         }),
         headers: {'Content-Type': 'application/json'},
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         var responseBody = response.body;
 
         var dados = json.decode(responseBody);
-
-        print('Aqui é o TOKEN: ' + dados['token']);
-
-        print('AQUI é o ID PESSOA: ' + dados['pessoaEntity']);
 
         getFindById(id) {}
 
@@ -69,6 +66,7 @@ class _CadastroPageState extends State<CadastroPage> {
   }
 
   Widget build(BuildContext context) {
+    TextEditingController _nome = TextEditingController();
     TextEditingController _cpf = TextEditingController();
     TextEditingController _data = TextEditingController();
     TextEditingController _email = TextEditingController();
@@ -88,6 +86,28 @@ class _CadastroPageState extends State<CadastroPage> {
                       style:
                           TextStyle(fontSize: 45, fontWeight: FontWeight.bold),
                     )),
+                SizedBox(height: 30),
+                Container(
+                  width: 500,
+                  child: TextFormField(
+                    controller: _nome,
+                    decoration: InputDecoration(
+                        labelText: 'Nome',
+                        labelStyle: TextStyle(color: Colors.black),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Color.fromRGBO(255, 143, 171, 1)))),
+                    cursorColor: Color.fromRGBO(255, 143, 171, 1),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Nome is required';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
                 SizedBox(height: 30),
                 Container(
                   width: 500,
@@ -118,6 +138,7 @@ class _CadastroPageState extends State<CadastroPage> {
                 Container(
                   width: 500,
                   child: TextFormField(
+                    controller: _email,
                     decoration: InputDecoration(
                         labelText: 'Email',
                         labelStyle: TextStyle(color: Colors.black),
@@ -165,6 +186,7 @@ class _CadastroPageState extends State<CadastroPage> {
                 Container(
                   width: 500,
                   child: TextFormField(
+                    controller: _password,
                     decoration: InputDecoration(
                         labelText: 'Password',
                         labelStyle: TextStyle(color: Colors.black),
@@ -201,7 +223,7 @@ class _CadastroPageState extends State<CadastroPage> {
                       if (value == null || value.isEmpty) {
                         return 'Please confirm your password';
                       }
-                      if (value != _password) {
+                      if (value != _password.text) {
                         return 'Passwords do not match';
                       }
                       return null;
@@ -219,7 +241,7 @@ class _CadastroPageState extends State<CadastroPage> {
                       print('Cpf Inválido');
                     }
 
-                    getCadastro(context, _cpf.text, _email.text, _data.text,
+                    getCadastro(context, _nome.text, _cpf.text, _email.text, _data.text,
                         _password.text);
                   },
                   style: ElevatedButton.styleFrom(

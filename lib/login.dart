@@ -1,9 +1,13 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:prognosticare/cadastro.dart';
 import 'package:prognosticare/recuperarsenha.dart';
 import 'home.dart';
 import 'package:http/http.dart' as http;
+
+
+final storage = FlutterSecureStorage();
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
@@ -21,12 +25,16 @@ class LoginPage extends StatelessWidget {
 
       if (response.statusCode == 200) {
         var responseBody = response.body;
-
         var dados = json.decode(responseBody);
-        
-        print('Aqui é o TOKEN: ' + dados['token']);
 
-        print('AQUI é o ID PESSOA: ' + dados['pessoaEntity']);
+        final token = dados['token'] as String;
+        final userId = dados['user_id'] as String;
+        
+        await storage.write(key: 'token', value: token);
+        await storage.write(key: 'user_id', value: userId);
+
+        print('Login realizado com sucesso! Token: $token');
+        print('Id $userId');
 
         getFindById(id) {}
 
@@ -38,9 +46,30 @@ class LoginPage extends StatelessWidget {
         );
       } else {
         print('Código de Status da Resposta: ${response.statusCode}');
+        print({response.body});
+        print('Erro no login!');
       }
     } catch (e) {
       print('Erro: $e');
+    }
+  }
+
+  Future<void> fetchUserData() async {
+    final token = await storage.read(key: 'token');
+    final userId = await storage.read(key: 'user_id');
+
+    final response = await http.get(
+      Uri.parse('http://localhost:8080/register-person/find/$userId'),
+      headers: <String, String>{
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      print('User Data: $data');
+    } else {
+      print('Failed to fetch user data.');
     }
   }
 
@@ -83,11 +112,6 @@ class LoginPage extends StatelessWidget {
                     // You can add more validation for CPF format if needed
                     return null;
                   },
-                  // onChanged: (value) {
-                  //   setState(() {
-                  //     _cpf = value;
-                  //   });
-                  // },
                 ),
               ),
               SizedBox(height: 30),
@@ -111,11 +135,6 @@ class LoginPage extends StatelessWidget {
                     // You can add more validation for email format if needed
                     return null;
                   },
-                  // onChanged: (value) {
-                  //   setState(() {
-                  //     _email = value;
-                  //   });
-                  // },
                 ),
               ),
               SizedBox(height: 30),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:prognosticare/login.dart';
 
 class HomePage extends StatelessWidget {
   final String? cpf;
@@ -101,7 +102,10 @@ class HomePage extends StatelessWidget {
               leading: Icon(Icons.subdirectory_arrow_left),
               title: Text('Sair do APP'),
               onTap: () {
-                // Lógica para navegar para a página de configurações
+                Navigator.push(context,
+                        MaterialPageRoute(
+                          builder: (context) => LoginPage(),
+                        ));
               },
             ),
           ],

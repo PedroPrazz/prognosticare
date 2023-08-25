@@ -128,6 +128,7 @@ class LoginPage extends StatelessWidget {
                           borderSide: BorderSide(
                               color: Color.fromRGBO(255, 143, 171, 1)))),
                   cursorColor: Color.fromRGBO(255, 143, 171, 1),
+                  obscureText: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Senha is required';

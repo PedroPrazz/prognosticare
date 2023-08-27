@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:prognosticare/api/service/forgotPasswordService.dart';
 import 'package:prognosticare/senhanova.dart';
 
 class RecuperarSenha extends StatelessWidget {
@@ -6,6 +7,7 @@ class RecuperarSenha extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController _email = TextEditingController();
     return Scaffold(
         body: Center(
           child: Padding(
@@ -22,6 +24,7 @@ class RecuperarSenha extends StatelessWidget {
                 Container(
                   width: 500,
                   child: TextFormField(
+                    controller: _email,
                     decoration: InputDecoration(
                         labelText: 'Email',
                         labelStyle: TextStyle(color: Colors.black),
@@ -35,25 +38,17 @@ class RecuperarSenha extends StatelessWidget {
                       if (value == null || value.isEmpty) {
                         return 'Email is required';
                       }
-                      // You can add more validation for CPF format if needed
                       return null;
                     },
-                    // onChanged: (value) {
-                    //   setState(() {
-                    //     _cpf = value;
-                    //   });
-                    // },
                   ),
                 ),
                 SizedBox(height: 30),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => NovaSenha(),
-                      ),
-                    );
+                    ForgotPasswordService.getNewPassword(_email.text);
+                    if(ForgotPasswordService.getNewPassword == true){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => NovaSenha()));
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color.fromRGBO(255, 143, 171, 1),

@@ -74,12 +74,12 @@ class LoginPage extends StatelessWidget {
               ),
               SizedBox(height: 30),
               ElevatedButton(
-                onPressed: () {
-                  LoginService.getLogin(_email.text, _password.text);
-                    if(LoginService.getLogin == true){
+                  onPressed: () async {
+                    bool loggedIn = await LoginService.getLogin(_email.text, _password.text);
+                    if (loggedIn) {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
                     }
-                },
+                  },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color.fromRGBO(255, 143, 171, 1),
                   alignment: Alignment.center,

@@ -36,10 +36,10 @@ class CadastroService {
 
         if (age < 18) {
           print('User is not of legal age');
-
           return false;
         }
         return true;
+
       } else {
         print('Response Status Code: ${response.statusCode}');
         return false;

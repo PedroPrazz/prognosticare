@@ -181,7 +181,7 @@ class _CadastroPageState extends State<CadastroPage> {
                 ),
                 SizedBox(height: 30),
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     String cpf = _cpf.text;
 
                     if (GetUtils.isCpf(cpf)) {
@@ -190,11 +190,10 @@ class _CadastroPageState extends State<CadastroPage> {
                       print('Cpf Inválido');
                     }
                    
-                   CadastroService.getCadastro(_nome.text, _cpf.text, _email.text, _data.text, _password.text);
-                    if(CadastroService.getCadastro == true){
+                    bool loggedIn = await CadastroService.getCadastro(_nome.text, _cpf.text, _email.text, _data.text, _password.text);
+                    if (loggedIn) {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
                     }
-
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color.fromRGBO(255, 143, 171, 1),

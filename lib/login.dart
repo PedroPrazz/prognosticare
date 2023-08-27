@@ -1,82 +1,16 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:prognosticare/api/service/loginService.dart';
 import 'package:prognosticare/cadastro.dart';
 import 'package:prognosticare/recuperarsenha.dart';
 import 'home.dart';
-import 'package:http/http.dart' as http;
-
-
-final storage = FlutterSecureStorage();
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
 
-  Future<void> getLogin(
-      BuildContext context, String email, String password) async {
-    var url = Uri.parse('http://localhost:8080/login');
-
-    try {
-      var response = await http.post(
-        url,
-        body: json.encode({'email': email, 'password': password}),
-        headers: {'Content-Type': 'application/json'},
-      );
-
-      if (response.statusCode == 200) {
-        var responseBody = response.body;
-        var dados = json.decode(responseBody);
-
-        final token = dados['token'] as String;
-        final userId = dados['user_id'] as String;
-        
-        await storage.write(key: 'token', value: token);
-        await storage.write(key: 'user_id', value: userId);
-
-        print('Login realizado com sucesso! Token: $token');
-        print('Id $userId');
-
-        getFindById(id) {}
-
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => HomePage(),
-          ),
-        );
-      } else {
-        print('Código de Status da Resposta: ${response.statusCode}');
-        print({response.body});
-        print('Erro no login!');
-      }
-    } catch (e) {
-      print('Erro: $e');
-    }
-  }
-
-  Future<void> fetchUserData() async {
-    final token = await storage.read(key: 'token');
-    final userId = await storage.read(key: 'user_id');
-
-    final response = await http.get(
-      Uri.parse('http://localhost:8080/register-person/find/$userId'),
-      headers: <String, String>{
-        'Authorization': 'Bearer $token',
-      },
-    );
-
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      print('User Data: $data');
-    } else {
-      print('Failed to fetch user data.');
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     TextEditingController _email = TextEditingController();
-    TextEditingController _senha = TextEditingController();
+    TextEditingController _password= TextEditingController();
     return Scaffold(
         body: SingleChildScrollView(
       reverse: true,
@@ -118,7 +52,7 @@ class LoginPage extends StatelessWidget {
               Container(
                 width: 500,
                 child: TextFormField(
-                  controller: _senha,
+                  controller: _password,
                   decoration: InputDecoration(
                       labelText: 'Senha',
                       labelStyle: TextStyle(color: Colors.black),
@@ -141,9 +75,10 @@ class LoginPage extends StatelessWidget {
               SizedBox(height: 30),
               ElevatedButton(
                 onPressed: () {
-                  //aQUI
-
-                  getLogin(context, _email.text, _senha.text);
+                  LoginService.getLogin(_email.text, _password.text);
+                    if(LoginService.getLogin == true){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+                    }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color.fromRGBO(255, 143, 171, 1),

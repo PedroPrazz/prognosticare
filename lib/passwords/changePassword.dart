@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:prognosticare/api/service/changePasswordService.dart';
 import '../homePage.dart';
 
 class ChangePassword extends StatelessWidget {
@@ -7,6 +7,7 @@ class ChangePassword extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController _password = TextEditingController();
     return Scaffold(
         body: Center(
           child: Padding(
@@ -23,6 +24,7 @@ class ChangePassword extends StatelessWidget {
                 Container(
                   width: 500,
                   child: TextFormField(
+                    controller: _password,
                     decoration: InputDecoration(
                         labelText: 'Nova senha',
                         labelStyle: TextStyle(color: Colors.black),
@@ -32,18 +34,13 @@ class ChangePassword extends StatelessWidget {
                             borderSide: BorderSide(
                                 color: Color.fromRGBO(255, 143, 171, 1)))),
                     cursorColor: Color.fromRGBO(255, 143, 171, 1),
+                    obscureText: true,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Senha is required';
                       }
-                      // You can add more validation for CPF format if needed
                       return null;
                     },
-                    // onChanged: (value) {
-                    //   setState(() {
-                    //     _cpf = value;
-                    //   });
-                    // },
                   ),
                 ),
                 SizedBox(height: 30),
@@ -59,29 +56,28 @@ class ChangePassword extends StatelessWidget {
                             borderSide: BorderSide(
                                 color: Color.fromRGBO(255, 143, 171, 1)))),
                     cursorColor: Color.fromRGBO(255, 143, 171, 1),
+                    obscureText: true,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Senha is required';
+                        return 'Please confirm your password';
                       }
-                      // You can add more validation for email format if needed
+                      if (value != _password.text) {
+                        return 'Passwords do not match';
+                      }
                       return null;
                     },
-                    // onChanged: (value) {
-                    //   setState(() {
-                    //     _email = value;
-                    //   });
-                    // },
                   ),
                 ),
                 SizedBox(height: 30),
                 ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => HomePage(),
-                      ),
-                    );
+                  onPressed: () async {
+                    bool changePassword = await ChangePasswordService.getChangePassword(_password.text);
+                    if(changePassword){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+                      print('Senha alterada com sucesso!');
+                    }else{
+                      print('As senhas não coincidem. Tente novamente!');
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color.fromRGBO(255, 143, 171, 1),

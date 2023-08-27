@@ -1,6 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:prognosticare/login.dart';
 import 'package:prognosticare/passwords/changePassword.dart';
+import 'package:prognosticare/profile.dart';
+
+// class Event {
+//   final String name;
+//   final String eventType;
+//   final DateTime dateTime;
+
+//   Event(this.name, this.eventType, this.dateTime);
+// }
 
 class HomePage extends StatelessWidget {
   final String? cpf;
@@ -9,6 +18,19 @@ class HomePage extends StatelessWidget {
   final String? datanasc;
 
   HomePage({this.cpf, this.email, this.password, this.datanasc});
+
+  // final List<Event> events = [
+  //   Event("Evento 1", "Tipo A", DateTime.now().subtract(Duration(days: 1))),
+  //   Event("Evento 2", "Tipo B", DateTime.now()),
+  //   Event("Evento 3", "Tipo C", DateTime.now().add(Duration(days: 1))),
+  // ];
+
+  // List<Event> getEventsForDay(DateTime day) {
+  //   return events.where((event) =>
+  //       event.dateTime.day == day.day &&
+  //       event.dateTime.month == day.month &&
+  //       event.dateTime.year == day.year).toList();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +67,7 @@ class HomePage extends StatelessWidget {
                       ),
                       SizedBox(height: 8),
                       Text(
-                        '$cpf', // Mostra o CPF cadastrado
+                        '$email', // Mostra o CPF cadastrado
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 18,
@@ -59,6 +81,7 @@ class HomePage extends StatelessWidget {
               leading: Icon(Icons.person),
               title: Text('Meus Dados'),
               onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => MyProfile()));
               },
             ),
             ListTile(
@@ -109,12 +132,6 @@ class HomePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text('CPF: $cpf'),
-            Text('Email: $email'),
-            Text('Password: $password'),
-            Text('Data de Nascimento: $datanasc'),
-          ],
         ),
       ),
     );

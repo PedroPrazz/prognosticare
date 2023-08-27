@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:prognosticare/api/service/loginService.dart';
+import 'package:prognosticare/passwords/changePassword.dart';
 import 'package:prognosticare/register.dart';
 import 'package:prognosticare/passwords/forgotPassword.dart';
 import 'homePage.dart';
@@ -72,15 +73,18 @@ class LoginPage extends StatelessWidget {
               ),
               SizedBox(height: 30),
               ElevatedButton(
-                  onPressed: () async {
-                    bool loggedIn = await LoginService.getLogin(_email.text, _password.text);
-                    if (loggedIn) {
+                onPressed: () async {
+                  bool loggedIn = await LoginService.getLogin(_email.text, _password.text);
+                  if (loggedIn) {
+                    if (_password.text == 'abcdfe') {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ChangePassword()));
+                    } else {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
                     }
-                    else{
-                      print('Seu email e senha não correspondem. Tente novamente!');
-                    }
-                  },
+                  } else {
+                    print('Seu email e senha não correspondem. Tente novamente!');
+                  }
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color.fromRGBO(255, 143, 171, 1),
                   alignment: Alignment.center,
@@ -127,3 +131,28 @@ class LoginPage extends StatelessWidget {
     ));
   }
 }
+
+
+
+// ElevatedButton(
+//   onPressed: () async {
+//     bool loggedIn = await LoginService.getLogin(_email.text, _password.text);
+    
+//     if (loggedIn) {
+//       int responseCode = await LoginService.getResponseCode(_email.text, _password.text);
+      
+//       if (responseCode == 200) {
+//         if (_password.text == 'abcdfe') {  // Verificar a senha após o login bem-sucedido
+//           Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+//         } else {
+//           print('Senha incorreta. Tente novamente!');
+//         }
+//       } else {
+//         print('Login bem-sucedido, mas resposta não esperada: $responseCode');
+//       }
+//     } else {
+//       print('Seu email e senha não correspondem. Tente novamente!');
+//     }
+//   },
+//   // ... restante do código do botão ...
+// )

@@ -2,17 +2,17 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:prognosticare/home.dart';
 import 'package:prognosticare/login.dart';
-import 'api/service/cadastroService.dart';
+import 'api/service/registerService.dart';
+import 'homePage.dart';
 
-class CadastroPage extends StatefulWidget {
-  const CadastroPage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<CadastroPage> createState() => _CadastroPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
-class _CadastroPageState extends State<CadastroPage> {
+class _RegisterPageState extends State<RegisterPage> {
 
   Widget build(BuildContext context) {
     TextEditingController _nome = TextEditingController();
@@ -190,7 +190,7 @@ class _CadastroPageState extends State<CadastroPage> {
                       print('Cpf Inválido');
                     }
                    
-                    bool loggedIn = await CadastroService.getCadastro(_nome.text, _cpf.text, _email.text, _data.text, _password.text);
+                    bool loggedIn = await RegisterService.getRegister(_nome.text, _cpf.text, _email.text, _data.text, _password.text);
                     if (loggedIn) {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
                     }

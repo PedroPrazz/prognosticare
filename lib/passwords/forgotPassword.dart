@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:prognosticare/api/service/forgotPasswordService.dart';
-import 'package:prognosticare/senhanova.dart';
+import 'package:prognosticare/passwords/changePassword.dart';
 
-class RecuperarSenha extends StatelessWidget {
-  const RecuperarSenha({super.key});
+class ForgotPassword extends StatelessWidget {
+  const ForgotPassword({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -44,10 +44,13 @@ class RecuperarSenha extends StatelessWidget {
                 ),
                 SizedBox(height: 30),
                 ElevatedButton(
-                  onPressed: () {
-                    ForgotPasswordService.getNewPassword(_email.text);
-                    if(ForgotPasswordService.getNewPassword == true){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => NovaSenha()));
+                  onPressed: () async {
+                    bool sendEmail = await ForgotPasswordService.getNewPassword(_email.text);
+                    if(sendEmail){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ChangePassword()));
+                      print('Email enviado com sucesso!');
+                    }else{
+                      print('Email não cadastrado no sistema. Tente novamente!');
                     }
                   },
                   style: ElevatedButton.styleFrom(
@@ -66,3 +69,4 @@ class RecuperarSenha extends StatelessWidget {
         ));
   }
 }
+

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:prognosticare/home.dart';
 
-class NovaSenha extends StatelessWidget {
-  const NovaSenha({super.key});
+import '../homePage.dart';
+
+class ChangePassword extends StatelessWidget {
+  const ChangePassword({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +16,7 @@ class NovaSenha extends StatelessWidget {
                 Container(
                     margin: EdgeInsets.all(25),
                     child: Text(
-                      'Recuperar Senha',
+                      'Alterar Senha',
                       style: TextStyle(fontSize: 37, fontWeight: FontWeight.bold),
                     )),
                 SizedBox(height: 30),
@@ -89,7 +90,7 @@ class NovaSenha extends StatelessWidget {
                   child: Container(
                       width: 465,
                       height: 39,
-                      child: Center(child: Text('CONFIRMAR'))),
+                      child: Center(child: Text('ALTERAR SENHA'))),
                 ),
               ]))),
         ));

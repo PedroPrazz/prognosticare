@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:prognosticare/login.dart';
+import 'package:prognosticare/passwords/changePassword.dart';
 
 class HomePage extends StatelessWidget {
   final String? cpf;
@@ -17,17 +18,15 @@ class HomePage extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.notifications_none),
             onPressed: () {
-              // Lógica para ação do botão
             },
           ),
         ],
         title: Text('PrognostiCare'),
-        backgroundColor: Color.fromRGBO(255, 143, 171, 1), // Cor de fundo
+        backgroundColor: Color.fromRGBO(255, 143, 171, 1),
         foregroundColor: Colors.white,
         centerTitle: true,
       ),
       drawer: Drawer(
-        // Adicionando o Drawer
         child: ListView(
           children: [
             Container(
@@ -40,7 +39,7 @@ class HomePage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Icon(
-                        Icons.person, // Ícone para representar o usuário
+                        Icons.person,
                         color: Colors.white,
                         size: 20,
                       ),
@@ -60,42 +59,37 @@ class HomePage extends StatelessWidget {
               leading: Icon(Icons.person),
               title: Text('Meus Dados'),
               onTap: () {
-                // Lógica para navegar para a página inicial
               },
             ),
             ListTile(
               leading: Icon(Icons.assignment),
               title: Text('Meu Prontuário'),
               onTap: () {
-                // Lógica para navegar para a página inicial
               },
             ),
             ListTile(
               leading: Icon(Icons.emoji_emotions),
               title: Text('Meus Dependentes'),
               onTap: () {
-                // Lógica para navegar para a página inicial
               },
             ),
             ListTile(
               leading: Icon(Icons.auto_stories),
               title: Text('Minha Agenda'),
               onTap: () {
-                // Lógica para navegar para a página inicial
               },
             ),
             ListTile(
               leading: Icon(Icons.miscellaneous_services),
               title: Text('Alterar Senha'),
               onTap: () {
-                // Lógica para navegar para a página inicial
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ChangePassword()));
               },
             ),
             ListTile(
               leading: Icon(Icons.info_outline),
               title: Text('Sobre o APP'),
               onTap: () {
-                // Lógica para navegar para a página inicial
               },
             ),
             ListTile(

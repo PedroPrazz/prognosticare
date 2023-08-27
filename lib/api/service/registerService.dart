@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
-class CadastroService {
-  static Future<bool> getCadastro(String nome, String cpf, String email,
+class RegisterService {
+  static Future<bool> getRegister(String nome, String cpf, String email,
       String data, String password) async {
     final url = Uri.parse('http://localhost:8080/register-person/save');
 

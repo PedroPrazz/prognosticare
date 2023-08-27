@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:prognosticare/api/service/loginService.dart';
-import 'package:prognosticare/cadastro.dart';
-import 'package:prognosticare/recuperarsenha.dart';
-import 'home.dart';
+import 'package:prognosticare/register.dart';
+import 'package:prognosticare/passwords/forgotPassword.dart';
+import 'homePage.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
@@ -43,7 +43,6 @@ class LoginPage extends StatelessWidget {
                     if (value == null || value.isEmpty) {
                       return 'Email is required';
                     }
-                    // You can add more validation for CPF format if needed
                     return null;
                   },
                 ),
@@ -67,7 +66,6 @@ class LoginPage extends StatelessWidget {
                     if (value == null || value.isEmpty) {
                       return 'Senha is required';
                     }
-                    // You can add more validation for email format if needed
                     return null;
                   },
                 ),
@@ -78,6 +76,9 @@ class LoginPage extends StatelessWidget {
                     bool loggedIn = await LoginService.getLogin(_email.text, _password.text);
                     if (loggedIn) {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+                    }
+                    else{
+                      print('Seu email e senha não correspondem. Tente novamente!');
                     }
                   },
                 style: ElevatedButton.styleFrom(
@@ -95,7 +96,7 @@ class LoginPage extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => RecuperarSenha(),
+                        builder: (context) => ForgotPassword(),
                       ));
                 },
                 child: Text(
@@ -111,7 +112,7 @@ class LoginPage extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => CadastroPage(),
+                        builder: (context) => RegisterPage(),
                       ));
                 },
                 child: Text(

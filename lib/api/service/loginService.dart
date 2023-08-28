@@ -6,7 +6,6 @@ final storage = FlutterSecureStorage();
 class LoginService {
   static Future<bool> getLogin(String email, String password) async {
 
-  final userId = await storage.read(key: 'user_id');
     final url = Uri.parse('http://localhost:8080/login');
 
     try {
@@ -26,8 +25,7 @@ class LoginService {
         print(dados);
 
         await storage.write(key: 'token', value: dados['token']);
-        await storage.write(key: 'user_id', value: dados['userId']);
-        print('User ID: $userId');
+        await storage.write(key: 'user_id', value: dados['pessoaEntity']);
         return true;
 
       } else {

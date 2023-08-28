@@ -23,13 +23,9 @@ class ChangePasswordService {
       );
 
       if (response.statusCode == 200) {
-        final responseBody = response.body;
-        final dados = json.decode(responseBody);
 
-        print(dados);
-
-        await storage.write(key: 'token', value: dados['token']);
-        await storage.write(key: 'user_id', value: userId);
+        await storage.write(key: 'token', value: 'token');
+        await storage.write(key: 'user_id', value: 'pessoaEntity');
         return true;
 
       } else {

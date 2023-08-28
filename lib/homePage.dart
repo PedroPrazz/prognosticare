@@ -119,10 +119,7 @@ class HomePage extends StatelessWidget {
               leading: Icon(Icons.subdirectory_arrow_left),
               title: Text('Sair do APP'),
               onTap: () {
-                Navigator.push(context,
-                        MaterialPageRoute(
-                          builder: (context) => LoginPage(),
-                        ));
+                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => LoginPage()), (route) => false);
               },
             ),
           ],

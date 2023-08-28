@@ -3,9 +3,10 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 final storage = FlutterSecureStorage();
-
 class LoginService {
   static Future<bool> getLogin(String email, String password) async {
+
+  final userId = await storage.read(key: 'user_id');
     final url = Uri.parse('http://localhost:8080/login');
 
     try {
@@ -26,7 +27,7 @@ class LoginService {
 
         await storage.write(key: 'token', value: dados['token']);
         await storage.write(key: 'user_id', value: dados['userId']);
-        
+        print('User ID: $userId');
         return true;
 
       } else {
@@ -41,11 +42,3 @@ class LoginService {
     }
   }
 }
-
-//         // final token = dados['token'] as String;
-//         // final userId = dados['user_id'] as String;
-        
-      
-
-//         // print('Login realizado com sucesso! Token: $token');
-//         // print('Id $userId');

@@ -9,19 +9,15 @@ class ForgotPasswordService {
       final response = await http.post(
         url,
         body: json.encode({
-          'email': email,
+          'email': email
         }),
         headers: {'Content-Type': 'application/json'},
       );
 
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        final responseBody = response.body;
-        final dados = json.decode(responseBody);
-
-        print(dados);
+      if (response.statusCode == 200) {
 
         return true;
-
+        
       } else {
         print('Response Status Code: ${response.statusCode}');
         return false;

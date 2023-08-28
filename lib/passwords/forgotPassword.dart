@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:prognosticare/api/service/forgotPasswordService.dart';
+import 'package:prognosticare/login.dart';
 import 'package:prognosticare/passwords/changePassword.dart';
 
 class ForgotPassword extends StatelessWidget {
@@ -47,7 +48,7 @@ class ForgotPassword extends StatelessWidget {
                   onPressed: () async {
                     bool sendEmail = await ForgotPasswordService.getNewPassword(_email.text);
                     if(sendEmail){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ChangePassword()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
                       print('Email enviado com sucesso!');
                     }else{
                       print('Email não cadastrado no sistema. Tente novamente!');

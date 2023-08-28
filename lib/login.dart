@@ -76,7 +76,7 @@ class LoginPage extends StatelessWidget {
                 onPressed: () async {
                   bool loggedIn = await LoginService.getLogin(_email.text, _password.text);
                   if (loggedIn) {
-                    if (_password.text == 'abcdfe') {
+                    if (_password.text == 'abcdefgh') {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => ChangePassword()));
                     } else {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
@@ -134,25 +134,3 @@ class LoginPage extends StatelessWidget {
 
 
 
-// ElevatedButton(
-//   onPressed: () async {
-//     bool loggedIn = await LoginService.getLogin(_email.text, _password.text);
-    
-//     if (loggedIn) {
-//       int responseCode = await LoginService.getResponseCode(_email.text, _password.text);
-      
-//       if (responseCode == 200) {
-//         if (_password.text == 'abcdfe') {  // Verificar a senha após o login bem-sucedido
-//           Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-//         } else {
-//           print('Senha incorreta. Tente novamente!');
-//         }
-//       } else {
-//         print('Login bem-sucedido, mas resposta não esperada: $responseCode');
-//       }
-//     } else {
-//       print('Seu email e senha não correspondem. Tente novamente!');
-//     }
-//   },
-//   // ... restante do código do botão ...
-// )

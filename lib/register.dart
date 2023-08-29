@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:prognosticare/login.dart';
 import 'api/service/registerService.dart';
-import 'homePage.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});

@@ -12,7 +12,7 @@ class Pessoa {
   String cartaoPlanoSaude;
 
   Pessoa({
-    required this.pessoaId,
+    this.pessoaId,
     required this.nome,
     required this.cpf,
     required this.contato,

@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:prognosticare/api/model/pessoa.dart';
 
-class persoUpdateService {
+class PersonUpdateService {
   static Future<bool> getPerson(Pessoa pessoa) async {
     final url = Uri.parse('http://localhost:8080/register-person/update');
 

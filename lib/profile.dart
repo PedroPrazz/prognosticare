@@ -5,7 +5,9 @@ import 'package:prognosticare/api/model/pessoa.dart';
 import 'package:prognosticare/api/service/personUpdateService.dart';
 
 class MyProfile extends StatefulWidget {
-  const MyProfile({super.key});
+  MyProfile({super.key, required this.pessoa});
+
+  Future<Pessoa> pessoa;
 
   @override
   State<MyProfile> createState() => _MyProfileState();
@@ -13,9 +15,9 @@ class MyProfile extends StatefulWidget {
 
 class _MyProfileState extends State<MyProfile> {
   @override
-
   bool alergiaMarcada = false;
   bool doadorMarcado = false;
+  
 
   Widget build(BuildContext context) {
     TextEditingController _nome = TextEditingController();
@@ -26,6 +28,7 @@ class _MyProfileState extends State<MyProfile> {
     TextEditingController _tipoAlergia = TextEditingController();
     TextEditingController _cartaoNacional = TextEditingController();
     TextEditingController _cartaoPlanoSaude = TextEditingController();
+
 
     return Center(
       child: Scaffold(
@@ -298,16 +301,12 @@ class _MyProfileState extends State<MyProfile> {
                   SizedBox(height: 30),
                   ElevatedButton(
                     onPressed: () async {
-                    // bool updatePerson = await PersonUpdateService.getPerson(Pessoa(nome: _nome.text, cpf: cpf, contato: contato, dataNascimento: dataNascimento, tipoSanguineo: tipoSanguineo, alergia: alergia, tipoAlergia: tipoAlergia, tipoResponsavel: tipoResponsavel, cartaoNacional: cartaoNacional, cartaoPlanoSaude: cartaoPlanoSaude))
-                    // if (updatePerson) {
-                    //   if (_password.text == 'abcdefgh') {
-                    //     Navigator.push(context, MaterialPageRoute(builder: (context) => ChangePassword()));
-                    //   } else {
-                    //     Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-                    //   }
-                    // } else {
-                    //   print('Seu email e senha não correspondem. Tente novamente!');
-                    // }
+                    // Pessoa pessoa = new Pessoa(nome: _nome.text, cpf: cpf.text, contato: contato.text,
+                    //  dataNascimento: dataNascimento.text, tipoSanguineo: tipoSanguineo.text, alergia: alergia.text, 
+                    //  tipoAlergia: tipoAlergia.text, tipoResponsavel: tipoResponsavel.text, cartaoNacional: cartaoNacional.text, 
+                    //  cartaoPlanoSaude: cartaoPlanoSaude.text);
+
+                    // bool updatePerson = await PersonUpdateService.getPerson(Pessoa())
                   },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color.fromRGBO(255, 143, 171, 1),

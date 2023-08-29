@@ -1,7 +1,12 @@
+import 'dart:js_interop';
+
 import 'package:flutter/material.dart';
 import 'package:prognosticare/login.dart';
 import 'package:prognosticare/passwords/changePassword.dart';
 import 'package:prognosticare/profile.dart';
+
+import 'api/model/pessoa.dart';
+import 'api/service/getFindbyIDService.dart';
 
 // class Event {
 //   final String name;
@@ -31,6 +36,7 @@ class HomePage extends StatelessWidget {
   //       event.dateTime.month == day.month &&
   //       event.dateTime.year == day.year).toList();
   // }
+
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +87,13 @@ class HomePage extends StatelessWidget {
               leading: Icon(Icons.person),
               title: Text('Meus Dados'),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => MyProfile()));
+                 Future<Pessoa> pessoa = GetFindbyIDService.getFindbyID();
+                 if (pessoa.isUndefinedOrNull){
+                  print('Não tem pessoa Cadastrada');
+                 }else{
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => MyProfile(pessoa: pessoa,)));
+                 }
+                 
               },
             ),
             ListTile(

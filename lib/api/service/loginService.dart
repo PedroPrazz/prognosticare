@@ -3,6 +3,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:prognosticare/api/service/getFindbyIDService.dart';
 
+import '../model/pessoa.dart';
+
 final storage = FlutterSecureStorage();
 
 class LoginService {
@@ -28,7 +30,7 @@ class LoginService {
 
         String? idPessoa = await storage.read(key: 'user_id');
 
-        bool pessoa = await GetFindbyIDService.getFindbyID();
+        Pessoa pessoa = await GetFindbyIDService.getFindbyID();
         
 
         return true;

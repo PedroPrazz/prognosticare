@@ -1,18 +1,18 @@
 class Pessoa {
-  String? pessoaId;
-  String? nome;
-  String? cpf;
-  String contato;
-  String? dataNascimento;
-  String tipoSanguineo;
-  bool alergia;
-  String tipoAlergia;
-  bool tipoResponsavel;
-  String cartaoNacional;
-  String cartaoPlanoSaude;
+  String pessoaId;
+  String nome;
+  String cpf;
+  String? contato;
+  String dataNascimento;
+  String? tipoSanguineo;
+  bool? alergia;
+  String? tipoAlergia;
+  bool? tipoResponsavel;
+  String? cartaoNacional;
+  String? cartaoPlanoSaude;
 
   Pessoa({
-    this.pessoaId,
+    required this.pessoaId,
     required this.nome,
     required this.cpf,
     required this.contato,
@@ -24,6 +24,7 @@ class Pessoa {
     required this.cartaoNacional,
     required this.cartaoPlanoSaude,
   });
+
 
   factory Pessoa.fromJson(Map<String, dynamic> json) {
     return Pessoa(

@@ -5,7 +5,7 @@ import 'package:prognosticare/api/model/pessoa.dart';
 
 final storage = FlutterSecureStorage();
 class GetFindbyIDService {
-  static Future<bool> getFindbyID() async {
+  static Future<Pessoa> getFindbyID() async {
 
     String? idPessoa = await storage.read(key: 'user_id');
     String? token = await storage.read(key: 'token');
@@ -24,15 +24,16 @@ class GetFindbyIDService {
         Map<String, dynamic> jsonData = json.decode(response.body);
 
         Pessoa pessoa = Pessoa.fromJson(jsonData);
-        return true;
+        print(pessoa.nome);
+        return pessoa;
 
       } else {
         print('Response Status Code: ${response.statusCode}');
-        return false;
+        throw Exception('DSFDSFDF');
       }
     } catch (e) {
       print('Error: $e');
-      return false;
+        throw Exception('DSFDSFDF');
     }
   }
 }

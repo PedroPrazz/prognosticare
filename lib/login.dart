@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:prognosticare/api/service/getFindbyIDService.dart';
 import 'package:prognosticare/api/service/loginService.dart';
 import 'package:prognosticare/passwords/changePassword.dart';
 import 'package:prognosticare/register.dart';
@@ -80,6 +81,7 @@ class LoginPage extends StatelessWidget {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => ChangePassword()));
                     } else {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+                      GetFindbyIDService.getFindbyID();
                     }
                   } else {
                     print('Seu email e senha não correspondem. Tente novamente!');

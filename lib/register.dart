@@ -192,7 +192,7 @@ class _RegisterPageState extends State<RegisterPage> {
                    
                     bool loggedIn = await RegisterService.getRegister(_nome.text, _cpf.text, _email.text, _data.text, _password.text);
                     if (loggedIn) {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
                     }
                   },
                   style: ElevatedButton.styleFrom(

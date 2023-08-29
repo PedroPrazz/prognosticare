@@ -170,10 +170,11 @@ class _MyProfileState extends State<MyProfile> {
                   Container(
                     width: 300,
                     child: DropdownButtonFormField<String>(
+                      focusColor: Colors.white,
                       decoration: InputDecoration(
+                        hoverColor: Colors.blue,
                         labelText: 'Tipo Sanguíneo',
                         labelStyle: TextStyle(color: Colors.black),
-                        fillColor: Colors.white,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),

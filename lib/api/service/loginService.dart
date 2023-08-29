@@ -1,11 +1,12 @@
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:prognosticare/api/service/getFindbyIDService.dart';
 
 final storage = FlutterSecureStorage();
+
 class LoginService {
   static Future<bool> getLogin(String email, String password) async {
-
     final url = Uri.parse('http://localhost:8080/login');
 
     try {
@@ -18,16 +19,19 @@ class LoginService {
         headers: {'Content-Type': 'application/json'},
       );
 
-      if (response.statusCode == 200 || response.statusCode == 201) {
+      if (response.statusCode == 200) {
         final responseBody = response.body;
         final dados = json.decode(responseBody);
 
-        print(dados);
-
         await storage.write(key: 'token', value: dados['token']);
         await storage.write(key: 'user_id', value: dados['pessoaEntity']);
-        return true;
 
+        String? idPessoa = await storage.read(key: 'user_id');
+
+        bool pessoa = await GetFindbyIDService.getFindbyID();
+        
+
+        return true;
       } else {
         print('Response Status Code: ${response.statusCode}');
         print({response.body});

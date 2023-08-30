@@ -7,17 +7,20 @@ import 'package:prognosticare/api/service/personUpdateService.dart';
 class MyProfile extends StatefulWidget {
   MyProfile({super.key, required this.pessoa});
 
-  Future<Pessoa> pessoa;
+  Pessoa pessoa;
 
   @override
   State<MyProfile> createState() => _MyProfileState();
 }
 
 class _MyProfileState extends State<MyProfile> {
+
   @override
   bool alergiaMarcada = false;
   bool doadorMarcado = false;
-  
+  // late 
+
+
 
   Widget build(BuildContext context) {
     TextEditingController _nome = TextEditingController();
@@ -33,7 +36,7 @@ class _MyProfileState extends State<MyProfile> {
     return Center(
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Meus Dados'),
+          title: Text(widget.pessoa.nome),
           centerTitle: true,
           backgroundColor: Color.fromRGBO(255, 143, 171, 1),
           foregroundColor: Colors.white,
@@ -47,10 +50,10 @@ class _MyProfileState extends State<MyProfile> {
                   Container(
                     width: 500,
                     child: TextFormField(
+                      enabled: false,
                       controller: _nome,
                       decoration: InputDecoration(
-                          labelText: 'Nome Completo',
-                          labelStyle: TextStyle(color: Colors.black),
+                          hintText: widget.pessoa.nome,
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10)),
                           focusedBorder: OutlineInputBorder(
@@ -69,14 +72,14 @@ class _MyProfileState extends State<MyProfile> {
                   Container(
                     width: 500,
                     child: TextFormField(
+                      enabled: false,
                       controller: _cpf,
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,
                         CpfInputFormatter(),
                       ],
                       decoration: InputDecoration(
-                          labelText: 'CPF',
-                          labelStyle: TextStyle(color: Colors.black),
+                          hintText: widget.pessoa.cpf,
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10)),
                           focusedBorder: OutlineInputBorder(
@@ -95,14 +98,14 @@ class _MyProfileState extends State<MyProfile> {
                   Container(
                     width: 500,
                     child: TextFormField(
+                      enabled: false,
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,
                         DataInputFormatter(),
                       ],
                       controller: _data,
                       decoration: InputDecoration(
-                          labelText: 'Data de Nascimento',
-                          labelStyle: TextStyle(color: Colors.black),
+                          hintText: widget.pessoa.dataNascimento,
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10)),
                           focusedBorder: OutlineInputBorder(
@@ -301,13 +304,17 @@ class _MyProfileState extends State<MyProfile> {
                   SizedBox(height: 30),
                   ElevatedButton(
                     onPressed: () async {
+                      // bool loggedIn = await PersonUpdateService.getPerson(Pessoa pessoa);
+                      // if (loggedIn) {
+                      //   Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+                      // }
+                    },
                     // Pessoa pessoa = new Pessoa(nome: _nome.text, cpf: cpf.text, contato: contato.text,
                     //  dataNascimento: dataNascimento.text, tipoSanguineo: tipoSanguineo.text, alergia: alergia.text, 
                     //  tipoAlergia: tipoAlergia.text, tipoResponsavel: tipoResponsavel.text, cartaoNacional: cartaoNacional.text, 
                     //  cartaoPlanoSaude: cartaoPlanoSaude.text);
 
                     // bool updatePerson = await PersonUpdateService.getPerson(Pessoa())
-                  },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color.fromRGBO(255, 143, 171, 1),
                       alignment: Alignment.center,

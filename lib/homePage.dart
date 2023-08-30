@@ -86,12 +86,13 @@ class HomePage extends StatelessWidget {
             ListTile(
               leading: Icon(Icons.person),
               title: Text('Meus Dados'),
-              onTap: () {
-                 Future<Pessoa> pessoa = GetFindbyIDService.getFindbyID();
+              onTap: () async {
+                 Pessoa pessoa = await GetFindbyIDService.getFindbyID();
+                 print(GetFindbyIDService.getFindbyID());
                  if (pessoa.isUndefinedOrNull){
                   print('Não tem pessoa Cadastrada');
                  }else{
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => MyProfile(pessoa: pessoa,)));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => MyProfile(pessoa: pessoa)));
                  }
                  
               },

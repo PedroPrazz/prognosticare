@@ -24,7 +24,7 @@ class GetFindbyIDService {
         Map<String, dynamic> jsonData = json.decode(response.body);
 
         Pessoa pessoa = Pessoa.fromJson(jsonData);
-        print(pessoa.nome);
+        // print(pessoa.nome);
         return pessoa;
 
       } else {

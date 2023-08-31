@@ -11,7 +11,7 @@ class ChangePasswordService {
 
     final userId = await storage.read(key: 'user_id');
 
-    final url = Uri.parse('http://localhost:8080/register-person/public/change-password/$userId');
+    final url = Uri.parse('http://prognosticare.ddns.net:8085/register-person/public/change-password/$userId');
 
     try {
       final response = await http.put(

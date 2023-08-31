@@ -14,25 +14,35 @@ class MyProfile extends StatefulWidget {
 }
 
 class _MyProfileState extends State<MyProfile> {
+  @override
+
+
+  TextEditingController _nome = TextEditingController();
+  TextEditingController _cpf = TextEditingController();
+  TextEditingController _contato = TextEditingController();
+  TextEditingController _data = TextEditingController();
+  final TextEditingController _tipoSanguineo = TextEditingController();
+  TextEditingController _tipoAlergia = TextEditingController();
+  TextEditingController _cartaoNacional = TextEditingController();
+  TextEditingController _cartaoPlanoSaude = TextEditingController();
+
+  bool doadorMarcado = false;
+  bool alergiaMarcada = false;
 
   @override
-  bool alergiaMarcada = false;
-  bool doadorMarcado = false;
-  // late 
-
-
+  void initState() {
+    super.initState();
+    _nome.text = widget.pessoa.nome;
+    _cpf.text = widget.pessoa.cpf;
+    _contato.text = widget.pessoa.contato.toString();
+    _data.text = widget.pessoa.dataNascimento;
+    _tipoSanguineo.text = widget.pessoa.tipoSanguineo ?? 'A+';
+    _tipoAlergia.text = widget.pessoa.tipoAlergia.toString();
+    _cartaoNacional.text = widget.pessoa.cartaoNacional.toString();
+    _cartaoPlanoSaude.text = widget.pessoa.cartaoPlanoSaude.toString();
+  }
 
   Widget build(BuildContext context) {
-    TextEditingController _nome = TextEditingController();
-    TextEditingController _cpf = TextEditingController();
-    TextEditingController _contato = TextEditingController();
-    TextEditingController _data = TextEditingController();
-    final TextEditingController _tipoSanguineo = TextEditingController();
-    TextEditingController _tipoAlergia = TextEditingController();
-    TextEditingController _cartaoNacional = TextEditingController();
-    TextEditingController _cartaoPlanoSaude = TextEditingController();
-
-
     return Center(
       child: Scaffold(
         appBar: AppBar(
@@ -204,7 +214,9 @@ class _MyProfileState extends State<MyProfile> {
                           ),
                         ),
                       ),
-                      value: _tipoSanguineo.text.isEmpty ? null : _tipoSanguineo.text,
+                      value: _tipoSanguineo.text.isEmpty
+                          ? null
+                          : _tipoSanguineo.text,
                       onChanged: (String? newValue) {
                         setState(() {
                           _tipoSanguineo.text = newValue!;
@@ -225,11 +237,8 @@ class _MyProfileState extends State<MyProfile> {
                           child: Row(
                             children: [
                               Icon(Icons.bloodtype,
-                                  color: Color.fromRGBO(255, 143, 171,
-                                      1)), // Ícone que você pode personalizar
-                              SizedBox(
-                                  width:
-                                      10), // Espaçamento entre o ícone e o texto
+                                  color: Color.fromRGBO(255, 143, 171, 1)),
+                              SizedBox(width: 10),
                               Text(
                                 value,
                                 style: TextStyle(
@@ -282,7 +291,6 @@ class _MyProfileState extends State<MyProfile> {
                           ),
                         ),
                         cursorColor: Color.fromRGBO(255, 143, 171, 1),
-                        // validator e outras propriedades...
                       ),
                     ),
                   ),
@@ -304,17 +312,24 @@ class _MyProfileState extends State<MyProfile> {
                   SizedBox(height: 30),
                   ElevatedButton(
                     onPressed: () async {
-                      // bool loggedIn = await PersonUpdateService.getPerson(Pessoa pessoa);
-                      // if (loggedIn) {
-                      //   Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+                      // Pessoa pessoaAtualizada = widget.pessoa.copyWith(
+                      //     nome: _nome.text,
+                      //     cpf: _cpf.text,
+                      //     contato: _contato.text,
+                      //     dataNascimento: _data.text,
+                      //     tipoSanguineo: _tipoSanguineo.text,
+                      //     tipoAlergia: _tipoAlergia.text,
+                      //     cartaoNacional: _cartaoNacional.text,
+                      //     cartaoPlanoSaude: _cartaoPlanoSaude.text);
+                      // bool update =
+                      //     await PersonUpdateService.getPerson(pessoaAtualizada);
+                      // if (update) {
+                      //   Navigator.push(
+                      //       context,
+                      //       MaterialPageRoute(
+                      //           builder: (context) => HomePage()));
                       // }
                     },
-                    // Pessoa pessoa = new Pessoa(nome: _nome.text, cpf: cpf.text, contato: contato.text,
-                    //  dataNascimento: dataNascimento.text, tipoSanguineo: tipoSanguineo.text, alergia: alergia.text, 
-                    //  tipoAlergia: tipoAlergia.text, tipoResponsavel: tipoResponsavel.text, cartaoNacional: cartaoNacional.text, 
-                    //  cartaoPlanoSaude: cartaoPlanoSaude.text);
-
-                    // bool updatePerson = await PersonUpdateService.getPerson(Pessoa())
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color.fromRGBO(255, 143, 171, 1),
                       alignment: Alignment.center,

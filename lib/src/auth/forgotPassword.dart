@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:prognosticare/api/service/forgotPasswordService.dart';
-import 'package:prognosticare/login.dart';
+
+import 'login.dart';
 
 class ForgotPassword extends StatelessWidget {
   const ForgotPassword({super.key});

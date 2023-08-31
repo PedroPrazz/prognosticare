@@ -25,6 +25,30 @@ class Pessoa {
     required this.cartaoPlanoSaude,
   });
 
+  Pessoa copyWith({
+    String? nome,
+    String? cpf,
+    String? contato,
+    String? dataNascimento,
+    String? tipoSanguineo,
+    String? tipoAlergia,
+    String? cartaoNacional,
+    String? cartaoPlanoSaude,
+  }) {
+    return Pessoa(
+      pessoaId: pessoaId ?? this.pessoaId,
+      nome: nome ?? this.nome,
+      cpf: cpf ?? this.cpf,
+      contato: contato ?? this.contato,
+      dataNascimento: dataNascimento ?? this.dataNascimento,
+      tipoSanguineo: tipoSanguineo ?? this.tipoSanguineo,
+      alergia: alergia ?? this.alergia,
+      tipoAlergia: tipoAlergia ?? this.tipoAlergia,
+      tipoResponsavel: tipoResponsavel ?? this.tipoResponsavel,
+      cartaoNacional: cartaoNacional ?? this.cartaoNacional,
+      cartaoPlanoSaude: cartaoPlanoSaude ?? this.cartaoPlanoSaude,
+    );
+  }
 
   factory Pessoa.fromJson(Map<String, dynamic> json) {
     return Pessoa(

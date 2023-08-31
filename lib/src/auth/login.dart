@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:prognosticare/api/service/getFindbyIDService.dart';
 import 'package:prognosticare/api/service/loginService.dart';
-import 'package:prognosticare/passwords/changePassword.dart';
-import 'package:prognosticare/register.dart';
-import 'package:prognosticare/passwords/forgotPassword.dart';
+import 'package:prognosticare/src/auth/register.dart';
+import 'changePassword.dart';
+import 'forgotPassword.dart';
 import 'homePage.dart';
 
 class LoginPage extends StatelessWidget {

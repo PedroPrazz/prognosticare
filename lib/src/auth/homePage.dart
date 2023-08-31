@@ -1,12 +1,12 @@
 import 'dart:js_interop';
 
 import 'package:flutter/material.dart';
-import 'package:prognosticare/login.dart';
-import 'package:prognosticare/passwords/changePassword.dart';
-import 'package:prognosticare/profile.dart';
+import 'package:prognosticare/src/auth/profile.dart';
 
-import 'api/model/pessoa.dart';
-import 'api/service/getFindbyIDService.dart';
+import '../../api/model/pessoa.dart';
+import '../../api/service/getFindbyIDService.dart';
+import 'changePassword.dart';
+import 'login.dart';
 
 // class Event {
 //   final String name;

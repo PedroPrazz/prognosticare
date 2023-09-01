@@ -313,6 +313,7 @@ class _MyProfileState extends State<MyProfile> {
                   ElevatedButton(
                     onPressed: () async {
                       Pessoa pessoaAtualizada = widget.pessoa.copyWith(
+                        pessoaId: widget.pessoa.pessoaId,
                         nome: _nome.text,
                         cpf: _cpf.text,
                         contato: _contato.text,
@@ -331,6 +332,7 @@ class _MyProfileState extends State<MyProfile> {
                             MaterialPageRoute(
                                 builder: (context) => HomePage()));
                       } else {
+                        print("id: ${pessoaAtualizada.pessoaId}");
                         print("Nome: ${pessoaAtualizada.nome}");
                         print("CPF: ${pessoaAtualizada.cpf}");
                         print("Contato: ${pessoaAtualizada.contato}");

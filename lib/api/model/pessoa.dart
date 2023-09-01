@@ -26,6 +26,7 @@ class Pessoa {
   });
 
   Pessoa copyWith({
+    String? pessoaId,
     String? nome,
     String? cpf,
     String? contato,

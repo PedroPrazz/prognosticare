@@ -31,6 +31,7 @@ class Pessoa {
     String? contato,
     String? dataNascimento,
     String? tipoSanguineo,
+    bool? alergia,
     String? tipoAlergia,
     String? cartaoNacional,
     String? cartaoPlanoSaude,

@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:prognosticare/api/model/pessoa.dart';
 import 'package:prognosticare/api/service/personUpdateService.dart';
 
+import 'homePage.dart';
+
 class MyProfile extends StatefulWidget {
   MyProfile({super.key, required this.pessoa});
 
@@ -15,13 +17,11 @@ class MyProfile extends StatefulWidget {
 
 class _MyProfileState extends State<MyProfile> {
   @override
-
-
   TextEditingController _nome = TextEditingController();
   TextEditingController _cpf = TextEditingController();
   TextEditingController _contato = TextEditingController();
   TextEditingController _data = TextEditingController();
-  final TextEditingController _tipoSanguineo = TextEditingController();
+  TextEditingController _tipoSanguineo = TextEditingController();
   TextEditingController _tipoAlergia = TextEditingController();
   TextEditingController _cartaoNacional = TextEditingController();
   TextEditingController _cartaoPlanoSaude = TextEditingController();
@@ -36,7 +36,7 @@ class _MyProfileState extends State<MyProfile> {
     _cpf.text = widget.pessoa.cpf;
     _contato.text = widget.pessoa.contato.toString();
     _data.text = widget.pessoa.dataNascimento;
-    _tipoSanguineo.text = widget.pessoa.tipoSanguineo ?? 'A+';
+    _tipoSanguineo.text = widget.pessoa.tipoSanguineo ?? 'A_POSITIVO';
     _tipoAlergia.text = widget.pessoa.tipoAlergia.toString();
     _cartaoNacional.text = widget.pessoa.cartaoNacional.toString();
     _cartaoPlanoSaude.text = widget.pessoa.cartaoPlanoSaude.toString();
@@ -223,14 +223,14 @@ class _MyProfileState extends State<MyProfile> {
                         });
                       },
                       items: <String>[
-                        'A+',
-                        'A-',
-                        'B+',
-                        'B-',
-                        'O+',
-                        'O-',
-                        'AB+',
-                        'AB-'
+                        'A_POSITIVO',
+                        'A_NEGATIVO',
+                        'B_POSITIVO',
+                        'B_NEGATIVO',
+                        'O_POSITIVO',
+                        'O_NEGATIVO',
+                        'AB_POSITIVO',
+                        'AB_NEGATIVO',
                       ].map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
@@ -312,23 +312,36 @@ class _MyProfileState extends State<MyProfile> {
                   SizedBox(height: 30),
                   ElevatedButton(
                     onPressed: () async {
-                      // Pessoa pessoaAtualizada = widget.pessoa.copyWith(
-                      //     nome: _nome.text,
-                      //     cpf: _cpf.text,
-                      //     contato: _contato.text,
-                      //     dataNascimento: _data.text,
-                      //     tipoSanguineo: _tipoSanguineo.text,
-                      //     tipoAlergia: _tipoAlergia.text,
-                      //     cartaoNacional: _cartaoNacional.text,
-                      //     cartaoPlanoSaude: _cartaoPlanoSaude.text);
-                      // bool update =
-                      //     await PersonUpdateService.getPerson(pessoaAtualizada);
-                      // if (update) {
-                      //   Navigator.push(
-                      //       context,
-                      //       MaterialPageRoute(
-                      //           builder: (context) => HomePage()));
-                      // }
+                      Pessoa pessoaAtualizada = widget.pessoa.copyWith(
+                        nome: _nome.text,
+                        cpf: _cpf.text,
+                        contato: _contato.text,
+                        dataNascimento: _data.text,
+                        tipoSanguineo: _tipoSanguineo.text,
+                        alergia: alergiaMarcada,
+                        tipoAlergia: _tipoAlergia.text,
+                        cartaoNacional: _cartaoNacional.text,
+                        cartaoPlanoSaude: _cartaoPlanoSaude.text,
+                      );
+                      bool update =
+                          await PersonUpdateService.getPerson(pessoaAtualizada);
+                      if (update) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => HomePage()));
+                      } else {
+                        print("Nome: ${pessoaAtualizada.nome}");
+                        print("CPF: ${pessoaAtualizada.cpf}");
+                        print("Contato: ${pessoaAtualizada.contato}");
+                        print("Data de Nascimento: ${pessoaAtualizada.dataNascimento}");
+                        print("tipoSanguineo: ${pessoaAtualizada.tipoSanguineo}");
+                        print("alergia: ${pessoaAtualizada.alergia}");
+                        print("tipoAlergia: ${pessoaAtualizada.tipoAlergia}");
+                        print("cartaoNacional: ${pessoaAtualizada.cartaoNacional}");
+                        print("cartaoPlanoSaude: ${pessoaAtualizada.cartaoPlanoSaude}");
+
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color.fromRGBO(255, 143, 171, 1),

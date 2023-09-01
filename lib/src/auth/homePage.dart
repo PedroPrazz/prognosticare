@@ -2,7 +2,6 @@ import 'dart:js_interop';
 
 import 'package:flutter/material.dart';
 import 'package:prognosticare/src/auth/profile.dart';
-
 import '../../api/model/pessoa.dart';
 import '../../api/service/getFindbyIDService.dart';
 import 'changePassword.dart';
@@ -21,6 +20,7 @@ class HomePage extends StatelessWidget {
   final String? email;
   final String? password;
   final String? datanasc;
+
 
   HomePage({this.cpf, this.email, this.password, this.datanasc});
 
@@ -73,7 +73,7 @@ class HomePage extends StatelessWidget {
                       ),
                       SizedBox(height: 8),
                       Text(
-                        '$email', // Mostra o CPF cadastrado
+                        'nome da pessoa aqui',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 18,

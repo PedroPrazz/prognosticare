@@ -34,6 +34,7 @@ class Pessoa {
     String? tipoSanguineo,
     bool? alergia,
     String? tipoAlergia,
+    bool? tipoResponsavel,
     String? cartaoNacional,
     String? cartaoPlanoSaude,
   }) {

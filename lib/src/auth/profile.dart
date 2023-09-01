@@ -1,9 +1,9 @@
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:prognosticare/api/model/pessoa.dart';
 import 'package:prognosticare/api/service/personUpdateService.dart';
-
 import 'homePage.dart';
 
 class MyProfile extends StatefulWidget {
@@ -29,13 +29,16 @@ class _MyProfileState extends State<MyProfile> {
   bool doadorMarcado = false;
   bool alergiaMarcada = false;
 
+  DateFormat _dateFormat = DateFormat('dd/MM/yyyy');
+
   @override
   void initState() {
     super.initState();
     _nome.text = widget.pessoa.nome;
     _cpf.text = widget.pessoa.cpf;
     _contato.text = widget.pessoa.contato.toString();
-    _data.text = widget.pessoa.dataNascimento;
+    DateTime parsedDate = DateTime.parse(widget.pessoa.dataNascimento);
+    _data.text = _dateFormat.format(parsedDate);
     _tipoSanguineo.text = widget.pessoa.tipoSanguineo ?? 'A_POSITIVO';
     _tipoAlergia.text = widget.pessoa.tipoAlergia.toString();
     _cartaoNacional.text = widget.pessoa.cartaoNacional.toString();
@@ -312,15 +315,20 @@ class _MyProfileState extends State<MyProfile> {
                   SizedBox(height: 30),
                   ElevatedButton(
                     onPressed: () async {
+                      DateTime parsedDate = _dateFormat.parse(_data.text);
+                      String originalDate =
+                          "${parsedDate.day.toString().padLeft(2, '0')}/${parsedDate.month.toString().padLeft(2, '0')}/${parsedDate.year.toString()}";
+
                       Pessoa pessoaAtualizada = widget.pessoa.copyWith(
                         pessoaId: widget.pessoa.pessoaId,
                         nome: _nome.text,
                         cpf: _cpf.text,
                         contato: _contato.text,
-                        dataNascimento: _data.text,
+                        dataNascimento: originalDate,
                         tipoSanguineo: _tipoSanguineo.text,
                         alergia: alergiaMarcada,
                         tipoAlergia: _tipoAlergia.text,
+                        tipoResponsavel: widget.pessoa.tipoResponsavel,
                         cartaoNacional: _cartaoNacional.text,
                         cartaoPlanoSaude: _cartaoPlanoSaude.text,
                       );
@@ -336,13 +344,18 @@ class _MyProfileState extends State<MyProfile> {
                         print("Nome: ${pessoaAtualizada.nome}");
                         print("CPF: ${pessoaAtualizada.cpf}");
                         print("Contato: ${pessoaAtualizada.contato}");
-                        print("Data de Nascimento: ${pessoaAtualizada.dataNascimento}");
-                        print("tipoSanguineo: ${pessoaAtualizada.tipoSanguineo}");
+                        print(
+                            "Data de Nascimento: ${pessoaAtualizada.dataNascimento}");
+                        print(
+                            "tipoSanguineo: ${pessoaAtualizada.tipoSanguineo}");
                         print("alergia: ${pessoaAtualizada.alergia}");
+                        print(
+                            "responsavel: ${pessoaAtualizada.tipoResponsavel}");
                         print("tipoAlergia: ${pessoaAtualizada.tipoAlergia}");
-                        print("cartaoNacional: ${pessoaAtualizada.cartaoNacional}");
-                        print("cartaoPlanoSaude: ${pessoaAtualizada.cartaoPlanoSaude}");
-
+                        print(
+                            "cartaoNacional: ${pessoaAtualizada.cartaoNacional}");
+                        print(
+                            "cartaoPlanoSaude: ${pessoaAtualizada.cartaoPlanoSaude}");
                       }
                     },
                     style: ElevatedButton.styleFrom(

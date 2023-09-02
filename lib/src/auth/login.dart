@@ -12,7 +12,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TextEditingController _email = TextEditingController();
-    TextEditingController _password= TextEditingController();
+    TextEditingController _password = TextEditingController();
     return Scaffold(
         body: SingleChildScrollView(
       reverse: true,
@@ -22,7 +22,8 @@ class LoginPage extends StatelessWidget {
             child: Form(
                 child: Column(children: [
               Container(
-                  margin: EdgeInsets.only(top: 180, left: 25, right: 25, bottom: 25),
+                  margin: EdgeInsets.only(
+                      top: 180, left: 25, right: 25, bottom: 25),
                   child: Text(
                     'Login',
                     style: TextStyle(fontSize: 37, fontWeight: FontWeight.bold),
@@ -75,16 +76,65 @@ class LoginPage extends StatelessWidget {
               SizedBox(height: 30),
               ElevatedButton(
                 onPressed: () async {
-                  bool loggedIn = await LoginService.getLogin(_email.text, _password.text);
-                  if (loggedIn) {
-                    if (_password.text == 'abcdefgh') {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ChangePassword()));
-                    } else {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-                      GetFindbyIDService.getFindbyID();
-                    }
+                  if (_email.text.isEmpty || _password.text.isEmpty) {
+                    // Exibir um AlertDialog se o email ou senha estiverem vazios
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text('Tente novamente!'),
+                          content:
+                              Text('O email e a senha não podem ser vazios.'),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context)
+                                    .pop(); // Fechar o AlertDialog
+                              },
+                              child: Text('OK'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
                   } else {
-                    print('Seu email e senha não correspondem. Tente novamente!');
+                    bool loggedIn = await LoginService.getLogin(
+                        _email.text, _password.text);
+                    if (loggedIn) {
+                      if (_password.text == 'abcdefgh') {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ChangePassword()));
+                      } else {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => HomePage()));
+                        GetFindbyIDService.getFindbyID();
+                      }
+                    } else {
+                      // Exibir um AlertDialog se o login falhar
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text('Tente novamente!'),
+                            content:
+                                Text('Seu email e/ou senha não correspondem.'),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context)
+                                      .pop(); // Fechar o AlertDialog
+                                },
+                                child: Text('OK'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    }
                   }
                 },
                 style: ElevatedButton.styleFrom(
@@ -92,9 +142,10 @@ class LoginPage extends StatelessWidget {
                   alignment: Alignment.center,
                 ),
                 child: Container(
-                    width: 465,
-                    height: 39,
-                    child: Center(child: Text('ENTRAR'))),
+                  width: 465,
+                  height: 39,
+                  child: Center(child: Text('ENTRAR')),
+                ),
               ),
               SizedBox(height: 30),
               TextButton(
@@ -133,6 +184,3 @@ class LoginPage extends StatelessWidget {
     ));
   }
 }
-
-
-

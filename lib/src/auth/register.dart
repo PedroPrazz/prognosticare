@@ -12,14 +12,15 @@ class RegisterPage extends StatefulWidget {
   @override
   State<RegisterPage> createState() => _RegisterPageState();
 }
-class _RegisterPageState extends State<RegisterPage> {
 
+class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     TextEditingController _nome = TextEditingController();
     TextEditingController _cpf = TextEditingController();
     TextEditingController _data = TextEditingController();
     TextEditingController _email = TextEditingController();
     TextEditingController _password = TextEditingController();
+    TextEditingController _confirmPassword = TextEditingController();
     return Scaffold(
       body: SingleChildScrollView(
         child: Center(
@@ -189,10 +190,40 @@ class _RegisterPageState extends State<RegisterPage> {
                     } else {
                       print('Cpf Inválido');
                     }
-                   
-                    bool loggedIn = await RegisterService.getRegister(_nome.text, _cpf.text, _email.text, _data.text, _password.text);
+
+                    // Validar se a senha e a confirmação de senha coincidem
+                    if (_password.text != _confirmPassword.text) {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text('Tente novamente!'),
+                            content:
+                                Text('As senhas digitadas são diferentes.'),
+                            actions: <Widget>[
+                              TextButton(
+                                child: Text('OK'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                      return; // Impede que o código continue a execução
+                    }
+
+                    // Se as senhas coincidirem, continue com o registro
+                    bool loggedIn = await RegisterService.getRegister(
+                        _nome.text,
+                        _cpf.text,
+                        _email.text,
+                        _data.text,
+                        _password.text);
                     if (loggedIn) {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => LoginPage()));
                     }
                   },
                   style: ElevatedButton.styleFrom(
@@ -200,9 +231,10 @@ class _RegisterPageState extends State<RegisterPage> {
                     alignment: Alignment.center,
                   ),
                   child: Container(
-                      width: 465,
-                      height: 39,
-                      child: Center(child: Text('CADASTRAR'))),
+                    width: 465,
+                    height: 39,
+                    child: Center(child: Text('CADASTRAR')),
+                  ),
                 ),
                 SizedBox(height: 30),
                 TextButton(

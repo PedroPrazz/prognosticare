@@ -1,7 +1,7 @@
 import 'dart:js_interop';
 
 import 'package:flutter/material.dart';
-import 'package:prognosticare/src/auth/agendamentos.dart';
+import 'package:prognosticare/api/components/dialog.dart';
 import 'package:prognosticare/src/auth/profile.dart';
 import '../../api/model/pessoa.dart';
 import '../../api/service/getFindbyIDService.dart';
@@ -15,14 +15,17 @@ import 'login.dart';
 
 //   Event(this.name, this.eventType, this.dateTime);
 // }
+List pessoa_id = [];
 
-class HomePage extends StatelessWidget {
+class MeusDependentes extends StatelessWidget {
+  final String? id;
   final String? cpf;
   final String? email;
   final String? password;
   final String? datanasc;
 
-  HomePage({this.cpf, this.email, this.password, this.datanasc});
+  MeusDependentes(
+      {this.id, this.cpf, this.email, this.password, this.datanasc});
 
   // final List<Event> events = [
   //   Event("Evento 1", "Tipo A", DateTime.now().subtract(Duration(days: 1))),
@@ -47,7 +50,7 @@ class HomePage extends StatelessWidget {
             onPressed: () {},
           ),
         ],
-        title: Text('PrognostiCare'),
+        title: Text('Meus Dependentes'),
         backgroundColor: Color.fromRGBO(255, 143, 171, 1),
         foregroundColor: Colors.white,
         centerTitle: true,
@@ -100,15 +103,23 @@ class HomePage extends StatelessWidget {
             ListTile(
               leading: Icon(Icons.assignment),
               title: Text('Meu Prontuário'),
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Agendamentos()));
-              },
+              onTap: () {},
             ),
             ListTile(
               leading: Icon(Icons.emoji_emotions),
               title: Text('Meus Dependentes'),
-              onTap: () {},
+              onTap: () async {
+                Pessoa pessoa = await GetFindbyIDService.getFindbyID();
+                print(GetFindbyIDService.getFindbyID());
+                if (pessoa == null) {
+                  print('Não tem pessoa Cadastrada');
+                } else {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MyProfile(pessoa: pessoa)));
+                }
+              },
             ),
             ListTile(
               leading: Icon(Icons.auto_stories),
@@ -141,10 +152,41 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+      body: SingleChildScrollView(
+        child: SizedBox(
+          child: Container(
+            padding: EdgeInsets.all(50),
+            child: Column(
+              children: [
+                Container(
+                  height: 50,
+                ),
+                Container(
+                  height: 250,
+                  child: ListView.builder(
+                      itemCount: pessoa_id.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          title: Text(pessoa_id[index]),
+                          trailing: IconButton(
+                            color: Colors.red,
+                            icon: Icon(Icons.delete),
+                            onPressed: () {
+                              (() {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return Confirmacao();
+                                    });
+                              });
+                            },
+                          ),
+                        );
+                      }),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );

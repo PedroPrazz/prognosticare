@@ -1,7 +1,9 @@
 import 'dart:js_interop';
 
 import 'package:flutter/material.dart';
+import 'package:prognosticare/src/auth/agendamentos.dart';
 import 'package:prognosticare/src/auth/profile.dart';
+import 'package:prognosticare/src/auth/prontuario.dart';
 import '../../api/model/pessoa.dart';
 import '../../api/service/getFindbyIDService.dart';
 import 'changePassword.dart';
@@ -21,7 +23,6 @@ class HomePage extends StatelessWidget {
   final String? password;
   final String? datanasc;
 
-
   HomePage({this.cpf, this.email, this.password, this.datanasc});
 
   // final List<Event> events = [
@@ -37,7 +38,6 @@ class HomePage extends StatelessWidget {
   //       event.dateTime.year == day.year).toList();
   // }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,8 +45,7 @@ class HomePage extends StatelessWidget {
         actions: [
           IconButton(
             icon: Icon(Icons.notifications_none),
-            onPressed: () {
-            },
+            onPressed: () {},
           ),
         ],
         title: Text('PrognostiCare'),
@@ -87,52 +86,57 @@ class HomePage extends StatelessWidget {
               leading: Icon(Icons.person),
               title: Text('Meus Dados'),
               onTap: () async {
-                 Pessoa pessoa = await GetFindbyIDService.getFindbyID();
-                 print(GetFindbyIDService.getFindbyID());
-                 if (pessoa.isUndefinedOrNull){
+                Pessoa pessoa = await GetFindbyIDService.getFindbyID();
+                print(GetFindbyIDService.getFindbyID());
+                if (pessoa == null) {
                   print('Não tem pessoa Cadastrada');
-                 }else{
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => MyProfile(pessoa: pessoa)));
-                 }
-                 
+                } else {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MyProfile(pessoa: pessoa)));
+                }
               },
             ),
             ListTile(
               leading: Icon(Icons.assignment),
               title: Text('Meu Prontuário'),
               onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Prontuario()));
               },
             ),
             ListTile(
               leading: Icon(Icons.emoji_emotions),
               title: Text('Meus Dependentes'),
-              onTap: () {
-              },
+              onTap: () {},
             ),
             ListTile(
               leading: Icon(Icons.auto_stories),
               title: Text('Minha Agenda'),
-              onTap: () {
-              },
+              onTap: () {},
             ),
             ListTile(
               leading: Icon(Icons.miscellaneous_services),
               title: Text('Alterar Senha'),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ChangePassword()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ChangePassword()));
               },
             ),
             ListTile(
               leading: Icon(Icons.info_outline),
               title: Text('Sobre o APP'),
-              onTap: () {
-              },
+              onTap: () {},
             ),
             ListTile(
               leading: Icon(Icons.subdirectory_arrow_left),
               title: Text('Sair do APP'),
               onTap: () {
-                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => LoginPage()), (route) => false);
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginPage()),
+                    (route) => false);
               },
             ),
           ],

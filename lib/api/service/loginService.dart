@@ -8,7 +8,7 @@ final storage = FlutterSecureStorage();
 
 class LoginService {
   static Future<bool> getLogin(String email, String password) async {
-    final url = Uri.parse('http://prognosticare.ddns.net:8085/login');
+    final url = Uri.parse('http://prognosticare.ddns.net:8085//login');
 
     try {
       final response = await http.post(
@@ -30,7 +30,6 @@ class LoginService {
         String? idPessoa = await storage.read(key: 'user_id');
 
         Pessoa pessoa = await GetFindbyIDService.getFindbyID();
-        
 
         return true;
       } else {

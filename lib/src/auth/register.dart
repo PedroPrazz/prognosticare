@@ -14,6 +14,128 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  Future<void> mostrarCamposVaziosAlertDialog(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Tente novamente!'),
+          content: Text('Os campos não podem estar vazios.'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> nomeInvalidoAlertDialog(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Tente novamente!'),
+          content: Text('O nome precisa conter pelo menos de 3 caracteres.'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> cpfInvalidoAlertDialog(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Tente novamente!'),
+          content: Text('O CPF digitado é inválido.'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> emailInvalidoAlertDialog(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Tente novamente!'),
+          content: Text('O email digitado é inválido.'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> mostrarSenhasNaoCorrespondentesAlertDialog(
+      BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Tente novamente!'),
+          content: Text('As senhas digitadas são diferentes.'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> mostrarSenhasMenoresOitoCaracteresAlertDialog(
+      BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Tente novamente!'),
+          content: Text('A senha precisa conter mais de 8 caracteres.'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Widget build(BuildContext context) {
     TextEditingController _nome = TextEditingController();
     TextEditingController _cpf = TextEditingController();
@@ -159,6 +281,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 Container(
                   width: 500,
                   child: TextFormField(
+                    controller: _confirmPassword,
                     decoration: InputDecoration(
                         labelText: 'Confirm Password',
                         labelStyle: TextStyle(color: Colors.black),
@@ -183,38 +306,41 @@ class _RegisterPageState extends State<RegisterPage> {
                 SizedBox(height: 30),
                 ElevatedButton(
                   onPressed: () async {
-                    String cpf = _cpf.text;
-
-                    if (GetUtils.isCpf(cpf)) {
-                      print('Cpf Válido');
-                    } else {
-                      print('Cpf Inválido');
+                    if (_nome.text.isEmpty ||
+                        _cpf.text.isEmpty ||
+                        _email.text.isEmpty ||
+                        _data.text.isEmpty ||
+                        _password.text.isEmpty ||
+                        _confirmPassword.text.isEmpty) {
+                      mostrarCamposVaziosAlertDialog(context);
+                      return;
                     }
 
-                    // Validar se a senha e a confirmação de senha coincidem
+                    if (_nome.text.length < 3) {
+                      nomeInvalidoAlertDialog(context);
+                      return;
+                    }
+
+                    if (!GetUtils.isCpf(_cpf.text)) {
+                      cpfInvalidoAlertDialog(context);
+                      return;
+                    }
+
+                    if (!_email.text.contains("@") ||
+                        !_email.text.contains(".com")) {
+                      emailInvalidoAlertDialog(context);
+                      return;
+                    }
+
+                    if (_password.text.length < 8) {
+                      mostrarSenhasMenoresOitoCaracteresAlertDialog(context);
+                      return;
+                    }
                     if (_password.text != _confirmPassword.text) {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text('Tente novamente!'),
-                            content:
-                                Text('As senhas digitadas são diferentes.'),
-                            actions: <Widget>[
-                              TextButton(
-                                child: Text('OK'),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                      return; // Impede que o código continue a execução
+                      mostrarSenhasNaoCorrespondentesAlertDialog(context);
+                      return;
                     }
 
-                    // Se as senhas coincidirem, continue com o registro
                     bool loggedIn = await RegisterService.getRegister(
                         _nome.text,
                         _cpf.text,

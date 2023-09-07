@@ -48,6 +48,28 @@ class ChangePassword extends StatelessWidget {
     );
   }
 
+  // Método para mostrar o AlertDialog de senhas menores que 8 caracteres
+  Future<void> mostrarSenhasMenoresOitoCaracteresAlertDialog(
+      BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Tente novamente!'),
+          content: Text('A senha precisa conter mais de 8 caracteres.'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   // Método para mostrar o AlertDialog de senha alterada com sucesso
   Future<void> mostrarSenhaAlteradaComSucessoAlertDialog(
       BuildContext context) async {
@@ -57,14 +79,6 @@ class ChangePassword extends StatelessWidget {
         return AlertDialog(
           title: Text('Senha Alterada'),
           content: Text('A senha foi alterada com sucesso.'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('OK'),
-            ),
-          ],
         );
       },
     );
@@ -155,25 +169,22 @@ class ChangePassword extends StatelessWidget {
                 SizedBox(height: 30),
                 ElevatedButton(
                   onPressed: () async {
-                    // Verificar se os campos estão vazios
-                    if (_newPasswordController.text.isEmpty) {
+                    if (_newPasswordController.text.isEmpty ||
+                        _confirmPasswordController.text.isEmpty) {
                       mostrarCamposVaziosAlertDialog(context);
+                    } else if (_newPasswordController.text.length < 8) {
+                      mostrarSenhasMenoresOitoCaracteresAlertDialog(context);
+                    } else if (_newPasswordController.text !=
+                        _confirmPasswordController.text) {
+                      mostrarSenhasNaoCorrespondentesAlertDialog(context);
                     } else {
                       bool changePassword =
                           await ChangePasswordService.getChangePassword(
                               _newPasswordController.text);
-                      if (changePassword) {
-                        mostrarSenhaAlteradaComSucessoAlertDialog(context);
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => LoginPage()));
-                        print('Senha alterada com sucesso!');
-                      } else {
-                        print('As senhas não coincidem. Tente novamente!');
-                        // Mostrar o AlertDialog de senhas não correspondentes
-                        mostrarSenhasNaoCorrespondentesAlertDialog(context);
-                      }
+                      mostrarSenhaAlteradaComSucessoAlertDialog(context);
+                      await Future.delayed(Duration(seconds: 5));
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => LoginPage()));
                     }
                   },
                   style: ElevatedButton.styleFrom(

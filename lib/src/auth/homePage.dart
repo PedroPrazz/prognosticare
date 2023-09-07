@@ -1,7 +1,4 @@
-import 'dart:js_interop';
-
 import 'package:flutter/material.dart';
-import 'package:prognosticare/src/auth/agendamentos.dart';
 import 'package:prognosticare/src/auth/profile.dart';
 import 'package:prognosticare/src/auth/prontuario.dart';
 import '../../api/model/pessoa.dart';
@@ -18,12 +15,13 @@ import 'login.dart';
 // }
 
 class HomePage extends StatelessWidget {
+  final String? nome;
   final String? cpf;
   final String? email;
   final String? password;
   final String? datanasc;
 
-  HomePage({this.cpf, this.email, this.password, this.datanasc});
+  HomePage({this.nome, this.cpf, this.email, this.password, this.datanasc});
 
   // final List<Event> events = [
   //   Event("Evento 1", "Tipo A", DateTime.now().subtract(Duration(days: 1))),

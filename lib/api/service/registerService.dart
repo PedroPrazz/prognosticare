@@ -5,7 +5,8 @@ import 'package:intl/intl.dart';
 class RegisterService {
   static Future<bool> getRegister(String nome, String cpf, String email,
       String data, String password) async {
-    final url = Uri.parse('http://prognosticare.ddns.net:8085/register-person/save');
+    final url =
+        Uri.parse('http://prognosticare.ddns.net:8085//register-person/save');
 
     try {
       final response = await http.post(
@@ -39,7 +40,6 @@ class RegisterService {
           return false;
         }
         return true;
-
       } else {
         print('Response Status Code: ${response.statusCode}');
         return false;

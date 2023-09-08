@@ -2,9 +2,9 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:prognosticare/api/model/pessoa.dart';
+import 'package:prognosticare/model/pessoa.dart';
 import 'package:prognosticare/api/service/personUpdateService.dart';
-import 'homePage.dart';
+import 'pages-antigas/homePage.dart';
 
 class MyProfile extends StatefulWidget {
   MyProfile({super.key, required this.pessoa});

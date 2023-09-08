@@ -2,13 +2,13 @@ import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:prognosticare/api/service/getFindbyIDService.dart';
-import '../model/pessoa.dart';
+import '../../model/pessoa.dart';
 
 final storage = FlutterSecureStorage();
 
 class LoginService {
   static Future<bool> getLogin(String email, String password) async {
-    final url = Uri.parse('http://prognosticare.ddns.net:8085/login');
+    final url = Uri.parse('http://localhost:8080/login');
 
     try {
       final response = await http.post(

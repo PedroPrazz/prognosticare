@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:prognosticare/api/service/changePasswordService.dart';
-import 'login.dart';
+import 'package:prognosticare/src/auth/sign_in_screen.dart';
 
 class ChangePassword extends StatelessWidget {
   const ChangePassword({super.key});
@@ -167,7 +167,7 @@ class ChangePassword extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => LoginPage()));
+                                builder: (context) => SignInScreen()));
                         print('Senha alterada com sucesso!');
                       } else {
                         print('As senhas não coincidem. Tente novamente!');

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:prognosticare/api/service/forgotPasswordService.dart';
+import 'package:prognosticare/src/auth/sign_in_screen.dart';
 
-import 'login.dart';
 
 class ForgotPassword extends StatelessWidget {
   const ForgotPassword({super.key});
@@ -64,7 +64,7 @@ class ForgotPassword extends StatelessWidget {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => LoginPage()));
+                                      builder: (context) => SignInScreen()));
                             },
                             child: Text('OK'),
                           ),

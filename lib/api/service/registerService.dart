@@ -6,7 +6,7 @@ class RegisterService {
   static Future<bool> getRegister(String nome, String cpf, String email,
       String data, String password) async {
     final url =
-        Uri.parse('http://prognosticare.ddns.net:8085//register-person/save');
+        Uri.parse('http://prognosticare.ddns.net:8085/register-person/save');
 
     try {
       final response = await http.post(

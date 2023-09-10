@@ -216,6 +216,7 @@ class SignUpScreen extends StatelessWidget {
                               child: const Text(
                                 'Cadastrar',
                                 style: TextStyle(
+                                  color: Colors.white,
                                   fontSize: 18,
                                 ),
                               ),

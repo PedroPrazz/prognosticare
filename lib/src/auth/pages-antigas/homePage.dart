@@ -87,6 +87,7 @@ class HomePage extends StatelessWidget {
               onTap: () async {
                  Pessoa pessoa = await GetFindbyIDService.getFindbyID();
                  print(GetFindbyIDService.getFindbyID());
+                 // ignore: unnecessary_null_comparison
                  if (pessoa == null){
                   print('Não tem pessoa Cadastrada');
                  }else{

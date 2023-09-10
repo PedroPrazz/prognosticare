@@ -5,7 +5,7 @@ import 'package:prognosticare/model/pessoa.dart';
 class PersonUpdateService {
   static Future<bool> getPerson(Pessoa pessoa) async {
     final url =
-        Uri.parse('http://prognosticare.ddns.net:8085//register-person/update');
+        Uri.parse('http://prognosticare.ddns.net:8085/register-person/update');
     try {
       final response = await http.put(
         url,

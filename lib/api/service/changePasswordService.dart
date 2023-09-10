@@ -10,7 +10,7 @@ class ChangePasswordService {
     final token = await storage.read(key: 'token'); // Recupere o token
 
     final url = Uri.parse(
-        'http://prognosticare.ddns.net:8085//register-person/public/change-password/$userId');
+        'http://prognosticare.ddns.net:8085/register-person/public/change-password/$userId');
 
     try {
       final response = await http.put(

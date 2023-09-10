@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:prognosticare/api/model/pessoa.dart';
 import 'package:prognosticare/api/service/personUpdateService.dart';
-import 'homePage.dart';
+import 'package:prognosticare/homePage.dart';
 
 class MyProfile extends StatefulWidget {
   MyProfile({super.key, required this.pessoa});

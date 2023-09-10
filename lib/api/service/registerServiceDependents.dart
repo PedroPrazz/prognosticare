@@ -5,8 +5,7 @@ import 'package:intl/intl.dart';
 class RegisterServiceDepents {
   static Future<bool> getRegister(String pessoaId, String nome, String cpf,
       String email, String data, String password) async {
-    final url =
-        Uri.parse('http://prognosticare.ddns.net:8085//add-dependent/{id}');
+    final url = Uri.parse('http://localhost:8080/add-dependent/{id}');
 
     try {
       final response = await http.post(

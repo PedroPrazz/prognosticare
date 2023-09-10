@@ -1,10 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:prognosticare/api/service/forgotPasswordService.dart';
-
-import 'login.dart';
+import 'package:prognosticare/src/auth/sign_in_screen.dart';
 
 class ForgotPassword extends StatelessWidget {
   const ForgotPassword({super.key});
+
+  Future<void> emailValidoAlertDialog(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Email enviado!'),
+          content: Text('Foi enviado um email com instruções de recuperação.'),
+        );
+      },
+    );
+  }
+
+  Future<void> emailInvalidoAlertDialog(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Tente novamente!'),
+          content: Text('Email não cadastrado no sistema.'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,49 +80,12 @@ class ForgotPassword extends StatelessWidget {
                 bool sendEmail =
                     await ForgotPasswordService.getNewPassword(_email.text);
                 if (sendEmail) {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: Text('Email Enviado'),
-                        content: Text(
-                            'O email foi enviado com sucesso! Verifique sua caixa de entrada.'),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context)
-                                  .pop(); // Fechar o AlertDialog
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => LoginPage()));
-                            },
-                            child: Text('OK'),
-                          ),
-                        ],
-                      );
-                    },
-                  );
+                  emailValidoAlertDialog(context);
+                  await Future.delayed(Duration(seconds: 5));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => SignInScreen()));
                 } else {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: Text('Email Não Cadastrado'),
-                        content: Text(
-                            'O email não está cadastrado no sistema. Verifique o email informado.'),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context)
-                                  .pop(); // Fechar o AlertDialog
-                            },
-                            child: Text('OK'),
-                          ),
-                        ],
-                      );
-                    },
-                  );
+                  emailInvalidoAlertDialog(context);
                 }
               },
               style: ElevatedButton.styleFrom(
@@ -99,10 +93,9 @@ class ForgotPassword extends StatelessWidget {
                 alignment: Alignment.center,
               ),
               child: Container(
-                width: 465,
-                height: 39,
-                child: Center(child: Text('RECUPERAR SENHA')),
-              ),
+                  width: 465,
+                  height: 39,
+                  child: Center(child: Text('RECUPERAR SENHA'))),
             ),
             SizedBox(height: 30),
             Text(

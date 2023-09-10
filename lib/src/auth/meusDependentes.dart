@@ -1,13 +1,10 @@
-import 'dart:js_interop';
-
 import 'package:flutter/material.dart';
-import 'package:prognosticare/api/components/dialog.dart';
-import 'package:prognosticare/src/auth/profile.dart';
+import 'package:prognosticare/components/dialog.dart';
+import 'package:prognosticare/src/auth/sign_in_screen.dart';
+import 'package:prognosticare/passwords/changePassword.dart';
+import 'package:prognosticare/profile.dart';
 import '../../api/model/pessoa.dart';
 import '../../api/service/getFindbyIDService.dart';
-import 'changePassword.dart';
-import 'login.dart';
-
 // class Event {
 //   final String name;
 //   final String eventType;
@@ -145,7 +142,7 @@ class MeusDependentes extends StatelessWidget {
               onTap: () {
                 Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(builder: (context) => LoginPage()),
+                    MaterialPageRoute(builder: (context) => SignInScreen()),
                     (route) => false);
               },
             ),

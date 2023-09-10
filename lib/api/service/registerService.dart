@@ -39,7 +39,6 @@ class RegisterService {
           return false;
         }
         return true;
-
       } else {
         print('Response Status Code: ${response.statusCode}');
         return false;

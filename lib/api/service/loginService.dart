@@ -30,7 +30,6 @@ class LoginService {
         String? idPessoa = await storage.read(key: 'user_id');
 
         Pessoa pessoa = await GetFindbyIDService.getFindbyID();
-        
 
         return true;
       } else {

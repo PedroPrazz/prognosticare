@@ -1,12 +1,10 @@
-import 'dart:js_interop';
-
 import 'package:flutter/material.dart';
-import 'package:prognosticare/src/auth/agendamentos.dart';
-import 'package:prognosticare/src/auth/profile.dart';
+import 'package:prognosticare/passwords/changePassword.dart';
+import 'package:prognosticare/profile.dart';
+import 'package:prognosticare/src/auth/prontuario.dart';
 import '../../api/model/pessoa.dart';
 import '../../api/service/getFindbyIDService.dart';
-import 'changePassword.dart';
-import 'login.dart';
+import 'src/auth/sign_in_screen.dart';
 
 // class Event {
 //   final String name;
@@ -17,12 +15,13 @@ import 'login.dart';
 // }
 
 class HomePage extends StatelessWidget {
+  final String? nome;
   final String? cpf;
   final String? email;
   final String? password;
   final String? datanasc;
 
-  HomePage({this.cpf, this.email, this.password, this.datanasc});
+  HomePage({this.nome, this.cpf, this.email, this.password, this.datanasc});
 
   // final List<Event> events = [
   //   Event("Evento 1", "Tipo A", DateTime.now().subtract(Duration(days: 1))),
@@ -102,7 +101,7 @@ class HomePage extends StatelessWidget {
               title: Text('Meu Prontuário'),
               onTap: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Agendamentos()));
+                    MaterialPageRoute(builder: (context) => Prontuario()));
               },
             ),
             ListTile(
@@ -134,7 +133,7 @@ class HomePage extends StatelessWidget {
               onTap: () {
                 Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(builder: (context) => LoginPage()),
+                    MaterialPageRoute(builder: (context) => SignInScreen()),
                     (route) => false);
               },
             ),

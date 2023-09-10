@@ -2,8 +2,8 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:prognosticare/model/pessoa.dart';
-import 'package:prognosticare/api/service/personUpdateService.dart';
+import 'package:prognosticare/src/models/pessoa.dart';
+import 'package:prognosticare/src/api/service/personUpdateService.dart';
 import 'pages-antigas/homePage.dart';
 
 class MyProfile extends StatefulWidget {

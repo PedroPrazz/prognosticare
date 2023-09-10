@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:prognosticare/api/service/forgotPasswordService.dart';
-import 'package:prognosticare/src/auth/sign_in_screen.dart';
+import 'package:prognosticare/src/api/service/forgotPasswordService.dart';
+import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
 
 
 class ForgotPassword extends StatelessWidget {

@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:prognosticare/model/pessoa.dart';
+import 'package:prognosticare/src/models/pessoa.dart';
 
 class PersonUpdateService {
   static Future<bool> getPerson(Pessoa pessoa) async {

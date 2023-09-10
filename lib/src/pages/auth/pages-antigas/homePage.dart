@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:prognosticare/src/auth/profile.dart';
-import 'package:prognosticare/src/auth/sign_in_screen.dart';
-import '../../../model/pessoa.dart';
+import 'package:prognosticare/src/pages/auth/profile.dart';
+import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
+import '../../../models/pessoa.dart';
 import '../../../api/service/getFindbyIDService.dart';
 import '../changePassword.dart';
 

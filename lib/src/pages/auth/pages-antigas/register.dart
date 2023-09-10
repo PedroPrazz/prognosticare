@@ -2,7 +2,7 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:prognosticare/api/service/registerService.dart';
+import 'package:prognosticare/src/api/service/registerService.dart';
 import 'login.dart';
 
 class RegisterPage extends StatefulWidget {

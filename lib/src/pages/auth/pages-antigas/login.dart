@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:prognosticare/api/service/getFindbyIDService.dart';
-import 'package:prognosticare/api/service/loginService.dart';
+import 'package:prognosticare/src/api/service/getFindbyIDService.dart';
+import 'package:prognosticare/src/api/service/loginService.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:prognosticare/src/auth/sign_in_screen.dart';
+import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
 
 class BaseScreen extends StatefulWidget {
   BaseScreen({Key? key}) : super(key: key);

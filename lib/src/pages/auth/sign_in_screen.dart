@@ -3,12 +3,12 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:prognosticare/api/service/getFindbyIDService.dart';
-import 'package:prognosticare/api/service/loginService.dart';
-import 'package:prognosticare/src/auth/changePassword.dart';
-import 'package:prognosticare/src/base/base_screen.dart';
-import 'package:prognosticare/src/auth/components/custom_text_field.dart';
-import 'package:prognosticare/src/auth/sign_up_screen.dart';
+import 'package:prognosticare/src/api/service/getFindbyIDService.dart';
+import 'package:prognosticare/src/api/service/loginService.dart';
+import 'package:prognosticare/src/pages/auth/changePassword.dart';
+import 'package:prognosticare/src/pages/base/base_screen.dart';
+import 'package:prognosticare/src/pages/auth/components/custom_text_field.dart';
+import 'package:prognosticare/src/pages/auth/sign_up_screen.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
 
 class SignInScreen extends StatelessWidget {

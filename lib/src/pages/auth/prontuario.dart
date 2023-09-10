@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:prognosticare/src/auth/agendamentos.dart';
+import 'package:prognosticare/src/pages/auth/agendamentos.dart';
 
 class Prontuario extends StatefulWidget {
   const Prontuario({Key? key}) : super(key: key);

@@ -1,16 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:prognosticare/src/auth/profile.dart';
-<<<<<<< HEAD:lib/src/auth/pages-antigas/homePage.dart
-import 'package:prognosticare/src/auth/prontuario.dart';
+import 'package:prognosticare/src/auth/sign_in_screen.dart';
 import '../../../model/pessoa.dart';
 import '../../../api/service/getFindbyIDService.dart';
 import '../changePassword.dart';
-=======
-import '../../api/model/pessoa.dart';
-import '../../api/service/getFindbyIDService.dart';
-import 'changePassword.dart';
-import 'login.dart';
->>>>>>> parent of 6924412 (paths):lib/src/auth/homePage.dart
 
 // class Event {
 //   final String name;
@@ -94,7 +87,7 @@ class HomePage extends StatelessWidget {
               onTap: () async {
                  Pessoa pessoa = await GetFindbyIDService.getFindbyID();
                  print(GetFindbyIDService.getFindbyID());
-                 if (pessoa.isUndefinedOrNull){
+                 if (pessoa == null){
                   print('Não tem pessoa Cadastrada');
                  }else{
                   Navigator.push(context, MaterialPageRoute(builder: (context) => MyProfile(pessoa: pessoa)));
@@ -137,14 +130,7 @@ class HomePage extends StatelessWidget {
               leading: Icon(Icons.subdirectory_arrow_left),
               title: Text('Sair do APP'),
               onTap: () {
-<<<<<<< HEAD:lib/src/auth/pages-antigas/homePage.dart
-                // Navigator.pushAndRemoveUntil(
-                //     context,
-                //     MaterialPageRoute(builder: (context) => LoginPage()),
-                //     (route) => false);
-=======
-                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => LoginPage()), (route) => false);
->>>>>>> parent of 6924412 (paths):lib/src/auth/homePage.dart
+                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => SignInScreen()), (route) => false);
               },
             ),
           ],

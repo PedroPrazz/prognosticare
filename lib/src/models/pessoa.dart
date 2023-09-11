@@ -2,6 +2,7 @@ class Pessoa {
   String pessoaId;
   String nome;
   String cpf;
+  String email;
   String? contato;
   String dataNascimento;
   String? tipoSanguineo;
@@ -15,6 +16,7 @@ class Pessoa {
     required this.pessoaId,
     required this.nome,
     required this.cpf,
+    required this.email,
     required this.contato,
     required this.dataNascimento,
     required this.tipoSanguineo,
@@ -43,6 +45,7 @@ class Pessoa {
       nome: nome ?? this.nome,
       cpf: cpf ?? this.cpf,
       contato: contato ?? this.contato,
+      email: email ?? this.email,
       dataNascimento: dataNascimento ?? this.dataNascimento,
       tipoSanguineo: tipoSanguineo ?? this.tipoSanguineo,
       alergia: alergia ?? this.alergia,
@@ -58,6 +61,7 @@ class Pessoa {
       pessoaId: json['pessoa_id'],
       nome: json['nome'],
       cpf: json['cpf'],
+      email: json['email'],
       contato: json['contato'],
       dataNascimento: json['dataNascimento'],
       tipoSanguineo: json['tipoSanguineo'],
@@ -74,6 +78,7 @@ class Pessoa {
       'pessoa_id': pessoaId,
       'nome': nome,
       'cpf': cpf,
+      'email': email,
       'contato': contato,
       'dataNascimento': dataNascimento,
       'tipoSanguineo': tipoSanguineo,

@@ -7,7 +7,7 @@ import 'package:prognosticare/src/api/service/getFindbyIDService.dart';
 import 'package:prognosticare/src/api/service/loginService.dart';
 import 'package:prognosticare/src/pages/auth/changePassword.dart';
 import 'package:prognosticare/src/pages/base/base_screen.dart';
-import 'package:prognosticare/src/pages/auth/components/custom_text_field.dart';
+import 'package:prognosticare/src/pages/common_widgets/custom_text_field.dart';
 import 'package:prognosticare/src/pages/auth/sign_up_screen.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
 
@@ -59,6 +59,7 @@ class SignInScreen extends StatelessWidget {
                       height: 30,
                       child: DefaultTextStyle(
                         style: const TextStyle(
+                          color: Colors.white,
                           fontSize: 25,
                         ),
                         child: AnimatedTextKit(
@@ -167,6 +168,7 @@ class SignInScreen extends StatelessWidget {
                           child: const Text(
                             'Entrar',
                             style: TextStyle(
+                              color: Colors.white,
                               fontSize: 18,
                             ),
                           ),
@@ -220,9 +222,9 @@ class SignInScreen extends StatelessWidget {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(18),
                             ),
-                            side: const BorderSide(
+                            side: BorderSide(
                               width: 2,
-                              color: Colors.pink,
+                              color: CustomColors.customSwatchColor,
                             ),
                           ),
                           onPressed: () {
@@ -235,7 +237,6 @@ class SignInScreen extends StatelessWidget {
                           child: const Text(
                             'Criar conta',
                             style: TextStyle(
-                              color: Colors.white,
                               fontSize: 18,
                             ),
                           ),

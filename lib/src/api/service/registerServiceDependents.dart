@@ -2,19 +2,16 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
-class RegisterService {
-  static Future<bool> getRegister(String nome, String cpf, String email,
-      String data, String password) async {
-
-    final apiLocal = ('http://localhost:8080/register-person/save'); // variavel para local host
-    final apiServer = ('http://prognosticare.ddns.net:8085/register-person/save'); // variavel para server
-    
-    final url = Uri.parse(apiServer);
+class RegisterServiceDepents {
+  static Future<bool> getRegister(String pessoaId, String nome, String cpf,
+      String email, String data, String password) async {
+    final url = Uri.parse('http://localhost:8080/add-dependent/{id}');
 
     try {
       final response = await http.post(
         url,
         body: json.encode({
+          'pessoa_id': pessoaId,
           'nome': nome,
           'cpf': cpf,
           'email': email,

@@ -8,7 +8,11 @@ final storage = FlutterSecureStorage();
 
 class LoginService {
   static Future<bool> getLogin(String email, String password) async {
-    final url = Uri.parse('http://prognosticare.ddns.net:8085/login');
+
+    final apiLocal = ('http://localhost:8080/login'); // variavel para local host
+    final apiServer = ('http://prognosticare.ddns.net:8085/login'); // variavel para server
+    
+    final url = Uri.parse(apiServer);
 
     try {
       final response = await http.post(

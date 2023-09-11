@@ -2,14 +2,14 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:prognosticare/src/models/pessoa.dart';
 import 'package:prognosticare/src/api/service/personUpdateService.dart';
-import 'pages-antigas/homePage.dart';
+import 'package:prognosticare/src/models/pessoa.dart';
+import 'package:prognosticare/src/pages/base/base_screen.dart';
 
 class MyProfile extends StatefulWidget {
   MyProfile({super.key, required this.pessoa});
 
-  Pessoa pessoa;
+  final Pessoa pessoa;
 
   @override
   State<MyProfile> createState() => _MyProfileState();
@@ -338,7 +338,7 @@ class _MyProfileState extends State<MyProfile> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => HomePage()));
+                                builder: (context) => BaseScreen()));
                       } else {
                         print("id: ${pessoaAtualizada.pessoaId}");
                         print("Nome: ${pessoaAtualizada.nome}");

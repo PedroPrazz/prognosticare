@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: CustomColors.customSwatchColor,
       ),
       debugShowCheckedModeBanner: false,
-      initialRoute: PagesRoutes.signInRoute,
+      initialRoute: PagesRoutes.splashRoute,
       getPages: AppPages.pages,
     );
   }

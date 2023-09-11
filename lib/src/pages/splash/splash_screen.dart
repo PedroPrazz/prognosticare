@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:prognosticare/src/pages_routes/app_pages.dart';
 
-class SplashPage extends StatefulWidget {
-  const SplashPage({super.key});
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
 
   @override
-  State<SplashPage> createState() => _SplahPageState();
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplahPageState extends State<SplashPage> {
+class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    Future.delayed(Duration(seconds: 3)).then((_) => {
-          Navigator.of(context).pushReplacementNamed('/login'),
-        });
+
+    Future.delayed(Duration(seconds: 3)).then(
+      (_) => {
+        Get.offNamed(PagesRoutes.signInRoute),
+      },
+    );
   }
 
   @override

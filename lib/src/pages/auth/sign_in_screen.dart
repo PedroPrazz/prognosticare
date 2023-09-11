@@ -6,10 +6,9 @@ import 'package:get/get.dart';
 import 'package:prognosticare/src/api/service/getFindbyIDService.dart';
 import 'package:prognosticare/src/api/service/loginService.dart';
 import 'package:prognosticare/src/pages/auth/changePassword.dart';
-import 'package:prognosticare/src/pages/base/base_screen.dart';
 import 'package:prognosticare/src/pages/common_widgets/custom_text_field.dart';
-import 'package:prognosticare/src/pages/auth/sign_up_screen.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
+import 'package:prognosticare/src/pages_routes/app_pages.dart';
 
 class SignInScreen extends StatelessWidget {
   SignInScreen({Key? key}) : super(key: key);
@@ -154,10 +153,7 @@ class SignInScreen extends StatelessWidget {
                                         builder: (context) =>
                                             ChangePassword()));
                               } else {
-                                Navigator.of(context).pushReplacement(
-                                    MaterialPageRoute(builder: (c) {
-                                  return BaseScreen();
-                                }));
+                                Get.offNamed(PagesRoutes.baseRoute);
                                 GetFindbyIDService.getFindbyID();
                               }
                             } else {
@@ -228,11 +224,7 @@ class SignInScreen extends StatelessWidget {
                             ),
                           ),
                           onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(builder: (c) {
-                                return SignUpScreen();
-                              }),
-                            );
+                            Get.toNamed(PagesRoutes.signUpRoute);
                           },
                           child: const Text(
                             'Criar conta',

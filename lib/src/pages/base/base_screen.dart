@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:prognosticare/src/api/service/getFindbyIDService.dart';
 import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
+import 'package:prognosticare/src/models/pessoa.dart';
+import 'package:prognosticare/src/pages/common_widgets/custom_text_field.dart';
 import 'package:prognosticare/src/pages/profile/profile_tab.dart';
 
 class BaseScreen extends StatefulWidget {
   BaseScreen({Key? key}) : super(key: key);
-
 
   @override
   State<BaseScreen> createState() => _BaseScreenState();
@@ -14,7 +16,6 @@ class _BaseScreenState extends State<BaseScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       // Menu Lateral
       drawer: Drawer(
         child: Column(
@@ -27,13 +28,23 @@ class _BaseScreenState extends State<BaseScreen> {
               accountName: Text(''),
               accountEmail: Text(''),
             ),
-            
+
             //Meus Dados
             ListTile(
               leading: const Icon(Icons.person),
               title: const Text('Meus Dados'),
               onTap: () async {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileTab()));
+                Pessoa pessoa = await GetFindbyIDService.getFindbyID();
+                print(GetFindbyIDService.getFindbyID());
+                // ignore: unnecessary_null_comparison
+                if (pessoa == null) {
+                  print('Não tem pessoa Cadastrada');
+                } else {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ProfileTab(pessoa: pessoa)));
+                }
               },
             ),
 
@@ -63,7 +74,7 @@ class _BaseScreenState extends State<BaseScreen> {
               leading: const Icon(Icons.miscellaneous_services),
               title: const Text('Alterar Senha'),
               onTap: () {
-                // Navigator.push(context, MaterialPageRoute(builder: (context) => ChangePassword()));
+                updatePassword();
               },
             ),
 
@@ -79,13 +90,16 @@ class _BaseScreenState extends State<BaseScreen> {
               leading: const Icon(Icons.subdirectory_arrow_left),
               title: const Text('Sair do APP'),
               onTap: () {
-                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => SignInScreen()), (route) => false);
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => SignInScreen()),
+                    (route) => false);
               },
             ),
           ],
         ),
       ),
-      
+
       // AppBar
       appBar: AppBar(
         actions: [
@@ -102,6 +116,93 @@ class _BaseScreenState extends State<BaseScreen> {
       body: Container(
         child: Text('Você não possuí eventos'),
       ),
+    );
+  }
+
+//Dialog Alterar Senha
+  Future<bool?> updatePassword() {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Titulo
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 12),
+                      child: Text(
+                        'Alteração de senha',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+
+                    // Senha atual
+                    const CustomTextField(
+                      isSecret: true,
+                      icon: Icons.lock,
+                      label: 'Senha Atual',
+                    ),
+
+                    // Nova senha
+                    const CustomTextField(
+                      isSecret: true,
+                      icon: Icons.lock_outlined,
+                      label: 'Nova Senha',
+                    ),
+
+                    // Confirmar senha
+                    const CustomTextField(
+                      isSecret: true,
+                      icon: Icons.lock_outlined,
+                      label: 'Confirmar nova Senha',
+                    ),
+
+                    //Botão de confirmação
+                    SizedBox(
+                      height: 45,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        onPressed: () {},
+                        child: const Text(
+                          'Alterar',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Positioned(
+                top: 5,
+                right: 5,
+                child: IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  icon: const Icon(Icons.close),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

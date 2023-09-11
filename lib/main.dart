@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
+import 'package:prognosticare/src/pages_routes/app_pages.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,12 +12,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       theme: ThemeData(
         primarySwatch: CustomColors.customSwatchColor,
       ),
       debugShowCheckedModeBanner: false,
-      home: SignInScreen(),
+      initialRoute: PagesRoutes.signInRoute,
+      getPages: AppPages.pages,
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
+import 'package:prognosticare/src/pages/profile/profile_tab.dart';
 
 class BaseScreen extends StatefulWidget {
   BaseScreen({Key? key}) : super(key: key);
@@ -32,13 +33,7 @@ class _BaseScreenState extends State<BaseScreen> {
               leading: const Icon(Icons.person),
               title: const Text('Meus Dados'),
               onTap: () async {
-                //  Pessoa pessoa = await GetFindbyIDService.getFindbyID();
-                //  print(GetFindbyIDService.getFindbyID());
-                //  if (pessoa == null){
-                //   print('Não tem pessoa Cadastrada');
-                //  }else{
-                //   Navigator.push(context, MaterialPageRoute(builder: (context) => MyProfile(pessoa: pessoa)));
-                //  }
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileTab()));
               },
             ),
 

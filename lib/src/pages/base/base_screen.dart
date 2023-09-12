@@ -114,7 +114,31 @@ class _BaseScreenState extends State<BaseScreen> {
         centerTitle: true,
       ),
       body: Container(
-        child: Text('Você não possuí eventos'),
+        alignment: Alignment.center,
+        child: Text('Você não possuí eventos!', style: TextStyle(fontSize: 20)),
+      ),
+      //
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          PopupMenuButton(
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                child: TextButton(
+                  onPressed: () {},
+                  child: const Text('Agendamentos'),
+                ),
+              ),
+              PopupMenuItem(
+                child: TextButton(
+                  onPressed: () {},
+                  child: const Text('Acompanhamentos'),
+                ),
+              ),
+            ],
+          );
+        },
+        child: const Icon(Icons.add, color: Colors.white),
+        backgroundColor: const Color.fromRGBO(255, 143, 171, 1),
       ),
     );
   }

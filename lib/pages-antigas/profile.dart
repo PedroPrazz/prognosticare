@@ -2,6 +2,7 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:prognosticare/src/models/pessoa.dart';
 import 'package:prognosticare/src/api/service/personUpdateService.dart';
 import 'package:prognosticare/src/pages/base/base_screen.dart';
@@ -16,6 +17,12 @@ class MyProfile extends StatefulWidget {
 }
 
 class _MyProfileState extends State<MyProfile> {
+
+  final phoneFormartter = MaskTextInputFormatter(
+    mask: '(##) #####-####',
+    filter: {'#': RegExp(r'[0-9]')},
+  );
+
   @override
   TextEditingController _nome = TextEditingController();
   TextEditingController _cpf = TextEditingController();
@@ -140,6 +147,7 @@ class _MyProfileState extends State<MyProfile> {
                     child: TextFormField(
                       initialValue: widget.pessoa.contato,
                       controller: _contato,
+                      inputFormatters: [phoneFormartter],
                       decoration: InputDecoration(
                           labelText: 'Telefone',
                           labelStyle: TextStyle(color: Colors.black),
@@ -163,6 +171,8 @@ class _MyProfileState extends State<MyProfile> {
                     child: TextFormField(
                       initialValue: widget.pessoa.cartaoNacional,
                       controller: _cartaoNacional,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly,
+                      CNSInputFormatter()],
                       decoration: InputDecoration(
                           labelText: 'Cartão Nacional de Sáude (CNS)',
                           labelStyle: TextStyle(color: Colors.black),

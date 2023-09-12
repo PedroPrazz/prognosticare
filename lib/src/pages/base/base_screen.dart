@@ -39,12 +39,12 @@ class _BaseScreenState extends State<BaseScreen> {
                 print(GetFindbyIDService.getFindbyID());
                 // ignore: unnecessary_null_comparison
                 if (pessoa == null) {
-                  print('Não tem pessoa Cadastrada');
-                } else {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => MyProfile(pessoa: pessoa)));
+                          builder: (context) => ProfileTab(pessoa: pessoa)));
+                } else {
+                  print('Não tem pessoa Cadastrada');
                 }
               },
             ),

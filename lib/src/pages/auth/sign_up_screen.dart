@@ -29,7 +29,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
     filter: {'#': RegExp(r'[0-8]')},
   );
 
-  // final phoneFormartter = MaskTextInputFormatter(
+  
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;

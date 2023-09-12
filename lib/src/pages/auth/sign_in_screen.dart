@@ -1,4 +1,3 @@
-
 // imports
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +13,86 @@ class SignInScreen extends StatelessWidget {
   SignInScreen({Key? key}) : super(key: key);
 
   final _formKey = GlobalKey<FormState>();
+
+  Future<void> camposVaziosAlert(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Tente novamente!'),
+          content: Text('Os campos não podem estar vazios.'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> emailInvalidoAlert(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Tente novamente!'),
+          content: Text('O email é inválido!'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> senhaInvalidaAlert(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Tente novamente!'),
+          content: Text('A senha precisa conter pelo menos 8 caracteres!'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> loginSenhaInvalidoAlert(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Tente novamente!'),
+          content: Text('Seu email e/ou senha não correspondem!'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +144,8 @@ class SignInScreen extends StatelessWidget {
                           pause: Duration.zero,
                           repeatForever: true,
                           animatedTexts: [
-                            FadeAnimatedText('Conectando-se com o futuro da sua Saúde'),
+                            FadeAnimatedText(
+                                'Conectando-se com o futuro da sua Saúde'),
                             FadeAnimatedText('Exames'),
                             FadeAnimatedText('Prontuários'),
                             FadeAnimatedText('Consultas'),
@@ -138,11 +218,22 @@ class SignInScreen extends StatelessWidget {
                             ),
                           ),
                           onPressed: () async {
-                            if (_formKey.currentState!.validate()) {
-                              print('Todos os campos estão válidos');
-                            } else {
-                              print('Campos não válidos');
+                            if (emailController.text.isEmpty ||
+                                passwordController.text.isEmpty) {
+                              camposVaziosAlert(context);
+                              return;
                             }
+
+                            if (!emailController.text.contains("@")) {
+                              emailInvalidoAlert(context);
+                              return;
+                            }
+
+                            if (passwordController.text.length < 8) {
+                              senhaInvalidaAlert(context);
+                              return;
+                            }
+
                             bool loggedIn = await LoginService.getLogin(
                                 emailController.text, passwordController.text);
                             if (loggedIn) {
@@ -157,8 +248,16 @@ class SignInScreen extends StatelessWidget {
                                 GetFindbyIDService.getFindbyID();
                               }
                             } else {
+                              loginSenhaInvalidoAlert(context);
                               print(
                                   'Seu email e senha não correspondem. Tente novamente!');
+                              return;
+                            }
+
+                            if (_formKey.currentState!.validate()) {
+                              print('Todos os campos estão válidos');
+                            } else {
+                              print('Campos não válidos');
                             }
                           },
                           child: const Text(

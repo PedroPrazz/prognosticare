@@ -60,7 +60,7 @@ class _AgendamentosState extends State<Agendamentos> {
                     }).toList(),
                     decoration: InputDecoration(
                       labelText: 'Tipo de Agendamento',
-                      hintText: 'Selecione um tipo de agendamento',
+                      hintText: 'Selecione um tipo de agendamento...',
                       border: OutlineInputBorder(),
                     ),
                   ),

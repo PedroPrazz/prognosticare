@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:prognosticare/src/api/service/getFindbyIDService.dart';
+import 'package:prognosticare/src/pages/auth/prontuario.dart';
 import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
 import 'package:prognosticare/src/models/pessoa.dart';
 import 'package:prognosticare/src/pages/common_widgets/custom_text_field.dart';
@@ -13,6 +14,9 @@ class BaseScreen extends StatefulWidget {
 }
 
 class _BaseScreenState extends State<BaseScreen> {
+  final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,7 +56,10 @@ class _BaseScreenState extends State<BaseScreen> {
             ListTile(
               leading: const Icon(Icons.assignment),
               title: const Text('Meu Prontuário'),
-              onTap: () {},
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Prontuario()));
+              },
             ),
 
             //Meus Dependentes
@@ -149,12 +156,12 @@ class _BaseScreenState extends State<BaseScreen> {
                       ),
                     ),
 
-                    // Senha atual
-                    const CustomTextField(
-                      isSecret: true,
-                      icon: Icons.lock,
-                      label: 'Senha Atual',
-                    ),
+                    // // Senha atual
+                    // const CustomTextField(
+                    //   isSecret: true,
+                    //   icon: Icons.lock,
+                    //   label: 'Senha Atual',
+                    // ),
 
                     // Nova senha
                     const CustomTextField(

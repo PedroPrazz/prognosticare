@@ -10,7 +10,7 @@ class GetFindbyIDService {
     String? idPessoa = await storage.read(key: 'user_id');
     String? token = await storage.read(key: 'token');
 
-    final apiLocal = ('http://localhost:8080//register-person/find/$idPessoa'); // variavel para local host
+    final apiLocal = ('http://localhost:8080/register-person/find/$idPessoa'); // variavel para local host
     final apiServer = ('http://prognosticare.ddns.net:8085/register-person/find/$idPessoa'); // variavel para server
     
     final url = Uri.parse(apiServer);

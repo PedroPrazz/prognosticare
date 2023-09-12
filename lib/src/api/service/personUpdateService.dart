@@ -5,7 +5,7 @@ import 'package:prognosticare/src/models/pessoa.dart';
 class PersonUpdateService {
   static Future<bool> getPerson(Pessoa pessoa) async {
 
-    final apiLocal = ('http://localhost:8080//register-person/update'); // variavel para local host
+    final apiLocal = ('http://localhost:8080/register-person/update'); // variavel para local host
     final apiServer = ('http://prognosticare.ddns.net:8085/register-person/update'); // variavel para server
     
     final url = Uri.parse(apiServer);

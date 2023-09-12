@@ -19,13 +19,145 @@ class SignUpScreen extends StatelessWidget {
 
   final dataFormartter = MaskTextInputFormatter(
     mask: '##/##/####',
-    filter: {'#': RegExp(r'[0-8]')},
+    filter: {'#': RegExp(r'[0-9]')},
   );
 
   // final phoneFormartter = MaskTextInputFormatter(
   //   mask: '###.###.###-##',
   //   filter: {'#': RegExp( r'[0-9]')},
   // );
+
+  Future<void> camposVaziosAlert(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Tente novamente!'),
+          content: Text('Os campos não podem estar vazios.'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> nomeInvalidoAlert(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Tente novamente!'),
+          content: Text('O nome precisa conter pelo menos de 3 caracteres.'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> cpfInvalidoAlert(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Tente novamente!'),
+          content: Text('O CPF digitado é inválido.'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> emailInvalidoAlert(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Tente novamente!'),
+          content: Text('O email digitado é inválido.'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> senhaMenorOitoAlert(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Tente novamente!'),
+          content: Text('A senha precisa conter mais de 8 caracteres.'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> senhasNaoCorrespondemAlert(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Tente novamente!'),
+          content: Text('As senhas digitadas são diferentes.'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> cadastroSucessoAlert(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Cadastro realizado com sucesso!'),
+          content: Text('Aproveite o PrognostiCare!'),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -195,11 +327,41 @@ class SignUpScreen extends StatelessWidget {
                                 ),
                               ),
                               onPressed: () async {
-                                if (_formKey.currentState!.validate()) {
-                                  print('Todos os campos estão válidos');
-                                } else {
-                                  print('Campos não válidos');
+                                if (nomeController.text.isEmpty ||
+                                    cpfController.text.isEmpty ||
+                                    emailController.text.isEmpty ||
+                                    dataController.text.isEmpty ||
+                                    passwordController.text.isEmpty ||
+                                    confirmPasswordController.text.isEmpty) {
+                                  camposVaziosAlert(context);
+                                  return;
                                 }
+
+                                if (nomeController.text.length < 3) {
+                                  nomeInvalidoAlert(context);
+                                  return;
+                                }
+
+                                if (!GetUtils.isCpf(cpfController.text)) {
+                                  cpfInvalidoAlert(context);
+                                  return;
+                                }
+
+                                if (!emailController.text.contains("@")) {
+                                  emailInvalidoAlert(context);
+                                  return;
+                                }
+
+                                if (passwordController.text.length < 8) {
+                                  senhaMenorOitoAlert(context);
+                                  return;
+                                }
+                                if (passwordController.text !=
+                                    confirmPasswordController.text) {
+                                  senhasNaoCorrespondemAlert(context);
+                                  return;
+                                }
+
                                 bool signIn = await RegisterService.getRegister(
                                     nomeController.text,
                                     cpfController.text,
@@ -207,10 +369,18 @@ class SignUpScreen extends StatelessWidget {
                                     dataController.text,
                                     passwordController.text);
                                 if (signIn) {
+                                  cadastroSucessoAlert(context);
+                                  await Future.delayed(Duration(seconds: 5));
                                   Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(builder: (c) {
                                     return SignInScreen();
                                   }));
+                                }
+
+                                if (_formKey.currentState!.validate()) {
+                                  print('Todos os campos estão válidos');
+                                } else {
+                                  print('Campos não válidos');
                                 }
                               },
                               child: const Text(

@@ -37,8 +37,9 @@ class _MyProfileState extends State<MyProfile> {
     _nome.text = widget.pessoa.nome;
     _cpf.text = widget.pessoa.cpf;
     _contato.text = widget.pessoa.contato.toString();
-    DateTime parsedDate = DateTime.parse(widget.pessoa.dataNascimento);
-    _data.text = _dateFormat.format(parsedDate);
+    _data.text = widget.pessoa.dataNascimento;
+    // DateTime parsedDate = DateTime.parse(widget.pessoa.dataNascimento);
+    // _data.text = _dateFormat.format(parsedDate);
     _tipoSanguineo.text = widget.pessoa.tipoSanguineo ?? 'A_POSITIVO';
     _tipoAlergia.text = widget.pessoa.tipoAlergia.toString();
     _cartaoNacional.text = widget.pessoa.cartaoNacional.toString();
@@ -137,6 +138,7 @@ class _MyProfileState extends State<MyProfile> {
                   Container(
                     width: 500,
                     child: TextFormField(
+                      initialValue: widget.pessoa.contato,
                       controller: _contato,
                       decoration: InputDecoration(
                           labelText: 'Telefone',
@@ -159,6 +161,7 @@ class _MyProfileState extends State<MyProfile> {
                   Container(
                     width: 500,
                     child: TextFormField(
+                      initialValue: widget.pessoa.cartaoNacional,
                       controller: _cartaoNacional,
                       decoration: InputDecoration(
                           labelText: 'Cartão Nacional de Sáude (CNS)',
@@ -181,6 +184,7 @@ class _MyProfileState extends State<MyProfile> {
                   Container(
                     width: 500,
                     child: TextFormField(
+                      initialValue: widget.pessoa.cartaoPlanoSaude,
                       controller: _cartaoPlanoSaude,
                       decoration: InputDecoration(
                           labelText: 'Cartão do Plano de Saúde',
@@ -282,6 +286,7 @@ class _MyProfileState extends State<MyProfile> {
                     child: Container(
                       width: 500,
                       child: TextFormField(
+                        initialValue: widget.pessoa.tipoAlergia,
                         controller: _tipoAlergia,
                         decoration: InputDecoration(
                           labelText: 'Tipo de Alergia',
@@ -327,6 +332,7 @@ class _MyProfileState extends State<MyProfile> {
                         dataNascimento: originalDate,
                         tipoSanguineo: _tipoSanguineo.text,
                         alergia: alergiaMarcada,
+                        doador: doadorMarcado,
                         tipoAlergia: _tipoAlergia.text,
                         tipoResponsavel: widget.pessoa.tipoResponsavel,
                         cartaoNacional: _cartaoNacional.text,
@@ -349,6 +355,7 @@ class _MyProfileState extends State<MyProfile> {
                         print(
                             "tipoSanguineo: ${pessoaAtualizada.tipoSanguineo}");
                         print("alergia: ${pessoaAtualizada.alergia}");
+                        print('doador:${pessoaAtualizada.doador}');
                         print(
                             "responsavel: ${pessoaAtualizada.tipoResponsavel}");
                         print("tipoAlergia: ${pessoaAtualizada.tipoAlergia}");

@@ -8,6 +8,7 @@ class Pessoa {
   String? tipoSanguineo;
   bool? alergia;
   String? tipoAlergia;
+  bool? doador;
   bool? tipoResponsavel;
   String? cartaoNacional;
   String? cartaoPlanoSaude;
@@ -21,6 +22,7 @@ class Pessoa {
     required this.dataNascimento,
     required this.tipoSanguineo,
     required this.alergia,
+    required this.doador,
     required this.tipoAlergia,
     required this.tipoResponsavel,
     required this.cartaoNacional,
@@ -35,6 +37,7 @@ class Pessoa {
     String? dataNascimento,
     String? tipoSanguineo,
     bool? alergia,
+    bool? doador,
     String? tipoAlergia,
     bool? tipoResponsavel,
     String? cartaoNacional,
@@ -49,6 +52,7 @@ class Pessoa {
       dataNascimento: dataNascimento ?? this.dataNascimento,
       tipoSanguineo: tipoSanguineo ?? this.tipoSanguineo,
       alergia: alergia ?? this.alergia,
+      doador: doador ?? this.doador,
       tipoAlergia: tipoAlergia ?? this.tipoAlergia,
       tipoResponsavel: tipoResponsavel ?? this.tipoResponsavel,
       cartaoNacional: cartaoNacional ?? this.cartaoNacional,
@@ -66,6 +70,7 @@ class Pessoa {
       dataNascimento: json['dataNascimento'],
       tipoSanguineo: json['tipoSanguineo'],
       alergia: json['alergia'],
+      doador: json['doador'],
       tipoAlergia: json['tipoAlergia'],
       tipoResponsavel: json['tipoResponsavel'],
       cartaoNacional: json['cartaoNacional'],
@@ -83,6 +88,7 @@ class Pessoa {
       'dataNascimento': dataNascimento,
       'tipoSanguineo': tipoSanguineo,
       'alergia': alergia,
+      'doador': doador,
       'tipoAlergia': tipoAlergia,
       'tipoResponsavel': tipoResponsavel,
       'cartaoNacional': cartaoNacional,

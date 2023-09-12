@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:prognosticare/pages-antigas/profile.dart';
 import 'package:prognosticare/src/api/service/getFindbyIDService.dart';
 import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
 import 'package:prognosticare/src/models/pessoa.dart';
@@ -43,7 +44,7 @@ class _BaseScreenState extends State<BaseScreen> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => ProfileTab(pessoa: pessoa)));
+                          builder: (context) => MyProfile(pessoa: pessoa)));
                 }
               },
             ),

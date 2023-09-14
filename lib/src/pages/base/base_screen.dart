@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:prognosticare/pages-antigas/profile.dart';
 import 'package:prognosticare/src/api/service/getFindbyIDService.dart';
 import 'package:prognosticare/src/pages/auth/prontuario.dart';
 import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';

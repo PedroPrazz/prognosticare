@@ -9,7 +9,7 @@ import 'package:prognosticare/src/pages/common_widgets/custom_text_field.dart';
 class ProfileTab extends StatefulWidget {
   ProfileTab({super.key, required this.pessoa});
 
-  final Pessoa pessoa;
+  Pessoa pessoa;
 
   @override
   State<ProfileTab> createState() => _ProfileTabState();
@@ -20,16 +20,32 @@ class _ProfileTabState extends State<ProfileTab> {
   bool alergiaMarcada = false;
 
 
-  final Controller = TextEditingController();
-  final nomeController = TextEditingController();
-  final cpfController = TextEditingController();
-  final emailController = TextEditingController();
-  final dataController = TextEditingController();
-  final telefoneController = TextEditingController();
-  final cnsController = TextEditingController();
-  final cpsController = TextEditingController();
-  final tipoSanguineoController = TextEditingController();
-  final tipoAlergiaController = TextEditingController();
+  TextEditingController Controller = TextEditingController();
+  TextEditingController nomeController = TextEditingController();
+  TextEditingController cpfController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController dataController = TextEditingController();
+  TextEditingController telefoneController = TextEditingController();
+  TextEditingController cnsController = TextEditingController();
+  TextEditingController cpsController = TextEditingController();
+  TextEditingController tipoSanguineoController = TextEditingController();
+  TextEditingController tipoAlergiaController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    nomeController.text = widget.pessoa.nome;
+    cpfController.text = widget.pessoa.cpf;
+    emailController.text = widget.pessoa.email;
+    dataController.text = widget.pessoa.dataNascimento;
+    telefoneController.text = widget.pessoa.contato ?? ''; 
+    cnsController.text = widget.pessoa.cartaoNacional ?? '';
+    cpsController.text = widget.pessoa.cartaoPlanoSaude ?? '';
+    tipoSanguineoController.text = widget.pessoa.tipoSanguineo ?? '';
+    alergiaMarcada = widget.pessoa.alergia ?? false;
+    tipoAlergiaController.text = widget.pessoa.tipoAlergia ?? '';
+    doadorMarcado = widget.pessoa.doador ?? false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,23 +105,22 @@ class _ProfileTabState extends State<ProfileTab> {
           //Telefone
           CustomTextField(
             controller: telefoneController,
-            initialValue: widget.pessoa.contato,
             icon: Icons.phone,
             label: 'Telefone',
           ),
           //CNS
           CustomTextField(
-            controller: cnsController,
-            initialValue: widget.pessoa.cartaoNacional,
+           controller: cnsController,
+           
             icon: Icons.payment_outlined,
             label: 'Cartão Nacional de Saúde',
           ),
           //CPS
           CustomTextField(
-             controller: cpsController,
-            initialValue: widget.pessoa.cartaoPlanoSaude,
+            controller: cpsController ,
             icon: Icons.payment_outlined,
             label: 'Cartão do Plano de Saúde',
+
           ),
           //Tipo Sanguíneo
           Container(
@@ -179,6 +194,7 @@ class _ProfileTabState extends State<ProfileTab> {
               setState(
                 () {
                   alergiaMarcada = value!;
+                
                 },
               );
             },
@@ -187,6 +203,7 @@ class _ProfileTabState extends State<ProfileTab> {
             visible: alergiaMarcada,
             child: CustomTextField(
               controller: tipoAlergiaController,
+              initialValue: widget.pessoa.tipoAlergia,
               icon: Icons.medication,
               label: 'Tipo de Alergia',
             ),
@@ -229,11 +246,13 @@ class _ProfileTabState extends State<ProfileTab> {
                   cartaoNacional: cnsController.text,
                   cartaoPlanoSaude: cpsController.text,
                 );
-                bool update =
-                    await PersonUpdateService.getPerson(pessoaAtualizada);
-                if (update) {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => BaseScreen()));
+                Pessoa pessoaAtualizado = await PersonUpdateService.getPerson(pessoaAtualizada);
+                if (pessoaAtualizado != null) {
+                  setState(() {
+                    widget.pessoa = pessoaAtualizado;
+                  });
+                   Navigator.push(context,
+                       MaterialPageRoute(builder: (context) => BaseScreen()));
                 } else {
                   print("id: ${pessoaAtualizada.pessoaId}");
                   print("Nome: ${pessoaAtualizada.nome}");

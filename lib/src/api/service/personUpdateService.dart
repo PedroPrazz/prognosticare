@@ -6,12 +6,8 @@ import 'package:prognosticare/src/models/pessoa.dart';
 
 final storage = FlutterSecureStorage();
 class PersonUpdateService {
-  static Future<bool> getPerson(Pessoa pessoa) async {
+  static Future<Pessoa> getPerson(Pessoa pessoa) async {
 
-    // final apiLocal = ('http://localhost:8080//register-person/update'); // variavel para local host
-    // final apiServer = ('http://prognosticare.ddns.net:8085/register-person/update'); // variavel para server
-    
-    // final url = Uri.parse(apiServer);
   String? token = await storage.read(key: 'token');
     final url = Uri.parse(UriServer.url.toString()+'/register-person/update');
 
@@ -37,14 +33,18 @@ class PersonUpdateService {
       );
 
       if (response.statusCode == 200) {
-        return true;
+        Map<String, dynamic> jsonData = json.decode(response.body);
+        Pessoa pessoa = Pessoa.fromJson(jsonData);
+        
+        return pessoa;
       } else {
         print('Response Status Code: ${response.statusCode}');
-        return false;
+        
+        throw Exception('Erro ao atualizar Pessoa');
       }
     } catch (e) {
       print('Error: $e');
-      return false;
+      throw Exception('Erro de Try Catch ao atualizar pessoa');
     }
   }
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:prognosticare/components/dialog.dart';
-import 'package:prognosticare/pages-antigas/changePassword.dart';
 import 'package:prognosticare/src/models/pessoa.dart';
 import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
 import 'package:prognosticare/src/pages/profile/profile_tab.dart';
@@ -110,8 +109,7 @@ class MeusDependentes extends StatelessWidget {
               leading: Icon(Icons.miscellaneous_services),
               title: Text('Alterar Senha'),
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ChangePassword()));
+               
               },
             ),
             ListTile(

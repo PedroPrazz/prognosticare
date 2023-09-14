@@ -332,8 +332,8 @@ class _MyProfileState extends State<MyProfile> {
                         cartaoNacional: _cartaoNacional.text,
                         cartaoPlanoSaude: _cartaoPlanoSaude.text,
                       );
-                      bool update =
-                          await PersonUpdateService.getPerson(pessoaAtualizada);
+                      bool update = false;
+                         // await PersonUpdateService.getPerson(pessoaAtualizada);
                       if (update) {
                         Navigator.push(
                             context,

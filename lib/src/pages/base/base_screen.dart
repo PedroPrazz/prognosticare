@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:prognosticare/pages-antigas/profile.dart';
 import 'package:prognosticare/src/api/service/getFindbyIDService.dart';
 import 'package:prognosticare/src/pages/auth/prontuario.dart';
@@ -17,6 +18,7 @@ class BaseScreen extends StatefulWidget {
 class _BaseScreenState extends State<BaseScreen> {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
+  Pessoa? pessoa;
 
   @override
   Widget build(BuildContext context) {
@@ -39,17 +41,14 @@ class _BaseScreenState extends State<BaseScreen> {
               leading: const Icon(Icons.person),
               title: const Text('Meus Dados'),
               onTap: () async {
-                Pessoa pessoa = await GetFindbyIDService.getFindbyID();
-                print(GetFindbyIDService.getFindbyID());
-                // ignore: unnecessary_null_comparison
                 if (pessoa == null) {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ProfileTab(pessoa: pessoa)));
-                } else {
-                  print('Não tem pessoa Cadastrada');
+                  pessoa = await GetFindbyIDService.getFindbyID();
                 }
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProfileTab(pessoa: pessoa!),
+                    ));
               },
             ),
 

@@ -32,7 +32,7 @@ class PersonUpdateService {
           'cartaoNacional': pessoa.cartaoNacional,
           'cartaoPlanoSaude': pessoa.cartaoPlanoSaude,
         }),
-        headers: {'Content-Type': 'application/json','Authorization': 'Bearer $token'},
+        headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer $token'},
         
       );
 

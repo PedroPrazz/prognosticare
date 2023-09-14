@@ -88,21 +88,21 @@ class _ProfileTabState extends State<ProfileTab> {
           ),
           //Telefone
           CustomTextField(
-            // controller: telefoneController,
+            controller: telefoneController,
             initialValue: widget.pessoa.contato,
             icon: Icons.phone,
             label: 'Telefone',
           ),
           //CNS
           CustomTextField(
-            // controller: cnsController,
+            controller: cnsController,
             initialValue: widget.pessoa.cartaoNacional,
             icon: Icons.payment_outlined,
             label: 'Cartão Nacional de Saúde',
           ),
           //CPS
           CustomTextField(
-            // controller: cpsController,
+             controller: cpsController,
             initialValue: widget.pessoa.cartaoPlanoSaude,
             icon: Icons.payment_outlined,
             label: 'Cartão do Plano de Saúde',
@@ -217,10 +217,10 @@ class _ProfileTabState extends State<ProfileTab> {
               onPressed: () async {
                 Pessoa pessoaAtualizada = widget.pessoa.copyWith(
                   pessoaId: widget.pessoa.pessoaId,
-                  nome: nomeController.text,
-                  cpf: cpfController.text,
+                  nome: widget.pessoa.nome,
+                  cpf: widget.pessoa.cpf,
                   contato: telefoneController.text,
-                  dataNascimento: dataController.text,
+                  dataNascimento: widget.pessoa.dataNascimento,
                   tipoSanguineo: tipoSanguineoController.text,
                   alergia: alergiaMarcada,
                   doador: doadorMarcado,

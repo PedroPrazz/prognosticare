@@ -245,7 +245,6 @@ class SignInScreen extends StatelessWidget {
                                             ChangePassword()));
                               } else {
                                 Get.offNamed(PagesRoutes.baseRoute);
-                                GetFindbyIDService.getFindbyID();
                               }
                             } else {
                               loginSenhaInvalidoAlert(context);

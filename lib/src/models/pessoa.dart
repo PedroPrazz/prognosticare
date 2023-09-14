@@ -33,6 +33,7 @@ class Pessoa {
     String? pessoaId,
     String? nome,
     String? cpf,
+    String? email,
     String? contato,
     String? dataNascimento,
     String? tipoSanguineo,

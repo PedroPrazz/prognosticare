@@ -26,6 +26,7 @@ class _MyProfileState extends State<MyProfile> {
   @override
   TextEditingController _nome = TextEditingController();
   TextEditingController _cpf = TextEditingController();
+  TextEditingController _email = TextEditingController();
   TextEditingController _contato = TextEditingController();
   TextEditingController _data = TextEditingController();
   TextEditingController _tipoSanguineo = TextEditingController();
@@ -43,6 +44,7 @@ class _MyProfileState extends State<MyProfile> {
     super.initState();
     _nome.text = widget.pessoa.nome;
     _cpf.text = widget.pessoa.cpf;
+    _email.text = widget.pessoa.email;
     _contato.text = widget.pessoa.contato.toString();
     _data.text = widget.pessoa.dataNascimento;
     // DateTime parsedDate = DateTime.parse(widget.pessoa.dataNascimento);
@@ -160,6 +162,29 @@ class _MyProfileState extends State<MyProfile> {
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Telefone is required';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 30),
+                  Container(
+                    width: 500,
+                    child: TextFormField(
+                      initialValue: widget.pessoa.email,
+                      controller: _email,
+                      decoration: InputDecoration(
+                          labelText: 'Email',
+                          labelStyle: TextStyle(color: Colors.black),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color.fromRGBO(255, 143, 171, 1)))),
+                      cursorColor: Color.fromRGBO(255, 143, 171, 1),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Email is required';
                         }
                         return null;
                       },

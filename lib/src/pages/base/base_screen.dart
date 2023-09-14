@@ -36,22 +36,20 @@ class _BaseScreenState extends State<BaseScreen> {
 
             //Meus Dados
             ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text('Meus Dados'),
-              onTap: () async {
-                Pessoa pessoa = await GetFindbyIDService.getFindbyID();
-                print(GetFindbyIDService.getFindbyID());
-                // ignore: unnecessary_null_comparison
-                if (pessoa == null) {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ProfileTab(pessoa: pessoa)));
-                } else {
-                  print('Não tem pessoa Cadastrada');
-                }
-              },
-            ),
+                leading: const Icon(Icons.person),
+                title: const Text('Meus Dados'),
+                onTap: () async {
+                  Pessoa pessoa = await GetFindbyIDService.getFindbyID();
+                  print(GetFindbyIDService.getFindbyID());
+                  if (pessoa == null) {
+                    print('Não tem pessoa cadastrada');
+                  } else {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => MyProfile(pessoa: pessoa)));
+                  }
+                }),
 
             //Meu pronturário
             ListTile(

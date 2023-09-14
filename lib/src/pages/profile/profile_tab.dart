@@ -19,7 +19,6 @@ class _ProfileTabState extends State<ProfileTab> {
   bool doadorMarcado = false;
   bool alergiaMarcada = false;
 
-
   TextEditingController Controller = TextEditingController();
   TextEditingController nomeController = TextEditingController();
   TextEditingController cpfController = TextEditingController();
@@ -30,6 +29,9 @@ class _ProfileTabState extends State<ProfileTab> {
   TextEditingController cpsController = TextEditingController();
   TextEditingController tipoSanguineoController = TextEditingController();
   TextEditingController tipoAlergiaController = TextEditingController();
+  TextEditingController alergiaController = TextEditingController();
+  TextEditingController doadorController = TextEditingController();
+
 
   @override
   void initState() {
@@ -38,13 +40,16 @@ class _ProfileTabState extends State<ProfileTab> {
     cpfController.text = widget.pessoa.cpf;
     emailController.text = widget.pessoa.email;
     dataController.text = widget.pessoa.dataNascimento;
-    telefoneController.text = widget.pessoa.contato ?? ''; 
+    telefoneController.text = widget.pessoa.contato ?? '';
     cnsController.text = widget.pessoa.cartaoNacional ?? '';
     cpsController.text = widget.pessoa.cartaoPlanoSaude ?? '';
-    tipoSanguineoController.text = widget.pessoa.tipoSanguineo ?? '';
+    tipoSanguineoController.text = widget.pessoa.tipoSanguineo ?? 'SELECIONE';
     alergiaMarcada = widget.pessoa.alergia ?? false;
     tipoAlergiaController.text = widget.pessoa.tipoAlergia ?? '';
     doadorMarcado = widget.pessoa.doador ?? false;
+    alergiaController.text = widget.pessoa.alergia.toString();
+  doadorController.text = widget.pessoa.doador.toString();
+
   }
 
   @override
@@ -110,17 +115,15 @@ class _ProfileTabState extends State<ProfileTab> {
           ),
           //CNS
           CustomTextField(
-           controller: cnsController,
-           
+            controller: cnsController,
             icon: Icons.payment_outlined,
             label: 'Cartão Nacional de Saúde',
           ),
           //CPS
           CustomTextField(
-            controller: cpsController ,
+            controller: cpsController,
             icon: Icons.payment_outlined,
             label: 'Cartão do Plano de Saúde',
-
           ),
           //Tipo Sanguíneo
           Container(
@@ -142,6 +145,16 @@ class _ProfileTabState extends State<ProfileTab> {
                   ),
                 ),
               ),
+              // onChanged: (String? newValue) {
+              //   setState(() {
+              //     //tipoSanguineoController.text = newValue!;
+
+              //   });
+              // },
+              value: tipoSanguineoController.text.isEmpty
+                  ? null
+                  : tipoSanguineoController.text,
+
               onChanged: (String? newValue) {
                 setState(() {
                   tipoSanguineoController.text = newValue!;
@@ -156,6 +169,7 @@ class _ProfileTabState extends State<ProfileTab> {
                 'O_NEGATIVO',
                 'AB_POSITIVO',
                 'AB_NEGATIVO',
+                'SELECIONE'
               ].map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
@@ -189,12 +203,11 @@ class _ProfileTabState extends State<ProfileTab> {
             title: Text('Alergia a Medicamentos?'),
             controlAffinity: ListTileControlAffinity.leading,
             checkColor: CustomColors.customSwatchColor,
-            value: alergiaMarcada,
+            value: alergiaController.text == 'true',
             onChanged: (bool? value) {
               setState(
                 () {
-                  alergiaMarcada = value!;
-                
+                 alergiaController.text = value.toString();
                 },
               );
             },
@@ -202,7 +215,7 @@ class _ProfileTabState extends State<ProfileTab> {
           Visibility(
             visible: alergiaMarcada,
             child: CustomTextField(
-              controller: tipoAlergiaController,
+              //controller: tipoAlergiaController,
               initialValue: widget.pessoa.tipoAlergia,
               icon: Icons.medication,
               label: 'Tipo de Alergia',
@@ -213,11 +226,11 @@ class _ProfileTabState extends State<ProfileTab> {
             title: Text('É doador de Orgãos?'),
             controlAffinity: ListTileControlAffinity.leading,
             checkColor: CustomColors.customSwatchColor,
-            value: doadorMarcado,
+            value: doadorController.text == 'true',
             onChanged: (bool? value) {
               setState(
                 () {
-                  doadorMarcado = value!;
+                  doadorController.text = value.toString();
                 },
               );
             },
@@ -246,26 +259,30 @@ class _ProfileTabState extends State<ProfileTab> {
                   cartaoNacional: cnsController.text,
                   cartaoPlanoSaude: cpsController.text,
                 );
-                Pessoa pessoaAtualizado = await PersonUpdateService.getPerson(pessoaAtualizada);
+
+                Pessoa pessoaAtualizado =
+                    await PersonUpdateService.getPerson(pessoaAtualizada);
                 if (pessoaAtualizado != null) {
                   setState(() {
                     widget.pessoa = pessoaAtualizado;
                   });
-                   Navigator.push(context,
-                       MaterialPageRoute(builder: (context) => BaseScreen()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => BaseScreen()));
                 } else {
                   print("id: ${pessoaAtualizada.pessoaId}");
                   print("Nome: ${pessoaAtualizada.nome}");
                   print("CPF: ${pessoaAtualizada.cpf}");
                   print("Contato: ${pessoaAtualizada.contato}");
-                  print("Data de Nascimento: ${pessoaAtualizada.dataNascimento}");
+                  print(
+                      "Data de Nascimento: ${pessoaAtualizada.dataNascimento}");
                   print("tipoSanguineo: ${pessoaAtualizada.tipoSanguineo}");
                   print("alergia: ${pessoaAtualizada.alergia}");
                   print('doador:${pessoaAtualizada.doador}');
                   print("responsavel: ${pessoaAtualizada.tipoResponsavel}");
                   print("tipoAlergia: ${pessoaAtualizada.tipoAlergia}");
                   print("cartaoNacional: ${pessoaAtualizada.cartaoNacional}");
-                  print("cartaoPlanoSaude: ${pessoaAtualizada.cartaoPlanoSaude}");
+                  print(
+                      "cartaoPlanoSaude: ${pessoaAtualizada.cartaoPlanoSaude}");
                 }
               },
               child: const Text(

@@ -18,6 +18,7 @@ class PersonUpdateService {
           'pessoa_id': pessoa.pessoaId,
           'nome': pessoa.nome,
           'cpf': pessoa.cpf,
+          'email': pessoa.email,
           'contato': pessoa.contato,
           'dataNascimento': pessoa.dataNascimento,
           'tipoSanguineo': pessoa.tipoSanguineo,

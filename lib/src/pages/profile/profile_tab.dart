@@ -205,11 +205,11 @@ class _ProfileTabState extends State<ProfileTab> {
             title: Text('Alergia a Medicamentos?'),
             controlAffinity: ListTileControlAffinity.leading,
             checkColor: CustomColors.customSwatchColor,
-            value: alergiaController.text == 'true',
+            value: alergiaMarcada,
             onChanged: (bool? value) {
               setState(
                 () {
-                  alergiaController.text = value.toString();
+                 alergiaMarcada = value ?? false;
                 },
               );
             },
@@ -217,8 +217,8 @@ class _ProfileTabState extends State<ProfileTab> {
           Visibility(
             visible: alergiaMarcada,
             child: CustomTextField(
-              controller: tipoAlergiaController,
-              //initialValue: widget.pessoa.tipoAlergia,
+              // controller: tipoAlergiaController,
+              initialValue: widget.pessoa.tipoAlergia,
               icon: Icons.medication,
               label: 'Tipo de Alergia',
             ),
@@ -228,11 +228,11 @@ class _ProfileTabState extends State<ProfileTab> {
             title: Text('É doador de Orgãos?'),
             controlAffinity: ListTileControlAffinity.leading,
             checkColor: CustomColors.customSwatchColor,
-            value: doadorController.text == 'true',
+            value: doadorMarcado,
             onChanged: (bool? value) {
               setState(
                 () {
-                  doadorController.text = value.toString();
+                  doadorMarcado = value ?? false;
                 },
               );
             },
@@ -251,6 +251,7 @@ class _ProfileTabState extends State<ProfileTab> {
                   pessoaId: widget.pessoa.pessoaId,
                   nome: widget.pessoa.nome,
                   cpf: widget.pessoa.cpf,
+                  email: widget.pessoa.email,
                   contato: telefoneController.text,
                   dataNascimento: widget.pessoa.dataNascimento,
                   tipoSanguineo: tipoSanguineoController.text,

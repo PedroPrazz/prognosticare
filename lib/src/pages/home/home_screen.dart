@@ -6,14 +6,14 @@ import 'package:prognosticare/src/models/pessoa.dart';
 import 'package:prognosticare/src/pages/common_widgets/custom_text_field.dart';
 import 'package:prognosticare/src/pages/profile/profile_tab.dart';
 
-class BaseScreen extends StatefulWidget {
-  BaseScreen({Key? key}) : super(key: key);
+class HomeScreen extends StatefulWidget {
+  HomeScreen({Key? key}) : super(key: key);
 
   @override
-  State<BaseScreen> createState() => _BaseScreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _BaseScreenState extends State<BaseScreen> {
+class _HomeScreenState extends State<HomeScreen> {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
   Pessoa? pessoa;

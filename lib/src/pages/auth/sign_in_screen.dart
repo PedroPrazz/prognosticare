@@ -244,7 +244,7 @@ class SignInScreen extends StatelessWidget {
                                         builder: (context) =>
                                             ChangePassword()));
                               } else {
-                                Get.offNamed(PagesRoutes.baseRoute);
+                                Get.offNamed(PagesRoutes.homeRoute);
                               }
                             } else {
                               loginSenhaInvalidoAlert(context);

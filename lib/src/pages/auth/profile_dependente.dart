@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:prognosticare/src/api/service/personUpdateService.dart';
 import 'package:prognosticare/src/models/pessoa.dart';
-import 'package:prognosticare/src/pages/base/base_screen.dart';
+import 'package:prognosticare/src/pages/home/home_screen.dart';
 
 class MyProfile extends StatefulWidget {
   MyProfile({super.key, required this.pessoa});
@@ -333,12 +333,12 @@ class _MyProfileState extends State<MyProfile> {
                         cartaoPlanoSaude: _cartaoPlanoSaude.text,
                       );
                       bool update = false;
-                         // await PersonUpdateService.getPerson(pessoaAtualizada);
+                         await PersonUpdateService.getPerson(pessoaAtualizada);
                       if (update) {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => BaseScreen()));
+                                builder: (context) => HomeScreen()));
                       } else {
                         print("id: ${pessoaAtualizada.pessoaId}");
                         print("Nome: ${pessoaAtualizada.nome}");

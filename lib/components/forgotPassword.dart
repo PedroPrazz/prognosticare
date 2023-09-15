@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_utils/get_utils.dart';
 import 'package:prognosticare/components/validation.dart';
 import 'package:prognosticare/src/api/service/forgotPasswordService.dart';
 import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
 import 'package:prognosticare/src/pages/common_widgets/custom_text_field.dart';
 
-import '../src/api/service/changePasswordService.dart';
+class ForgotPasswordDialog extends StatelessWidget {
+  const ForgotPasswordDialog({Key? key});
 
-class ChangePasswordDialog extends StatelessWidget {
-  const ChangePasswordDialog({Key? key});
-
-  Future<bool?> updatePassword(BuildContext context) {
-    TextEditingController _newPasswordController = TextEditingController();
-    TextEditingController _confirmPasswordController = TextEditingController();
+  Future<bool?> forgotPassword(BuildContext context) {
+    TextEditingController _emailController = TextEditingController();
     return showDialog(
       context: context,
       builder: (context) {
@@ -31,7 +29,7 @@ class ChangePasswordDialog extends StatelessWidget {
                     const Padding(
                       padding: EdgeInsets.symmetric(vertical: 12),
                       child: Text(
-                        'Alteração de senha',
+                        'Esqueci a senha',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 18,
@@ -40,23 +38,19 @@ class ChangePasswordDialog extends StatelessWidget {
                       ),
                     ),
 
-                    // Nova senha
                     CustomTextField(
-                      controller: _newPasswordController,
-                      icon: Icons.lock,
-                      label: 'Senha',
-                      isSecret: true,     
+                      controller: _emailController,
+                      icon: Icons.email,
+                      label: 'E-mail',
+                      validator: (email) {
+                        if (email == null || email.isEmpty) {
+                          return 'Digite o email!';
+                        }
+                        if (!email.isEmail) return 'Digite um email válido!';
+                        return null;
+                      },
                     ),
 
-                    // Confirmar senha
-                    CustomTextField(
-                      controller: _confirmPasswordController,
-                      icon: Icons.lock,
-                      label: 'Confirmar Nova senha',
-                      isSecret: true,
-                    ),
-
-                    //Botão de confirmação
                     SizedBox(
                       height: 45,
                       child: ElevatedButton(
@@ -66,55 +60,59 @@ class ChangePasswordDialog extends StatelessWidget {
                           ),
                         ),
                         onPressed: () async {
-                          String novaSenha = _newPasswordController.text;
-                          String confirmarSenha =
-                              _confirmPasswordController.text;
-                          if (novaSenha == confirmarSenha && novaSenha!= '' && confirmarSenha != '' && novaSenha.length >8 && confirmarSenha.length >8) {
-                            bool changePassword =
-                                await ChangePasswordService.getChangePassword(
-                                    _newPasswordController.text);
-                            if (changePassword) {
+                          if (_emailController.text != '') {
+                            bool forgotPassowrd =
+                                await ForgotPasswordService.getNewPassword(
+                                    _emailController.text);
+                            if (forgotPassowrd) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text('Senha Alterada com Sucesso!'),
+                                  content: Text('E-mail Enviado com Sucesso!'),
                                   duration: Duration(seconds: 2),
                                   backgroundColor:
                                       Color.fromARGB(222, 51, 212, 10),
+                                  
                                 ),
                               );
-                             
+
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => SignInScreen()));
                             }
+                            if(forgotPassowrd == false) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Tente novamente mais tarde!!'),
+                                backgroundColor:
+                                    Color.fromARGB(222, 240, 16, 16),
+                                duration: Duration(seconds: 2),
+                              ),
+                            );
+                            print("erro ao trocar senha");
+                          }
 
-                            if(changePassword == false){
-                              ScaffoldMessenger.of(context).showSnackBar(
+                          }
+                          if (_emailController.text.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text('Tente novamente mais tarde!'),
+                                  content: Text('Digite um Email!'),
                                   duration: Duration(seconds: 2),
                                   backgroundColor:
-                                      Color.fromARGB(222, 212, 10, 10),
+                                      Color.fromARGB(222, 222, 222, 2),
                                 ),
                               );
-                             
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => SignInScreen()));
-                            }
+                            return;
+                          }
 
+                          if (!_emailController.text.contains("@")) {
+                            ValidationAlertDialog().emailInvalidoAlert(context);
+                            return;
                           } 
                           
-                          if (_newPasswordController.text.length < 8 || _confirmPasswordController.text.length < 8) {
-                              ValidationAlertDialog().senhaInvalidaAlert(context);
-                              return;
-                            }
-                            
                         },
                         child: const Text(
-                          'Alterar',
+                          'Enviar',
                           style: TextStyle(color: Colors.white),
                         ),
                       ),

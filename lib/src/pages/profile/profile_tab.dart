@@ -61,22 +61,6 @@ class _ProfileTabState extends State<ProfileTab> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    nomeController.text = widget.pessoa.nome;
-    cpfController.text = widget.pessoa.cpf;
-    emailController.text = widget.pessoa.email;
-    telefoneController.text = widget.pessoa.contato.toString();
-    dataController.text = widget.pessoa.dataNascimento;
-    // DateTime parsedDate = DateTime.parse(widget.pessoa.dataNascimento);
-    // _data.text = _dateFormat.format(parsedDate);
-    tipoSanguineoController.text = widget.pessoa.tipoSanguineo ?? 'A_POSITIVO';
-    tipoAlergiaController.text = widget.pessoa.tipoAlergia.toString();
-    cnsController.text = widget.pessoa.cartaoNacional.toString();
-    cpsController.text = widget.pessoa.cartaoPlanoSaude.toString();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(

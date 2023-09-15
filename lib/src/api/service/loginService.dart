@@ -10,10 +10,6 @@ final storage = FlutterSecureStorage();
 class LoginService {
   static Future<bool> getLogin(String email, String password) async {
 
-    // final apiLocal = ('http://localhost:8080/login'); // variavel para local host
-    // final apiServer = ('http://prognosticare.ddns.net:8085/login'); // variavel para server
-    
-    // final url = Uri.parse(apiServer);
 
     final url = Uri.parse(UriServer.url.toString()+'/login');
 
@@ -33,10 +29,13 @@ class LoginService {
 
         await storage.write(key: 'token', value: dados['token']);
         await storage.write(key: 'user_id', value: dados['pessoaEntity']);
+        await storage.write(key: 'nome', value: dados['nome']);
+
+
 
         String? idPessoa = await storage.read(key: 'user_id');
-
-        // Pessoa pessoa = await GetFindbyIDService.getFindbyID();
+        String? nome = await storage.read(key: 'nome');
+        Pessoa pessoa = await GetFindbyIDService.getFindbyID();
 
         return true;
       } else {

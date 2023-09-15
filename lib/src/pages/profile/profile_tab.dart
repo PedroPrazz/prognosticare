@@ -40,7 +40,6 @@ class _ProfileTabState extends State<ProfileTab> {
   TextEditingController alergiaController = TextEditingController();
   TextEditingController doadorController = TextEditingController();
 
-
   @override
   void initState() {
     super.initState();
@@ -56,8 +55,7 @@ class _ProfileTabState extends State<ProfileTab> {
     tipoAlergiaController.text = widget.pessoa.tipoAlergia ?? '';
     doadorMarcado = widget.pessoa.doador ?? false;
     alergiaController.text = widget.pessoa.alergia.toString();
-  doadorController.text = widget.pessoa.doador.toString();
-
+    doadorController.text = widget.pessoa.doador.toString();
   }
 
   @override
@@ -162,11 +160,9 @@ class _ProfileTabState extends State<ProfileTab> {
                   ),
                 ),
               ),
-
               value: tipoSanguineoController.text.isEmpty
                   ? null
                   : tipoSanguineoController.text,
-
               onChanged: (String? newValue) {
                 setState(() {
                   tipoSanguineoController.text = newValue!;
@@ -213,7 +209,7 @@ class _ProfileTabState extends State<ProfileTab> {
             onChanged: (bool? value) {
               setState(
                 () {
-                 alergiaController.text = value.toString();
+                  alergiaController.text = value.toString();
                 },
               );
             },
@@ -258,9 +254,9 @@ class _ProfileTabState extends State<ProfileTab> {
                   contato: telefoneController.text,
                   dataNascimento: widget.pessoa.dataNascimento,
                   tipoSanguineo: tipoSanguineoController.text,
-                  alergia: alergiaMarcada,
-                  doador: doadorMarcado,
-                  tipoAlergia: widget.pessoa.tipoAlergia,
+                  alergia: alergiaController.text.toLowerCase() == 'true',
+                  doador: doadorController.text.toLowerCase() == 'true',
+                  tipoAlergia: tipoAlergiaController.text,
                   tipoResponsavel: widget.pessoa.tipoResponsavel,
                   cartaoNacional: widget.pessoa.cartaoNacional,
                   cartaoPlanoSaude: widget.pessoa.cartaoPlanoSaude,

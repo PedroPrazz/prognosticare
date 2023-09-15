@@ -1,25 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:prognosticare/components/meuProntuario.dart';
 import 'package:prognosticare/src/api/service/getFindbyIDService.dart';
-import 'package:prognosticare/src/pages/auth/prontuario.dart';
+
 import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
 import 'package:prognosticare/src/models/pessoa.dart';
 import 'package:prognosticare/src/pages/common_widgets/custom_text_field.dart';
 import 'package:prognosticare/src/pages/profile/profile_tab.dart';
 
-class HomeScreen extends StatefulWidget {
-  HomeScreen({Key? key}) : super(key: key);
+final storage = FlutterSecureStorage();
+class BaseScreen extends StatefulWidget {
+  BaseScreen({Key? key}) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<BaseScreen> createState() => _BaseScreenState();
+  
 }
-
-class _HomeScreenState extends State<HomeScreen> {
+ 
+class _BaseScreenState extends State<BaseScreen> {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
   Pessoa? pessoa;
+  String? nome;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadNome();
+  }
+  Future<void> _loadNome() async {
+    nome = await storage.read(key: 'nome');
+    setState(() {}); // Atualiza o estado para refletir o nome carregado.
+  }
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       // Menu Lateral
       drawer: Drawer(
@@ -30,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 backgroundColor: Colors.white,
                 child: Text('TT'),
               ),
-              accountName: Text(''),
+              accountName: Text('Bem-vindo $nome'),
               accountEmail: Text(''),
             ),
 
@@ -55,8 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
               leading: const Icon(Icons.assignment),
               title: const Text('Meu Prontuário'),
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Prontuario()));
+                ProntuarioDialog().prontuarioDialog(context);
               },
             ),
 

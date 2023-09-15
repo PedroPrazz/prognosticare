@@ -66,8 +66,6 @@ class SignInScreen extends StatelessWidget {
                           pause: Duration.zero,
                           repeatForever: true,
                           animatedTexts: [
-                            FadeAnimatedText(
-                                'Conectando-se com o futuro da sua Saúde'),
                             FadeAnimatedText('Exames'),
                             FadeAnimatedText('Prontuários'),
                             FadeAnimatedText('Consultas'),

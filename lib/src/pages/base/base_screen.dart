@@ -178,12 +178,7 @@ class _BaseScreenState extends State<BaseScreen> {
                       ),
                     ),
 
-                    // // Senha atual
-                    // const CustomTextField(
-                    //   isSecret: true,
-                    //   icon: Icons.lock,
-                    //   label: 'Senha Atual',
-                    // ),
+      
 
                     // Nova senha
                     const CustomTextField(
@@ -208,10 +203,13 @@ class _BaseScreenState extends State<BaseScreen> {
                             borderRadius: BorderRadius.circular(20),
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+
+                        },
                         child: const Text(
                           'Alterar',
                           style: TextStyle(color: Colors.white),
+
                         ),
                       ),
                     ),

@@ -145,12 +145,7 @@ class _ProfileTabState extends State<ProfileTab> {
                   ),
                 ),
               ),
-              // onChanged: (String? newValue) {
-              //   setState(() {
-              //     //tipoSanguineoController.text = newValue!;
 
-              //   });
-              // },
               value: tipoSanguineoController.text.isEmpty
                   ? null
                   : tipoSanguineoController.text,
@@ -190,12 +185,6 @@ class _ProfileTabState extends State<ProfileTab> {
                   ),
                 );
               }).toList(),
-              // validator: (value) {
-              //   if (value == null || value.isEmpty) {
-              //     return 'Tipo sanguíneo is required';
-              //   }
-              //   return null;
-              // },
             ),
           ),
           //Alergia a Medicamentos
@@ -215,8 +204,8 @@ class _ProfileTabState extends State<ProfileTab> {
           Visibility(
             visible: alergiaMarcada,
             child: CustomTextField(
-              //controller: tipoAlergiaController,
-              initialValue: widget.pessoa.tipoAlergia,
+              controller: tipoAlergiaController,
+              //initialValue: widget.pessoa.tipoAlergia,
               icon: Icons.medication,
               label: 'Tipo de Alergia',
             ),

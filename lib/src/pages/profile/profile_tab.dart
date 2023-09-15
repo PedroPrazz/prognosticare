@@ -1,4 +1,7 @@
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:prognosticare/src/api/service/personUpdateService.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/models/pessoa.dart';
@@ -16,6 +19,11 @@ class ProfileTab extends StatefulWidget {
 }
 
 class _ProfileTabState extends State<ProfileTab> {
+  final phoneFormatter = MaskTextInputFormatter(
+    mask: '(##)#####-####',
+    filter: {'#': RegExp(r'[0-9]')},
+  );
+
   bool doadorMarcado = false;
   bool alergiaMarcada = false;
 
@@ -53,6 +61,22 @@ class _ProfileTabState extends State<ProfileTab> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    nomeController.text = widget.pessoa.nome;
+    cpfController.text = widget.pessoa.cpf;
+    emailController.text = widget.pessoa.email;
+    telefoneController.text = widget.pessoa.contato.toString();
+    dataController.text = widget.pessoa.dataNascimento;
+    // DateTime parsedDate = DateTime.parse(widget.pessoa.dataNascimento);
+    // _data.text = _dateFormat.format(parsedDate);
+    tipoSanguineoController.text = widget.pessoa.tipoSanguineo ?? 'A_POSITIVO';
+    tipoAlergiaController.text = widget.pessoa.tipoAlergia.toString();
+    cnsController.text = widget.pessoa.cartaoNacional.toString();
+    cpsController.text = widget.pessoa.cartaoPlanoSaude.toString();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -81,6 +105,7 @@ class _ProfileTabState extends State<ProfileTab> {
         children: [
           //Nome
           CustomTextField(
+            // controller: nomeController,
             readOnly: true,
             initialValue: widget.pessoa.nome,
             icon: Icons.person,
@@ -88,6 +113,7 @@ class _ProfileTabState extends State<ProfileTab> {
           ),
           //CPF
           CustomTextField(
+            // controller: cpfController,
             readOnly: true,
             initialValue: widget.pessoa.cpf,
             icon: Icons.file_copy,
@@ -95,6 +121,7 @@ class _ProfileTabState extends State<ProfileTab> {
           ),
           //Data de Nascimento
           CustomTextField(
+            // controller: dataController,
             readOnly: true,
             initialValue: widget.pessoa.dataNascimento,
             icon: Icons.date_range,
@@ -102,6 +129,7 @@ class _ProfileTabState extends State<ProfileTab> {
           ),
           //Email
           CustomTextField(
+            // controller: emailController,
             readOnly: true,
             initialValue: widget.pessoa.email,
             icon: Icons.email,
@@ -112,12 +140,17 @@ class _ProfileTabState extends State<ProfileTab> {
             controller: telefoneController,
             icon: Icons.phone,
             label: 'Telefone',
+            inputFormatters: [phoneFormatter],
           ),
           //CNS
           CustomTextField(
             controller: cnsController,
             icon: Icons.payment_outlined,
             label: 'Cartão Nacional de Saúde',
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly,
+              CNSInputFormatter()
+            ],
           ),
           //CPS
           CustomTextField(
@@ -243,10 +276,10 @@ class _ProfileTabState extends State<ProfileTab> {
                   tipoSanguineo: tipoSanguineoController.text,
                   alergia: alergiaMarcada,
                   doador: doadorMarcado,
-                  tipoAlergia: tipoAlergiaController.text,
+                  tipoAlergia: widget.pessoa.tipoAlergia,
                   tipoResponsavel: widget.pessoa.tipoResponsavel,
-                  cartaoNacional: cnsController.text,
-                  cartaoPlanoSaude: cpsController.text,
+                  cartaoNacional: widget.pessoa.cartaoNacional,
+                  cartaoPlanoSaude: widget.pessoa.cartaoPlanoSaude,
                 );
 
                 Pessoa pessoaAtualizado =

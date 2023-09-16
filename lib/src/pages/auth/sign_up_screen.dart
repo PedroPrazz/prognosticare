@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:prognosticare/components/validation.dart';
 import 'package:prognosticare/src/api/service/registerService.dart';
 import 'package:prognosticare/src/pages/common_widgets/custom_text_field.dart';
 import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
@@ -28,140 +29,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     mask: '##/##/####',
     filter: {'#': RegExp(r'[0-9]')},
   );
-
-  
-
-  Future<void> camposVaziosAlert(BuildContext context) async {
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Tente novamente!'),
-          content: Text('Os campos não podem estar vazios.'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future<void> nomeInvalidoAlert(BuildContext context) async {
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Tente novamente!'),
-          content: Text('O nome precisa conter pelo menos de 3 caracteres.'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future<void> cpfInvalidoAlert(BuildContext context) async {
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Tente novamente!'),
-          content: Text('O CPF digitado é inválido.'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future<void> emailInvalidoAlert(BuildContext context) async {
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Tente novamente!'),
-          content: Text('O email digitado é inválido.'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future<void> senhaMenorOitoAlert(BuildContext context) async {
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Tente novamente!'),
-          content: Text('A senha precisa conter mais de 8 caracteres.'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future<void> senhasNaoCorrespondemAlert(BuildContext context) async {
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Tente novamente!'),
-          content: Text('As senhas digitadas são diferentes.'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future<void> cadastroSucessoAlert(BuildContext context) async {
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Cadastro realizado com sucesso!'),
-          content: Text('Aproveite o PrognostiCare!'),
-        );
-      },
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -252,10 +119,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             validator: (email) {
                               if (email == null || email.isEmpty)
                                 return 'Digite seu email!';
-
                               if (!email.isEmail)
                                 return 'Digite um email válido!';
-
                               return null;
                             },
                           ),
@@ -293,7 +158,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 return 'Digite sua senha!';
                               }
                               if (senha.length < 8) {
-                                return 'Digite uma senha com pelo menos 7 caracteres.';
+                                return 'Digite uma senha com pelo menos 8 caracteres.';
                               }
                               if (confirmPasswordController.text !=
                                   passwordController.text) {
@@ -332,39 +197,46 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 ),
                               ),
                               onPressed: () async {
+                                if (_formKey.currentState!.validate()) {
+                                  print('Todos os campos estão válidos');
+                                } else {
+                                  print('Campos não válidos');
+                                }
+
                                 if (nomeController.text.isEmpty ||
                                     cpfController.text.isEmpty ||
                                     emailController.text.isEmpty ||
                                     dataController.text.isEmpty ||
                                     passwordController.text.isEmpty ||
                                     confirmPasswordController.text.isEmpty) {
-                                  camposVaziosAlert(context);
-                                  return;
+                                  return ValidationAlertDialog()
+                                      .camposVaziosAlert(context);
                                 }
 
                                 if (nomeController.text.length < 3) {
-                                  nomeInvalidoAlert(context);
-                                  return;
+                                  return ValidationAlertDialog()
+                                      .nomeInvalidoAlert(context);
                                 }
 
                                 if (!GetUtils.isCpf(cpfController.text)) {
-                                  cpfInvalidoAlert(context);
-                                  return;
+                                  return ValidationAlertDialog()
+                                      .cpfInvalidoAlert(context);
                                 }
 
                                 if (!emailController.text.contains("@")) {
-                                  emailInvalidoAlert(context);
-                                  return;
+                                  return ValidationAlertDialog()
+                                      .emailInvalidoAlert(context);
                                 }
 
                                 if (passwordController.text.length < 8) {
-                                  senhaMenorOitoAlert(context);
-                                  return;
+                                  return ValidationAlertDialog()
+                                      .senhaInvalidaAlert(context);
                                 }
+
                                 if (passwordController.text !=
                                     confirmPasswordController.text) {
-                                  senhasNaoCorrespondemAlert(context);
-                                  return;
+                                  return ValidationAlertDialog()
+                                      .senhasNaoCorrespondemAlert(context);
                                 }
 
                                 bool signIn = await RegisterService.getRegister(
@@ -374,26 +246,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     dataController.text,
                                     passwordController.text);
                                 if (signIn) {
-                                  cadastroSucessoAlert(context);
+                                  ValidationAlertDialog()
+                                      .cadastroSucessoAlert(context);
                                   await Future.delayed(Duration(seconds: 5));
                                   Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(builder: (c) {
                                     return SignInScreen();
                                   }));
-                                }else{
-                                   ScaffoldMessenger.of(context).showSnackBar(
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
-                                    content: Text('Erro interno tente novamente mais tarde!'),
-                                    duration: Duration(seconds: 3),
-                                    backgroundColor: Color.fromARGB(255, 212, 31, 18),
+                                      content: Text(
+                                          'Erro interno tente novamente mais tarde!'),
+                                      duration: Duration(seconds: 3),
+                                      backgroundColor:
+                                          Color.fromARGB(255, 212, 31, 18),
                                     ),
                                   );
-                                }
-
-                                if (_formKey.currentState!.validate()) {
-                                  print('Todos os campos estão válidos');
-                                } else {
-                                  print('Campos não válidos');
                                 }
                               },
                               child: const Text(

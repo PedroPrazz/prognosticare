@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:prognosticare/components/changePassword.dart';
 import 'package:prognosticare/components/meuProntuario.dart';
 import 'package:prognosticare/src/api/service/getFindbyIDService.dart';
-
 import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
 import 'package:prognosticare/src/models/pessoa.dart';
-import 'package:prognosticare/src/pages/common_widgets/custom_text_field.dart';
 import 'package:prognosticare/src/pages/profile/profile_tab.dart';
 import 'package:prognosticare/src/pages/profile/profile_tab_dependente.dart';
 
 final storage = FlutterSecureStorage();
+
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
-  
 }
- 
+
 class _HomeScreenState extends State<HomeScreen> {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
@@ -29,6 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     _loadNome();
   }
+
   Future<void> _loadNome() async {
     nome = await storage.read(key: 'nome');
     setState(() {}); // Atualiza o estado para refletir o nome carregado.
@@ -36,7 +36,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       // Menu Lateral
       drawer: Drawer(
@@ -104,7 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
               leading: const Icon(Icons.miscellaneous_services),
               title: const Text('Alterar Senha'),
               onTap: () {
-                updatePassword();
+                ChangePasswordDialog().updatePassword(context);
               },
             ),
 
@@ -170,91 +169,6 @@ class _HomeScreenState extends State<HomeScreen> {
         child: const Icon(Icons.add, color: Colors.white),
         backgroundColor: const Color.fromRGBO(255, 143, 171, 1),
       ),
-    );
-  }
-
-//Dialog Alterar Senha
-  Future<bool?> updatePassword() {
-    return showDialog(
-      context: context,
-      builder: (context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Stack(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // Titulo
-                    const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 12),
-                      child: Text(
-                        'Alteração de senha',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-
-      
-
-                    // Nova senha
-                    const CustomTextField(
-                      isSecret: true,
-                      icon: Icons.lock_outlined,
-                      label: 'Nova Senha',
-                    ),
-
-                    // Confirmar senha
-                    const CustomTextField(
-                      isSecret: true,
-                      icon: Icons.lock_outlined,
-                      label: 'Confirmar nova Senha',
-                    ),
-
-                    //Botão de confirmação
-                    SizedBox(
-                      height: 45,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                        ),
-                        onPressed: () {
-
-                        },
-                        child: const Text(
-                          'Alterar',
-                          style: TextStyle(color: Colors.white),
-
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Positioned(
-                top: 5,
-                right: 5,
-                child: IconButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  icon: const Icon(Icons.close),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
     );
   }
 }

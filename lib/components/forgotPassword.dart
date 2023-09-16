@@ -9,7 +9,7 @@ class ForgotPasswordDialog extends StatelessWidget {
   const ForgotPasswordDialog({Key? key});
 
   Future<bool?> forgotPassword(BuildContext context) {
-    TextEditingController _emailController = TextEditingController();
+    TextEditingController emailController = TextEditingController();
     return showDialog(
       context: context,
       builder: (context) {
@@ -37,9 +37,8 @@ class ForgotPasswordDialog extends StatelessWidget {
                         ),
                       ),
                     ),
-
                     CustomTextField(
-                      controller: _emailController,
+                      controller: emailController,
                       icon: Icons.email,
                       label: 'E-mail',
                       validator: (email) {
@@ -50,7 +49,6 @@ class ForgotPasswordDialog extends StatelessWidget {
                         return null;
                       },
                     ),
-
                     SizedBox(
                       height: 45,
                       child: ElevatedButton(
@@ -60,56 +58,29 @@ class ForgotPasswordDialog extends StatelessWidget {
                           ),
                         ),
                         onPressed: () async {
-                          if (_emailController.text != '') {
-                            bool forgotPassowrd =
-                                await ForgotPasswordService.getNewPassword(
-                                    _emailController.text);
-                            if (forgotPassowrd) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text('E-mail Enviado com Sucesso!'),
-                                  duration: Duration(seconds: 2),
-                                  backgroundColor:
-                                      Color.fromARGB(222, 51, 212, 10),
-                                  
-                                ),
-                              );
-
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => SignInScreen()));
-                            }
-                            if(forgotPassowrd == false) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('Tente novamente mais tarde!!'),
-                                backgroundColor:
-                                    Color.fromARGB(222, 240, 16, 16),
-                                duration: Duration(seconds: 2),
-                              ),
-                            );
-                            print("erro ao trocar senha");
+                          if (emailController.text.isEmpty) {
+                            return ValidationAlertDialog()
+                                .camposVaziosAlert(context);
                           }
-
+                          if (!emailController.text.contains("@")) {
+                            return ValidationAlertDialog()
+                                .emailInvalidoAlert(context);
                           }
-                          if (_emailController.text.isEmpty) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text('Digite um Email!'),
-                                  duration: Duration(seconds: 2),
-                                  backgroundColor:
-                                      Color.fromARGB(222, 222, 222, 2),
-                                ),
-                              );
-                            return;
+                          bool forgotPassowrd =
+                              await ForgotPasswordService.getNewPassword(
+                                  emailController.text);
+                          if (forgotPassowrd) {
+                            ValidationAlertDialog()
+                                .recuperarSenhaAlert(context);
+                            await Future.delayed(Duration(seconds: 5));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SignInScreen()));
+                          } else {
+                            return ValidationAlertDialog()
+                                .emailInexistenteAlert(context);
                           }
-
-                          if (!_emailController.text.contains("@")) {
-                            ValidationAlertDialog().emailInvalidoAlert(context);
-                            return;
-                          } 
-                          
                         },
                         child: const Text(
                           'Enviar',

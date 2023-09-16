@@ -1,4 +1,3 @@
-// imports
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,7 +13,6 @@ class SignInScreen extends StatelessWidget {
   SignInScreen({Key? key}) : super(key: key);
 
   final _formKey = GlobalKey<FormState>();
-
 
   @override
   Widget build(BuildContext context) {
@@ -138,20 +136,26 @@ class SignInScreen extends StatelessWidget {
                             ),
                           ),
                           onPressed: () async {
+                            if (_formKey.currentState!.validate()) {
+                              print('Todos os campos estão válidos');
+                            } else {
+                              print('Campos não válidos');
+                            }
+
                             if (emailController.text.isEmpty ||
                                 passwordController.text.isEmpty) {
-                              ValidationAlertDialog().camposVaziosAlert(context);
-                              return;
+                              return ValidationAlertDialog()
+                                  .camposVaziosAlert(context);
                             }
 
                             if (!emailController.text.contains("@")) {
-                              ValidationAlertDialog().emailInvalidoAlert(context);
-                              return;
+                              return ValidationAlertDialog()
+                                  .emailInvalidoAlert(context);
                             }
 
                             if (passwordController.text.length < 8) {
-                              ValidationAlertDialog().senhaInvalidaAlert(context);
-                              return;
+                              return ValidationAlertDialog()
+                                  .senhaInvalidaAlert(context);
                             }
 
                             bool loggedIn = await LoginService.getLogin(
@@ -163,16 +167,8 @@ class SignInScreen extends StatelessWidget {
                                 Get.offNamed(PagesRoutes.homeRoute);
                               }
                             } else {
-                              ValidationAlertDialog().loginSenhaInvalidoAlert(context);
-                              print(
-                                  'Seu email e senha não correspondem. Tente novamente!');
-                              return;
-                            }
-
-                            if (_formKey.currentState!.validate()) {
-                              print('Todos os campos estão válidos');
-                            } else {
-                              print('Campos não válidos');
+                              return ValidationAlertDialog()
+                                  .loginSenhaInvalidoAlert(context);
                             }
                           },
                           child: const Text(
@@ -214,7 +210,7 @@ class SignInScreen extends StatelessWidget {
                             ),
                             const Padding(
                               padding: EdgeInsets.symmetric(horizontal: 15),
-                              child: Text('Ou'),
+                              child: Text('OU'),
                             ),
                             Expanded(
                               child: Divider(

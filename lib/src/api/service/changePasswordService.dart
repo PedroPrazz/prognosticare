@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:prognosticare/src/config/uri.dart';
 
 final storage = FlutterSecureStorage();
 
@@ -10,10 +11,7 @@ class ChangePasswordService {
     final token = await storage.read(key: 'token'); // Recupere o token
 
     
-    final apiLocal = ('http://localhost:8080/register-person/public/change-password/$userId'); // variavel para local host
-    final apiServer = ('http://prognosticare.ddns.net:8085/register-person/public/change-password/$userId'); // variavel para server
-
-    final url = Uri.parse(apiServer);
+    final url = Uri.parse(UriServer.url.toString()+'/register-person/public/change-password/$userId');
 
     try {
       final response = await http.put(

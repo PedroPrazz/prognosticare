@@ -2,51 +2,58 @@ import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:prognosticare/src/config/uri.dart';
-import 'package:prognosticare/src/models/pessoa.dart';
 
 final storage = FlutterSecureStorage();
+
 class RegisterServiceDepents {
-  static Future<Pessoa> getPerson(Pessoa pessoa) async {
+  static Future<bool> getRegisterD(
+      String nome,
+      String cpf,
+      String data,
+      String tipoSanguineo,
+      bool alergia,
+      String tipoAlergia,
+      String cartaoNacional,
+      String cartaoPlanoSaude) async {
     String? idPessoa = await storage.read(key: 'user_id');
     String? token = await storage.read(key: 'token');
-    
-    final url = Uri.parse(UriServer.url.toString()+'/add-dependent/$idPessoa');
+
+    final url =
+        Uri.parse(UriServer.url.toString() + '/add-dependent/$idPessoa');
 
     try {
-      final response = await http.put(
+      final response = await http.post(
         url,
         body: json.encode({
-          'pessoa_id': pessoa.pessoaId,
-          'nome': pessoa.nome,
-          'cpf': pessoa.cpf,
-          'email': pessoa.email,
-          'contato': pessoa.contato,
-          'dataNascimento': pessoa.dataNascimento,
-          'tipoSanguineo': pessoa.tipoSanguineo,
-          'alergia': pessoa.alergia,
-          'tipoAlergia': pessoa.tipoAlergia,
-          'tipoResponsavel': pessoa.tipoResponsavel,
-          'doador': pessoa.doador,
-          'cartaoNacional': pessoa.cartaoNacional,
-          'cartaoPlanoSaude': pessoa.cartaoPlanoSaude,
+          'pessoa_id': idPessoa,
+          'nome': nome,
+          'cpf': cpf,
+          'dataNascimento': data,
+          'tipoSanguineo': tipoSanguineo,
+          'alergia': alergia,
+          'tipoAlergia': tipoAlergia,
+          'cartaoNacional': cartaoNacional,
+          'cartaoPlanoSaude': cartaoPlanoSaude,
         }),
-        headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer $token'},
-        
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token'
+        },
       );
 
-      if (response.statusCode == 200) {
-        Map<String, dynamic> jsonData = json.decode(response.body);
-        Pessoa pessoa = Pessoa.fromJson(jsonData);
-        
-        return pessoa;
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final responseBody = response.body;
+        final dados = json.decode(responseBody);
+        print(dados);
+
+        return true;
       } else {
         print('Response Status Code: ${response.statusCode}');
-        
-        throw Exception('Erro ao atualizar Pessoa');
+        return false;
       }
     } catch (e) {
       print('Error: $e');
-      throw Exception('Erro de Try Catch ao atualizar pessoa');
+      return false;
     }
   }
 }

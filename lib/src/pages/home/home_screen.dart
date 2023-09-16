@@ -7,6 +7,7 @@ import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
 import 'package:prognosticare/src/models/pessoa.dart';
 import 'package:prognosticare/src/pages/common_widgets/custom_text_field.dart';
 import 'package:prognosticare/src/pages/profile/profile_tab.dart';
+import 'package:prognosticare/src/pages/profile/profile_tab_dependente.dart';
 
 final storage = FlutterSecureStorage();
 class HomeScreen extends StatefulWidget {
@@ -86,7 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ProfileTab(pessoa: pessoa!),
+                      builder: (context) => ProfileTabDepentende(),
                     ));
               },
             ),

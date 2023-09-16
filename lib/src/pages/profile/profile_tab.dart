@@ -265,6 +265,7 @@ class _ProfileTabState extends State<ProfileTab> {
 
                 Pessoa pessoaAtualizado =
                     await PersonUpdateService.getPerson(pessoaAtualizada);
+                // ignore: unnecessary_null_comparison
                 if (pessoaAtualizado != null) {
                   setState(() {
                     widget.pessoa = pessoaAtualizado;

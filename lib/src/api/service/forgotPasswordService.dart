@@ -1,13 +1,12 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:prognosticare/src/config/uri.dart';
 
 class ForgotPasswordService {
   static Future<bool> getNewPassword(String email) async {
 
-    final apiLocal = ('http://localhost:8080/register-person/public/forgot-password'); // variavel para local host
-    final apiServer = ('http://prognosticare.ddns.net:8085/register-person/public/forgot-password'); // variavel para server
-    
-    final url = Uri.parse(apiServer);
+      
+    final url = Uri.parse(UriServer.url.toString()+'/register-person/public/forgot-password');
 
     try {
       final response = await http.post(

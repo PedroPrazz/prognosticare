@@ -7,8 +7,15 @@ import 'package:prognosticare/src/pages/common_widgets/custom_text_field.dart';
 import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
 
-class SignUpScreen extends StatelessWidget {
+class SignUpScreen extends StatefulWidget {
   SignUpScreen({Key? key}) : super(key: key);
+
+  @override
+  State<SignUpScreen> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
+  bool isOld = false;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -22,10 +29,7 @@ class SignUpScreen extends StatelessWidget {
     filter: {'#': RegExp(r'[0-9]')},
   );
 
-  // final phoneFormartter = MaskTextInputFormatter(
-  //   mask: '###.###.###-##',
-  //   filter: {'#': RegExp( r'[0-9]')},
-  // );
+  
 
   Future<void> camposVaziosAlert(BuildContext context) async {
     return showDialog<void>(
@@ -273,6 +277,7 @@ class SignUpScreen extends StatelessWidget {
                               if (idade < 18) {
                                 return 'Para realizar o cadastro você deve ser maior de idade!';
                               }
+                              isOld = true;
                               return null;
                             },
                           ),
@@ -375,6 +380,14 @@ class SignUpScreen extends StatelessWidget {
                                       MaterialPageRoute(builder: (c) {
                                     return SignInScreen();
                                   }));
+                                }else{
+                                   ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                    content: Text('Erro interno tente novamente mais tarde!'),
+                                    duration: Duration(seconds: 3),
+                                    backgroundColor: Color.fromARGB(255, 212, 31, 18),
+                                    ),
+                                  );
                                 }
 
                                 if (_formKey.currentState!.validate()) {

@@ -1,24 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:prognosticare/components/meuProntuario.dart';
 import 'package:prognosticare/src/api/service/getFindbyIDService.dart';
-import 'package:prognosticare/src/pages/auth/prontuario.dart';
+
 import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
 import 'package:prognosticare/src/models/pessoa.dart';
 import 'package:prognosticare/src/pages/common_widgets/custom_text_field.dart';
 import 'package:prognosticare/src/pages/profile/profile_tab.dart';
 
-class BaseScreen extends StatefulWidget {
-  BaseScreen({Key? key}) : super(key: key);
+final storage = FlutterSecureStorage();
+class HomeScreen extends StatefulWidget {
+  HomeScreen({Key? key}) : super(key: key);
 
   @override
-  State<BaseScreen> createState() => _BaseScreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
+  
 }
-
-class _BaseScreenState extends State<BaseScreen> {
+ 
+class _HomeScreenState extends State<HomeScreen> {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
+  Pessoa? pessoa;
+  String? nome;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadNome();
+  }
+  Future<void> _loadNome() async {
+    nome = await storage.read(key: 'nome');
+    setState(() {}); // Atualiza o estado para refletir o nome carregado.
+  }
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       // Menu Lateral
       drawer: Drawer(
@@ -29,7 +46,7 @@ class _BaseScreenState extends State<BaseScreen> {
                 backgroundColor: Colors.white,
                 child: Text('TT'),
               ),
-              accountName: Text(''),
+              accountName: Text('Bem-vindo $nome'),
               accountEmail: Text(''),
             ),
 
@@ -38,17 +55,14 @@ class _BaseScreenState extends State<BaseScreen> {
               leading: const Icon(Icons.person),
               title: const Text('Meus Dados'),
               onTap: () async {
-                Pessoa pessoa = await GetFindbyIDService.getFindbyID();
-                print(GetFindbyIDService.getFindbyID());
-                // ignore: unnecessary_null_comparison
                 if (pessoa == null) {
-                  print('Não tem pessoa Cadastrada');
-                } else {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ProfileTab(pessoa: pessoa)));
+                  pessoa = await GetFindbyIDService.getFindbyID();
                 }
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProfileTab(pessoa: pessoa!),
+                    ));
               },
             ),
 
@@ -57,8 +71,7 @@ class _BaseScreenState extends State<BaseScreen> {
               leading: const Icon(Icons.assignment),
               title: const Text('Meu Prontuário'),
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Prontuario()));
+                ProntuarioDialog().prontuarioDialog(context);
               },
             ),
 
@@ -180,12 +193,7 @@ class _BaseScreenState extends State<BaseScreen> {
                       ),
                     ),
 
-                    // // Senha atual
-                    // const CustomTextField(
-                    //   isSecret: true,
-                    //   icon: Icons.lock,
-                    //   label: 'Senha Atual',
-                    // ),
+      
 
                     // Nova senha
                     const CustomTextField(
@@ -210,10 +218,13 @@ class _BaseScreenState extends State<BaseScreen> {
                             borderRadius: BorderRadius.circular(20),
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+
+                        },
                         child: const Text(
                           'Alterar',
                           style: TextStyle(color: Colors.white),
+
                         ),
                       ),
                     ),

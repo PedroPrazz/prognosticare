@@ -1,11 +1,16 @@
 import 'dart:convert';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:prognosticare/src/config/uri.dart';
 
+final storage = FlutterSecureStorage();
 class RegisterServiceDepents {
   static Future<bool> getRegister(String pessoaId, String nome, String cpf,
       String email, String data, String password) async {
-    final url = Uri.parse('http://localhost:8080/add-dependent/{id}');
+      String? idPessoa = await storage.read(key: 'user_id');
+
+    final url = Uri.parse(UriServer.url.toString()+'/add-dependent/$idPessoa');
 
     try {
       final response = await http.post(

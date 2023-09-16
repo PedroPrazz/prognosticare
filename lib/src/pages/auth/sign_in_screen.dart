@@ -2,9 +2,10 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:prognosticare/src/api/service/getFindbyIDService.dart';
+import 'package:prognosticare/components/changePassword.dart';
+import 'package:prognosticare/components/forgotPassword.dart';
+import 'package:prognosticare/components/validation.dart';
 import 'package:prognosticare/src/api/service/loginService.dart';
-import 'package:prognosticare/src/pages/auth/changePassword.dart';
 import 'package:prognosticare/src/pages/common_widgets/custom_text_field.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/pages_routes/app_pages.dart';
@@ -14,85 +15,6 @@ class SignInScreen extends StatelessWidget {
 
   final _formKey = GlobalKey<FormState>();
 
-  Future<void> camposVaziosAlert(BuildContext context) async {
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Tente novamente!'),
-          content: Text('Os campos não podem estar vazios.'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future<void> emailInvalidoAlert(BuildContext context) async {
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Tente novamente!'),
-          content: Text('O email é inválido!'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future<void> senhaInvalidaAlert(BuildContext context) async {
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Tente novamente!'),
-          content: Text('A senha precisa conter pelo menos 8 caracteres!'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future<void> loginSenhaInvalidoAlert(BuildContext context) async {
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Tente novamente!'),
-          content: Text('Seu email e/ou senha não correspondem!'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -144,8 +66,6 @@ class SignInScreen extends StatelessWidget {
                           pause: Duration.zero,
                           repeatForever: true,
                           animatedTexts: [
-                            FadeAnimatedText(
-                                'Conectando-se com o futuro da sua Saúde'),
                             FadeAnimatedText('Exames'),
                             FadeAnimatedText('Prontuários'),
                             FadeAnimatedText('Consultas'),
@@ -220,17 +140,17 @@ class SignInScreen extends StatelessWidget {
                           onPressed: () async {
                             if (emailController.text.isEmpty ||
                                 passwordController.text.isEmpty) {
-                              camposVaziosAlert(context);
+                              ValidationAlertDialog().camposVaziosAlert(context);
                               return;
                             }
 
                             if (!emailController.text.contains("@")) {
-                              emailInvalidoAlert(context);
+                              ValidationAlertDialog().emailInvalidoAlert(context);
                               return;
                             }
 
                             if (passwordController.text.length < 8) {
-                              senhaInvalidaAlert(context);
+                              ValidationAlertDialog().senhaInvalidaAlert(context);
                               return;
                             }
 
@@ -238,17 +158,12 @@ class SignInScreen extends StatelessWidget {
                                 emailController.text, passwordController.text);
                             if (loggedIn) {
                               if (passwordController.text == 'abcdefgh') {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            ChangePassword()));
+                                ChangePasswordDialog().updatePassword(context);
                               } else {
-                                Get.offNamed(PagesRoutes.baseRoute);
-                                GetFindbyIDService.getFindbyID();
+                                Get.offNamed(PagesRoutes.homeRoute);
                               }
                             } else {
-                              loginSenhaInvalidoAlert(context);
+                              ValidationAlertDialog().loginSenhaInvalidoAlert(context);
                               print(
                                   'Seu email e senha não correspondem. Tente novamente!');
                               return;
@@ -274,7 +189,9 @@ class SignInScreen extends StatelessWidget {
                       Align(
                         alignment: Alignment.centerRight,
                         child: TextButton(
-                          onPressed: () async {},
+                          onPressed: () {
+                            ForgotPasswordDialog().forgotPassword(context);
+                          },
                           child: Text(
                             'Esqueceu a senha?',
                             style: TextStyle(

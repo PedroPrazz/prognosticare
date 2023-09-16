@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:prognosticare/components/changePassword.dart';
 import 'package:prognosticare/components/forgotPassword.dart';
 import 'package:prognosticare/components/validation.dart';
+import 'package:prognosticare/src/api/service/FirebaseMessagingService.dart';
 import 'package:prognosticare/src/api/service/loginService.dart';
 import 'package:prognosticare/src/pages/common_widgets/custom_text_field.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
@@ -15,12 +16,23 @@ class SignInScreen extends StatelessWidget {
 
   final _formKey = GlobalKey<FormState>();
 
+  Future<String?> _getFCMToken() async {
+    FirebaseMessagingService firebaseMessagingService = FirebaseMessagingService();
+    String? fcmToken = await firebaseMessagingService.getFirebaseToken();
+    return fcmToken;
+  }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final emailController = TextEditingController();
     final passwordController = TextEditingController();
+
+    _getFCMToken().then((fcmToken) {
+      if (fcmToken != null) {
+        print("Token FCM: $fcmToken");
+      }
+    });
 
     return Scaffold(
       backgroundColor: CustomColors.customSwatchColor,

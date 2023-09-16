@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:prognosticare/src/api/service/forgotPasswordService.dart';
 import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
 import 'package:prognosticare/src/pages/common_widgets/custom_text_field.dart';
-
 import '../src/api/service/changePasswordService.dart';
 
 class ValidationAlertDialog extends StatelessWidget {

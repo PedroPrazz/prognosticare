@@ -79,7 +79,16 @@ class _HomeScreenState extends State<HomeScreen> {
             ListTile(
               leading: const Icon(Icons.emoji_emotions),
               title: const Text('Meus Dependentes'),
-              onTap: () {},
+              onTap: () async {
+                if (pessoa == null) {
+                  pessoa = await GetFindbyIDService.getFindbyID();
+                }
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProfileTab(pessoa: pessoa!),
+                    ));
+              },
             ),
 
             //Minha Agenda

@@ -9,16 +9,16 @@ import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
 import 'package:prognosticare/src/pages/home/home_screen.dart';
 import 'package:prognosticare/src/pages/common_widgets/custom_text_field.dart';
 
-class ProfileTab extends StatefulWidget {
-  ProfileTab({super.key, required this.pessoa});
+class ProfileTabDepentende extends StatefulWidget {
+  ProfileTabDepentende({super.key, required this.pessoa});
 
   Pessoa pessoa;
 
   @override
-  State<ProfileTab> createState() => _ProfileTabState();
+  State<ProfileTabDepentende> createState() => _ProfileTabDepentendeState();
 }
 
-class _ProfileTabState extends State<ProfileTab> {
+class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
   final phoneFormatter = MaskTextInputFormatter(
     mask: '(##)#####-####',
     filter: {'#': RegExp(r'[0-9]')},

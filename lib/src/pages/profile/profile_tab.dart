@@ -37,8 +37,7 @@ class _ProfileTabState extends State<ProfileTab> {
   TextEditingController cpsController = TextEditingController();
   TextEditingController tipoSanguineoController = TextEditingController();
   TextEditingController tipoAlergiaController = TextEditingController();
-  TextEditingController alergiaController = TextEditingController();
-  TextEditingController doadorController = TextEditingController();
+  
 
   @override
   void initState() {
@@ -51,11 +50,11 @@ class _ProfileTabState extends State<ProfileTab> {
     cnsController.text = widget.pessoa.cartaoNacional ?? '';
     cpsController.text = widget.pessoa.cartaoPlanoSaude ?? '';
     tipoSanguineoController.text = widget.pessoa.tipoSanguineo ?? 'SELECIONE';
-    alergiaMarcada = widget.pessoa.alergia ?? false;
     tipoAlergiaController.text = widget.pessoa.tipoAlergia ?? '';
+    alergiaMarcada = widget.pessoa.alergia ?? false;
     doadorMarcado = widget.pessoa.doador ?? false;
-    alergiaController.text = widget.pessoa.alergia.toString();
-    doadorController.text = widget.pessoa.doador.toString();
+
+    
   }
 
   @override
@@ -87,7 +86,6 @@ class _ProfileTabState extends State<ProfileTab> {
         children: [
           //Nome
           CustomTextField(
-            // controller: nomeController,
             readOnly: true,
             initialValue: widget.pessoa.nome,
             icon: Icons.person,
@@ -95,7 +93,6 @@ class _ProfileTabState extends State<ProfileTab> {
           ),
           //CPF
           CustomTextField(
-            // controller: cpfController,
             readOnly: true,
             initialValue: widget.pessoa.cpf,
             icon: Icons.file_copy,
@@ -103,7 +100,6 @@ class _ProfileTabState extends State<ProfileTab> {
           ),
           //Data de Nascimento
           CustomTextField(
-            // controller: dataController,
             readOnly: true,
             initialValue: widget.pessoa.dataNascimento,
             icon: Icons.date_range,
@@ -111,7 +107,6 @@ class _ProfileTabState extends State<ProfileTab> {
           ),
           //Email
           CustomTextField(
-            // controller: emailController,
             readOnly: true,
             initialValue: widget.pessoa.email,
             icon: Icons.email,
@@ -217,8 +212,7 @@ class _ProfileTabState extends State<ProfileTab> {
           Visibility(
             visible: alergiaMarcada,
             child: CustomTextField(
-              // controller: tipoAlergiaController,
-              initialValue: widget.pessoa.tipoAlergia,
+              controller: tipoAlergiaController,
               icon: Icons.medication,
               label: 'Tipo de Alergia',
             ),
@@ -255,12 +249,12 @@ class _ProfileTabState extends State<ProfileTab> {
                   contato: telefoneController.text,
                   dataNascimento: widget.pessoa.dataNascimento,
                   tipoSanguineo: tipoSanguineoController.text,
-                  alergia: alergiaController.text.toLowerCase() == 'true',
-                  doador: doadorController.text.toLowerCase() == 'true',
                   tipoAlergia: tipoAlergiaController.text,
                   tipoResponsavel: widget.pessoa.tipoResponsavel,
-                  cartaoNacional: widget.pessoa.cartaoNacional,
-                  cartaoPlanoSaude: widget.pessoa.cartaoPlanoSaude,
+                  cartaoNacional: cnsController.text,
+                  cartaoPlanoSaude: cpsController.text,
+                  alergia: alergiaMarcada,
+                  doador: doadorMarcado,
                 );
 
                 Pessoa pessoaAtualizado =

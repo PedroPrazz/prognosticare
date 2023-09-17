@@ -4,7 +4,7 @@ import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
 
 
 class ForgotPassword extends StatelessWidget {
-  const ForgotPassword({super.key});
+  ForgotPassword({super.key});
 
   Future<void> emailValidoAlertDialog(BuildContext context) async {
     return showDialog<void>(

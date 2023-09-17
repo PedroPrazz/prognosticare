@@ -88,6 +88,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               if (nome == null || nome.isEmpty) {
                                 return 'Digite seu nome completo!';
                               }
+                              if (nome.length < 3) {
+                                return 'Nome deve ter no mínimo 3 caracteres!';
+                              }
                               return null;
                             },
                           ),
@@ -100,12 +103,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             controller: cpfController,
                             validator: (cpf) {
                               if (cpf == null || cpf.isEmpty) {
-                                return 'Digite seu cpf!';
+                                return 'Digite seu CPF!';
                               }
                               if (GetUtils.isCpf(cpf)) {
-                                print('Cpf Válido');
+                                print('CPF Válido');
                               } else {
-                                return 'Cpf Inválido';
+                                return 'CPF Inválido';
                               }
                               return null;
                             },
@@ -140,7 +143,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               int idade =
                                   DateTime.now().year - dataNascimento.year;
                               if (idade < 18) {
-                                return 'Para realizar o cadastro você deve ser maior de idade!';
+                                return 'Você deve ter mais de 18 anos!';
                               }
                               isOld = true;
                               return null;
@@ -202,43 +205,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 } else {
                                   print('Campos não válidos');
                                 }
-
-                                if (nomeController.text.isEmpty ||
-                                    cpfController.text.isEmpty ||
-                                    emailController.text.isEmpty ||
-                                    dataController.text.isEmpty ||
-                                    passwordController.text.isEmpty ||
-                                    confirmPasswordController.text.isEmpty) {
-                                  return ValidationAlertDialog()
-                                      .camposVaziosAlert(context);
-                                }
-
-                                if (nomeController.text.length < 3) {
-                                  return ValidationAlertDialog()
-                                      .nomeInvalidoAlert(context);
-                                }
-
-                                if (!GetUtils.isCpf(cpfController.text)) {
-                                  return ValidationAlertDialog()
-                                      .cpfInvalidoAlert(context);
-                                }
-
-                                if (!emailController.text.contains("@")) {
-                                  return ValidationAlertDialog()
-                                      .emailInvalidoAlert(context);
-                                }
-
-                                if (passwordController.text.length < 8) {
-                                  return ValidationAlertDialog()
-                                      .senhaInvalidaAlert(context);
-                                }
-
-                                if (passwordController.text !=
-                                    confirmPasswordController.text) {
-                                  return ValidationAlertDialog()
-                                      .senhasNaoCorrespondemAlert(context);
-                                }
-
                                 bool signIn = await RegisterService.getRegister(
                                     nomeController.text,
                                     cpfController.text,
@@ -248,7 +214,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 if (signIn) {
                                   ValidationAlertDialog()
                                       .cadastroSucessoAlert(context);
-                                  await Future.delayed(Duration(seconds: 5));
+                                  await Future.delayed(Duration(seconds: 3));
                                   Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(builder: (c) {
                                     return SignInScreen();

@@ -66,40 +66,21 @@ class ChangePasswordDialog extends StatelessWidget {
                           ),
                         ),
                         onPressed: () async {
-                          if (newPasswordController.text.isEmpty ||
-                              confirmNewPasswordController.text.isEmpty) {
-                            return ValidationAlertDialog()
-                                .camposVaziosAlert(context);
-                          }
-
-                          if (newPasswordController.text.length < 8) {
-                            return ValidationAlertDialog()
-                                .senhaInvalidaAlert(context);
-                          }
-
-                          if (newPasswordController.text !=
-                              confirmNewPasswordController.text) {
-                            return ValidationAlertDialog()
-                                .senhasNaoCorrespondemAlert(context);
-                          }
-
                           bool changePassword =
                               await ChangePasswordService.getChangePassword(
                                   newPasswordController.text);
                           if (changePassword) {
-                            ValidationAlertDialog().senhaAlteradaAlert(context);
-                            await Future.delayed(Duration(seconds: 5));
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Senha alterada com sucesso!'),
+                                duration: Duration(seconds: 3),
+                                backgroundColor: Colors.green,
+                              ),
+                            );
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => HomeScreen()));
-                          } else {
-                            ValidationAlertDialog()
-                                .naoAlterouSenhaAlert(context);
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SignInScreen()));
                           }
                         },
                         child: const Text(

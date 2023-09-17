@@ -5,6 +5,7 @@ import 'package:prognosticare/components/changePassword.dart';
 import 'package:prognosticare/components/forgotPassword.dart';
 import 'package:prognosticare/components/validation.dart';
 import 'package:prognosticare/src/api/service/loginService.dart';
+import 'package:prognosticare/src/auth/pages-antigas/forgotPassword.dart';
 import 'package:prognosticare/src/pages/common_widgets/custom_text_field.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/pages_routes/app_pages.dart';
@@ -100,11 +101,12 @@ class SignInScreen extends StatelessWidget {
                         icon: Icons.email,
                         label: 'Email',
                         validator: (email) {
-                          if (email == null || email.isEmpty)
+                          if (email == null || email.isEmpty) {
                             return 'Digite seu email!';
-
-                          if (!email.isEmail) return 'Digite um email válido!';
-
+                          }
+                          if (!email.isEmail) {
+                            return 'Digite um email válido!';
+                          }
                           return null;
                         },
                       ),
@@ -120,7 +122,7 @@ class SignInScreen extends StatelessWidget {
                             return 'Digite sua senha!';
                           }
                           if (senha.length < 8) {
-                            return 'Digite uma senha com pelo menos 7 caracteres.';
+                            return 'Senha deve conter no mínimo 8 caracteres!';
                           }
                           return null;
                         },
@@ -141,23 +143,6 @@ class SignInScreen extends StatelessWidget {
                             } else {
                               print('Campos não válidos');
                             }
-
-                            if (emailController.text.isEmpty ||
-                                passwordController.text.isEmpty) {
-                              return ValidationAlertDialog()
-                                  .camposVaziosAlert(context);
-                            }
-
-                            if (!emailController.text.contains("@")) {
-                              return ValidationAlertDialog()
-                                  .emailInvalidoAlert(context);
-                            }
-
-                            if (passwordController.text.length < 8) {
-                              return ValidationAlertDialog()
-                                  .senhaInvalidaAlert(context);
-                            }
-
                             bool loggedIn = await LoginService.getLogin(
                                 emailController.text, passwordController.text);
                             if (loggedIn) {
@@ -167,8 +152,14 @@ class SignInScreen extends StatelessWidget {
                                 Get.offNamed(PagesRoutes.homeRoute);
                               }
                             } else {
-                              return ValidationAlertDialog()
-                                  .loginSenhaInvalidoAlert(context);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                    'Email e/ou senha incorretos!',
+                                  ),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
                             }
                           },
                           child: const Text(

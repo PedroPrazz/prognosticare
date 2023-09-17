@@ -41,13 +41,6 @@ class ForgotPasswordDialog extends StatelessWidget {
                       controller: emailController,
                       icon: Icons.email,
                       label: 'E-mail',
-                      validator: (email) {
-                        if (email == null || email.isEmpty) {
-                          return 'Digite o email!';
-                        }
-                        if (!email.isEmail) return 'Digite um email válido!';
-                        return null;
-                      },
                     ),
                     SizedBox(
                       height: 45,
@@ -58,28 +51,22 @@ class ForgotPasswordDialog extends StatelessWidget {
                           ),
                         ),
                         onPressed: () async {
-                          if (emailController.text.isEmpty) {
-                            return ValidationAlertDialog()
-                                .camposVaziosAlert(context);
-                          }
-                          if (!emailController.text.contains("@")) {
-                            return ValidationAlertDialog()
-                                .emailInvalidoAlert(context);
-                          }
                           bool forgotPassowrd =
                               await ForgotPasswordService.getNewPassword(
                                   emailController.text);
                           if (forgotPassowrd) {
-                            ValidationAlertDialog()
-                                .recuperarSenhaAlert(context);
-                            await Future.delayed(Duration(seconds: 5));
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                    'Email de recuperação de senha enviado!'),
+                                duration: Duration(seconds: 3),
+                                backgroundColor: Colors.green,
+                              ),
+                            );
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => SignInScreen()));
-                          } else {
-                            return ValidationAlertDialog()
-                                .emailInexistenteAlert(context);
                           }
                         },
                         child: const Text(

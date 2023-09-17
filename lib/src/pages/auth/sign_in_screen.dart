@@ -6,6 +6,7 @@ import 'package:prognosticare/components/changePassword.dart';
 import 'package:prognosticare/components/forgotPassword.dart';
 import 'package:prognosticare/components/validation.dart';
 import 'package:prognosticare/src/api/service/loginService.dart';
+import 'package:prognosticare/src/pages/auth/forgotPassword.dart';
 import 'package:prognosticare/src/pages/common_widgets/custom_text_field.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/pages_routes/app_pages.dart';
@@ -190,7 +191,8 @@ class SignInScreen extends StatelessWidget {
                         alignment: Alignment.centerRight,
                         child: TextButton(
                           onPressed: () {
-                            ForgotPasswordDialog().forgotPassword(context);
+                            Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => ForgotPassword()));
                           },
                           child: Text(
                             'Esqueceu a senha?',

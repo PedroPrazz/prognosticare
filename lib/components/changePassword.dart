@@ -83,10 +83,11 @@ class ChangePasswordDialog extends StatelessWidget {
                                 ),
                               );
                              
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => SignInScreen()));
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SignInScreen()),
+                                (route) => false);
                             }
 
                             if(changePassword == false){

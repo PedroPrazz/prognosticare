@@ -36,20 +36,11 @@ class ForgotPasswordDialog extends StatelessWidget {
                         ),
                       ),
                     ),
-
                     CustomTextField(
                       controller: emailController,
                       icon: Icons.email,
                       label: 'E-mail',
-                      validator: (email) {
-                        if (email == null || email.isEmpty) {
-                          return 'Digite o email!';
-                        }
-                        if (!email.isEmail) return 'Digite um email válido!';
-                        return null;
-                      },
                     ),
-
                     SizedBox(
                       height: 45,
                       child: ElevatedButton(
@@ -59,64 +50,23 @@ class ForgotPasswordDialog extends StatelessWidget {
                           ),
                         ),
                         onPressed: () async {
-                          bool sendEmail =
+                          bool forgotPassowrd =
                               await ForgotPasswordService.getNewPassword(
                                   emailController.text);
-                          if (sendEmail) {
+                          if (forgotPassowrd) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                    'Email de recuperação de senha enviado!'),
+                                duration: Duration(seconds: 3),
+                                backgroundColor: Colors.green,
+                              ),
+                            );
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => SignInScreen()));
                           }
-                          // if (_emailController.text != '') {
-                          //   bool forgotPassowrd =
-                          //       await ForgotPasswordService.getNewPassword(
-                          //           _emailController.text);
-                          //   if (forgotPassowrd) {
-                          //     ScaffoldMessenger.of(context).showSnackBar(
-                          //       SnackBar(
-                          //         content: Text('E-mail Enviado com Sucesso!'),
-                          //         duration: Duration(seconds: 2),
-                          //         backgroundColor:
-                          //             Color.fromARGB(222, 51, 212, 10),
-
-                          //       ),
-                          //     );
-
-                          //     Navigator.push(
-                          //         context,
-                          //         MaterialPageRoute(
-                          //             builder: (context) => SignInScreen()));
-                          //   }
-                          //   if(forgotPassowrd == false) {
-                          //   ScaffoldMessenger.of(context).showSnackBar(
-                          //     SnackBar(
-                          //       content: Text('Tente novamente mais tarde!!'),
-                          //       backgroundColor:
-                          //           Color.fromARGB(222, 240, 16, 16),
-                          //       duration: Duration(seconds: 2),
-                          //     ),
-                          //   );
-                          //   print("erro ao trocar senha");
-                          // }
-
-                          // }
-                          // if (_emailController.text.isEmpty) {
-                          // ScaffoldMessenger.of(context).showSnackBar(
-                          //       SnackBar(
-                          //         content: Text('Digite um Email!'),
-                          //         duration: Duration(seconds: 2),
-                          //         backgroundColor:
-                          //             Color.fromARGB(222, 222, 222, 2),
-                          //       ),
-                          //     );
-                          //   return;
-                          // }
-
-                          // if (!_emailController.text.contains("@")) {
-                          //   ValidationAlertDialog().emailInvalidoAlert(context);
-                          //   return;
-                          // }
                         },
                         child: const Text(
                           'Enviar',

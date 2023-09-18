@@ -1,11 +1,10 @@
-// imports
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:prognosticare/components/changePassword.dart';
 import 'package:prognosticare/components/validation.dart';
 import 'package:prognosticare/src/api/service/loginService.dart';
-import 'package:prognosticare/src/pages/auth/forgotPassword.dart';
+import 'package:prognosticare/src/auth/pages-antigas/forgotPassword.dart';
 import 'package:prognosticare/src/pages/common_widgets/custom_text_field.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/pages_routes/app_pages.dart';
@@ -101,11 +100,12 @@ class SignInScreen extends StatelessWidget {
                         icon: Icons.email,
                         label: 'Email',
                         validator: (email) {
-                          if (email == null || email.isEmpty)
+                          if (email == null || email.isEmpty) {
                             return 'Digite seu email!';
-
-                          if (!email.isEmail) return 'Digite um email válido!';
-
+                          }
+                          if (!email.isEmail) {
+                            return 'Digite um email válido!';
+                          }
                           return null;
                         },
                       ),
@@ -121,7 +121,7 @@ class SignInScreen extends StatelessWidget {
                             return 'Digite sua senha!';
                           }
                           if (senha.length < 8) {
-                            return 'Digite uma senha com pelo menos 7 caracteres.';
+                            return 'Senha deve conter no mínimo 8 caracteres!';
                           }
                           return null;
                         },
@@ -137,22 +137,11 @@ class SignInScreen extends StatelessWidget {
                             ),
                           ),
                           onPressed: () async {
-                            if (emailController.text.isEmpty ||
-                                passwordController.text.isEmpty) {
-                              ValidationAlertDialog().camposVaziosAlert(context);
-                              return;
+                            if (_formKey.currentState!.validate()) {
+                              print('Todos os campos estão válidos');
+                            } else {
+                              print('Campos não válidos');
                             }
-
-                            if (!emailController.text.contains("@")) {
-                              ValidationAlertDialog().emailInvalidoAlert(context);
-                              return;
-                            }
-
-                            if (passwordController.text.length < 8) {
-                              ValidationAlertDialog().senhaInvalidaAlert(context);
-                              return;
-                            }
-
                             bool loggedIn = await LoginService.getLogin(
                                 emailController.text, passwordController.text);
                             if (loggedIn) {
@@ -162,16 +151,14 @@ class SignInScreen extends StatelessWidget {
                                 Get.offNamed(PagesRoutes.homeRoute);
                               }
                             } else {
-                              ValidationAlertDialog().loginSenhaInvalidoAlert(context);
-                              print(
-                                  'Seu email e senha não correspondem. Tente novamente!');
-                              return;
-                            }
-
-                            if (_formKey.currentState!.validate()) {
-                              print('Todos os campos estão válidos');
-                            } else {
-                              print('Campos não válidos');
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                    'Email e/ou senha incorretos!',
+                                  ),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
                             }
                           },
                           child: const Text(
@@ -189,8 +176,7 @@ class SignInScreen extends StatelessWidget {
                         alignment: Alignment.centerRight,
                         child: TextButton(
                           onPressed: () {
-                            Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => ForgotPassword()));
+                            ForgotPasswordDialog().forgotPassword(context);
                           },
                           child: Text(
                             'Esqueceu a senha?',
@@ -214,7 +200,7 @@ class SignInScreen extends StatelessWidget {
                             ),
                             const Padding(
                               padding: EdgeInsets.symmetric(horizontal: 15),
-                              child: Text('Ou'),
+                              child: Text('OU'),
                             ),
                             Expanded(
                               child: Divider(

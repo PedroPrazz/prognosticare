@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:prognosticare/src/pages/auth/schedule_screen.dart';
+import 'package:prognosticare/src/pages/auth/to_accompany.dart';
 
 class ProntuarioDialog extends StatelessWidget {
   const ProntuarioDialog({Key? key});
@@ -68,10 +69,10 @@ class ProntuarioDialog extends StatelessWidget {
                           ),
                         ),
                         onPressed: () {
-                         // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => Acompanhamentos()));
+                         Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ToAccompanyScreen()));
                         },
                         child: const Text(
                           'Acompanhamentos',

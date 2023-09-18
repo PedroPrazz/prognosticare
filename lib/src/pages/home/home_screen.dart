@@ -1,25 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:prognosticare/components/meuProntuario.dart';
+import 'package:prognosticare/src/api/service/changePasswordService.dart';
 import 'package:prognosticare/src/api/service/getFindbyIDService.dart';
-
+// import 'package:prognosticare/src/pages/auth/agendar.dart';
 import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
 import 'package:prognosticare/src/models/pessoa.dart';
 import 'package:prognosticare/src/pages/common_widgets/custom_text_field.dart';
 import 'package:prognosticare/src/pages/profile/profile_tab.dart';
+import 'package:prognosticare/src/pages/profile/profile_tab_dependente.dart';
 
 final storage = FlutterSecureStorage();
+
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
-  
 }
- 
+
 class _HomeScreenState extends State<HomeScreen> {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
+  // final AgendamentoProvider _agendamentoProvider = AgendamentoProvider();
   Pessoa? pessoa;
   String? nome;
 
@@ -28,6 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     _loadNome();
   }
+
   Future<void> _loadNome() async {
     nome = await storage.read(key: 'nome');
     setState(() {}); // Atualiza o estado para refletir o nome carregado.
@@ -35,7 +39,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       // Menu Lateral
       drawer: Drawer(
@@ -46,7 +49,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 backgroundColor: Colors.white,
                 child: Text('TT'),
               ),
-              accountName: Text('Bem-vindo $nome'),
+              accountName: Text(
+                'Bem-vindo $nome',
+                style: TextStyle(color: Colors.white),
+              ),
               accountEmail: Text(''),
             ),
 
@@ -79,7 +85,16 @@ class _HomeScreenState extends State<HomeScreen> {
             ListTile(
               leading: const Icon(Icons.emoji_emotions),
               title: const Text('Meus Dependentes'),
-              onTap: () {},
+              onTap: () async {
+                if (pessoa == null) {
+                  pessoa = await GetFindbyIDService.getFindbyID();
+                }
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProfileTabDepentende(),
+                    ));
+              },
             ),
 
             //Minha Agenda
@@ -134,9 +149,16 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: true,
       ),
       body: Container(
-        alignment: Alignment.center,
-        child: Text('Você não possuí eventos!', style: TextStyle(fontSize: 20)),
-      ),
+          alignment: Alignment.center,
+          child: ListView(
+            children: [
+              // Text(_agendamentoProvider.agendamento?.especialista ?? ''),
+              // Text(_agendamentoProvider.agendamento?.descricao ?? ''),
+              // Text(_agendamentoProvider.agendamento?.dataHorario ?? ''),
+              // Text(_agendamentoProvider.agendamento?.local ?? ''),
+              // Text(_agendamentoProvider.agendamento?.observacoes ?? ''),
+            ],
+          )),
       //
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -193,17 +215,17 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
 
-      
-
                     // Nova senha
-                    const CustomTextField(
+                    CustomTextField(
                       isSecret: true,
+                      controller: passwordController,
                       icon: Icons.lock_outlined,
                       label: 'Nova Senha',
                     ),
 
                     // Confirmar senha
-                    const CustomTextField(
+                    CustomTextField(
+                      controller: confirmPasswordController,
                       isSecret: true,
                       icon: Icons.lock_outlined,
                       label: 'Confirmar nova Senha',
@@ -218,13 +240,21 @@ class _HomeScreenState extends State<HomeScreen> {
                             borderRadius: BorderRadius.circular(20),
                           ),
                         ),
-                        onPressed: () {
-
+                        onPressed: () async {
+                          bool changePassword =
+                              await ChangePasswordService.getChangePassword(
+                                  passwordController.text);
+                          if (changePassword) {
+                            Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SignInScreen()),
+                                (route) => false);
+                          }
                         },
                         child: const Text(
                           'Alterar',
                           style: TextStyle(color: Colors.white),
-
                         ),
                       ),
                     ),

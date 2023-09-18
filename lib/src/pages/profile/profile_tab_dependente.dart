@@ -1,68 +1,56 @@
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:prognosticare/src/api/service/personUpdateService.dart';
+import 'package:prognosticare/src/api/service/registerServiceDependents.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
-import 'package:prognosticare/src/models/pessoa.dart';
 import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
 import 'package:prognosticare/src/pages/home/home_screen.dart';
 import 'package:prognosticare/src/pages/common_widgets/custom_text_field.dart';
 
-class ProfileTab extends StatefulWidget {
-  ProfileTab({super.key, required this.pessoa});
-
-  Pessoa pessoa;
+class ProfileTabDepentende extends StatefulWidget {
+  ProfileTabDepentende({super.key});
 
   @override
-  State<ProfileTab> createState() => _ProfileTabState();
+  State<ProfileTabDepentende> createState() => _ProfileTabDepentendeState();
 }
-
-class _ProfileTabState extends State<ProfileTab> {
-  final phoneFormatter = MaskTextInputFormatter(
-    mask: '(##)#####-####',
-    filter: {'#': RegExp(r'[0-9]')},
-  );
+class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
 
   bool doadorMarcado = false;
   bool alergiaMarcada = false;
 
-  TextEditingController Controller = TextEditingController();
   TextEditingController nomeController = TextEditingController();
   TextEditingController cpfController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
   TextEditingController dataController = TextEditingController();
-  TextEditingController telefoneController = TextEditingController();
   TextEditingController cnsController = TextEditingController();
   TextEditingController cpsController = TextEditingController();
   TextEditingController tipoSanguineoController = TextEditingController();
   TextEditingController tipoAlergiaController = TextEditingController();
-  
+  TextEditingController alergiaController = TextEditingController();
 
-  @override
-  void initState() {
-    super.initState();
-    nomeController.text = widget.pessoa.nome;
-    cpfController.text = widget.pessoa.cpf;
-    emailController.text = widget.pessoa.email;
-    dataController.text = widget.pessoa.dataNascimento;
-    telefoneController.text = widget.pessoa.contato ?? '';
-    cnsController.text = widget.pessoa.cartaoNacional ?? '';
-    cpsController.text = widget.pessoa.cartaoPlanoSaude ?? '';
-    tipoSanguineoController.text = widget.pessoa.tipoSanguineo ?? 'SELECIONE';
-    tipoAlergiaController.text = widget.pessoa.tipoAlergia ?? '';
-    alergiaMarcada = widget.pessoa.alergia ?? false;
-    doadorMarcado = widget.pessoa.doador ?? false;
-
-    
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   nomeController.text = widget.pessoa.nome;
+  //   cpfController.text = widget.pessoa.cpf;
+  //   emailController.text = widget.pessoa.email;
+  //   dataController.text = widget.pessoa.dataNascimento;
+  //   telefoneController.text = widget.pessoa.contato ?? '';
+  //   cnsController.text = widget.pessoa.cartaoNacional ?? '';
+  //   cpsController.text = widget.pessoa.cartaoPlanoSaude ?? '';
+  //   tipoSanguineoController.text = widget.pessoa.tipoSanguineo ?? 'SELECIONE';
+  //   alergiaMarcada = widget.pessoa.alergia ?? false;
+  //   tipoAlergiaController.text = widget.pessoa.tipoAlergia ?? '';
+  //   doadorMarcado = widget.pessoa.doador ?? false;
+  //   alergiaController.text = widget.pessoa.alergia.toString();
+  //   doadorController.text = widget.pessoa.doador.toString();
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Perfil do Usuário',
+          'Perfil do Dependente',
         ),
         foregroundColor: Colors.white,
         actions: [
@@ -86,38 +74,21 @@ class _ProfileTabState extends State<ProfileTab> {
         children: [
           //Nome
           CustomTextField(
-            readOnly: true,
-            initialValue: widget.pessoa.nome,
+            controller: nomeController,
             icon: Icons.person,
             label: 'Nome',
           ),
           //CPF
           CustomTextField(
-            readOnly: true,
-            initialValue: widget.pessoa.cpf,
+            controller: cpfController,
             icon: Icons.file_copy,
             label: 'CPF',
           ),
           //Data de Nascimento
           CustomTextField(
-            readOnly: true,
-            initialValue: widget.pessoa.dataNascimento,
+            controller: dataController,
             icon: Icons.date_range,
             label: 'Data de Nascimento',
-          ),
-          //Email
-          CustomTextField(
-            readOnly: true,
-            initialValue: widget.pessoa.email,
-            icon: Icons.email,
-            label: 'Email',
-          ),
-          //Telefone
-          CustomTextField(
-            controller: telefoneController,
-            icon: Icons.phone,
-            label: 'Telefone',
-            inputFormatters: [phoneFormatter],
           ),
           //CNS
           CustomTextField(
@@ -204,7 +175,7 @@ class _ProfileTabState extends State<ProfileTab> {
             onChanged: (bool? value) {
               setState(
                 () {
-                 alergiaMarcada = value ?? false;
+                  alergiaMarcada = value ?? false;
                 },
               );
             },
@@ -217,20 +188,6 @@ class _ProfileTabState extends State<ProfileTab> {
               label: 'Tipo de Alergia',
             ),
           ),
-          //É doador de orgãos
-          CheckboxListTile(
-            title: Text('É doador de Orgãos?'),
-            controlAffinity: ListTileControlAffinity.leading,
-            checkColor: CustomColors.customSwatchColor,
-            value: doadorMarcado,
-            onChanged: (bool? value) {
-              setState(
-                () {
-                  doadorMarcado = value ?? false;
-                },
-              );
-            },
-          ),
           // Botão de Cadastrar
           SizedBox(
             height: 50,
@@ -241,45 +198,20 @@ class _ProfileTabState extends State<ProfileTab> {
                 ),
               ),
               onPressed: () async {
-                Pessoa pessoaAtualizada = widget.pessoa.copyWith(
-                  pessoaId: widget.pessoa.pessoaId,
-                  nome: widget.pessoa.nome,
-                  cpf: widget.pessoa.cpf,
-                  email: widget.pessoa.email,
-                  contato: telefoneController.text,
-                  dataNascimento: widget.pessoa.dataNascimento,
-                  tipoSanguineo: tipoSanguineoController.text,
-                  tipoAlergia: tipoAlergiaController.text,
-                  tipoResponsavel: widget.pessoa.tipoResponsavel,
-                  cartaoNacional: cnsController.text,
-                  cartaoPlanoSaude: cpsController.text,
-                  alergia: alergiaMarcada,
-                  doador: doadorMarcado,
-                );
-
-                Pessoa pessoaAtualizado =
-                    await PersonUpdateService.getPerson(pessoaAtualizada);
-                // ignore: unnecessary_null_comparison
-                if (pessoaAtualizado != null) {
-                  setState(() {
-                    widget.pessoa = pessoaAtualizado;
-                  });
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => HomeScreen()));
-                } else {
-                  print("id: ${pessoaAtualizada.pessoaId}");
-                  print("Nome: ${pessoaAtualizada.nome}");
-                  print("CPF: ${pessoaAtualizada.cpf}");
-                  print("Email: ${pessoaAtualizada.email}");
-                  print("Contato: ${pessoaAtualizada.contato}");
-                  print("Data de Nascimento: ${pessoaAtualizada.dataNascimento}");
-                  print("tipoSanguineo: ${pessoaAtualizada.tipoSanguineo}");
-                  print("alergia: ${pessoaAtualizada.alergia}");
-                  print('doador:${pessoaAtualizada.doador}');
-                  print("responsavel: ${pessoaAtualizada.tipoResponsavel}");
-                  print("tipoAlergia: ${pessoaAtualizada.tipoAlergia}");
-                  print("cartaoNacional: ${pessoaAtualizada.cartaoNacional}");
-                  print("cartaoPlanoSaude: ${pessoaAtualizada.cartaoPlanoSaude}");
+                bool saveDependent = await RegisterServiceDepents.getRegisterD(
+                    nomeController.text,
+                    cpfController.text,
+                    dataController.text,
+                    tipoSanguineoController.text,
+                    alergiaMarcada,
+                    tipoAlergiaController.text,
+                    cnsController.text,
+                    cpsController.text);
+                if (saveDependent) {
+                  Navigator.of(context)
+                      .pushReplacement(MaterialPageRoute(builder: (c) {
+                    return HomeScreen();
+                  }));
                 }
               },
               child: const Text(

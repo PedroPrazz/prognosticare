@@ -190,7 +190,7 @@ class ChangePassword extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color.fromRGBO(255, 143, 171, 1),
                     alignment: Alignment.center,
-                  ),
+                  ),               
                   child: Container(
                     width: 465,
                     height: 39,

@@ -77,10 +77,11 @@ class ChangePasswordDialog extends StatelessWidget {
                                 backgroundColor: Colors.green,
                               ),
                             );
-                            Navigator.push(
+                            Navigator.pushAndRemoveUntil(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => HomeScreen()));
+                                    builder: (context) => SignInScreen()),
+                                (route) => false);
                           }
                         },
                         child: const Text(

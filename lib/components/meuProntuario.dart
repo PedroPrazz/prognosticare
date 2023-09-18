@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_utils/get_utils.dart';
-import 'package:prognosticare/components/validation.dart';
-import 'package:prognosticare/src/api/service/forgotPasswordService.dart';
-import 'package:prognosticare/src/pages/auth/agendamentos.dart';
-import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
-import 'package:prognosticare/src/pages/common_widgets/custom_text_field.dart';
+import 'package:prognosticare/src/pages/auth/schedule_screen.dart';
 
 class ProntuarioDialog extends StatelessWidget {
   const ProntuarioDialog({Key? key});
@@ -51,7 +46,7 @@ class ProntuarioDialog extends StatelessWidget {
                          Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => Agendamentos()));
+                              builder: (context) => ScheduleScreen()));
                         },
                         child: const Text(
                           'Agendamentos',

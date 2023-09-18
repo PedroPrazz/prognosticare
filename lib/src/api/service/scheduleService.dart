@@ -1,14 +1,12 @@
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:prognosticare/src/api/service/getFindbyIDService.dart';
 import 'package:prognosticare/src/config/uri.dart';
-import 'package:prognosticare/src/models/pessoa.dart';
 
 final storage = FlutterSecureStorage();
 
 class ScheduleService {
-  static Future<bool> getSchedule(String data, String local, String descricao, String observacoes, String especialista, String tipoExame, String intervaloData) async {
+  static Future<bool> getSchedule(String data, String local, String descricao, String observacoes, String especialista, String tipoExame) async {
   String? idPessoa = await storage.read(key: 'user_id');
 
     final url = Uri.parse(UriServer.url.toString()+'/to-scheduling/save/$idPessoa');
@@ -21,21 +19,18 @@ class ScheduleService {
           'local': local,
           'descricao': descricao,
           'observacao': observacoes,
-          'intervaloData': intervaloData,
           'especialista': especialista,
           'tipoExame': tipoExame,
         }),
         headers: {'Content-Type': 'application/json'},
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         final responseBody = response.body;
         final dados = json.decode(responseBody);
 
         await storage.write(key: 'token', value: dados['token']);
         await storage.write(key: 'user_id', value: dados['pessoaEntity']);
-
-        Pessoa pessoa = await GetFindbyIDService.getFindbyID();
 
         return true;
       } else {

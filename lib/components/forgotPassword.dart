@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_utils/get_utils.dart';
-import 'package:prognosticare/components/validation.dart';
 import 'package:prognosticare/src/api/service/forgotPasswordService.dart';
 import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
 import 'package:prognosticare/src/pages/common_widgets/custom_text_field.dart';

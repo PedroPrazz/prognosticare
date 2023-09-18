@@ -3,18 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:prognosticare/src/api/service/registerServiceDependents.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
+import 'package:prognosticare/src/models/dependente.dart';
 import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
 import 'package:prognosticare/src/pages/home/home_screen.dart';
 import 'package:prognosticare/src/pages/common_widgets/custom_text_field.dart';
 
-class ProfileTabDepentende extends StatefulWidget {
-  ProfileTabDepentende({super.key});
+class ProfileTabDependente extends StatefulWidget {
+  ProfileTabDependente({super.key, required this.dependente});
+
+  Dependente dependente;
 
   @override
-  State<ProfileTabDepentende> createState() => _ProfileTabDepentendeState();
+  State<ProfileTabDependente> createState() => _ProfileTabDependenteState();
 }
-class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
 
+class _ProfileTabDependenteState extends State<ProfileTabDependente> {
   bool doadorMarcado = false;
   bool alergiaMarcada = false;
 
@@ -27,23 +30,22 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
   TextEditingController tipoAlergiaController = TextEditingController();
   TextEditingController alergiaController = TextEditingController();
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   nomeController.text = widget.pessoa.nome;
-  //   cpfController.text = widget.pessoa.cpf;
-  //   emailController.text = widget.pessoa.email;
-  //   dataController.text = widget.pessoa.dataNascimento;
-  //   telefoneController.text = widget.pessoa.contato ?? '';
-  //   cnsController.text = widget.pessoa.cartaoNacional ?? '';
-  //   cpsController.text = widget.pessoa.cartaoPlanoSaude ?? '';
-  //   tipoSanguineoController.text = widget.pessoa.tipoSanguineo ?? 'SELECIONE';
-  //   alergiaMarcada = widget.pessoa.alergia ?? false;
-  //   tipoAlergiaController.text = widget.pessoa.tipoAlergia ?? '';
-  //   doadorMarcado = widget.pessoa.doador ?? false;
-  //   alergiaController.text = widget.pessoa.alergia.toString();
-  //   doadorController.text = widget.pessoa.doador.toString();
-  // }
+  @override
+  void initState() {
+    super.initState();
+    nomeController.text = widget.dependente.nome;
+    cpfController.text = widget.dependente.cpf;
+    dataController.text = widget.dependente.dataNascimento;
+    cnsController.text = widget.dependente.cartaoNacional ?? '';
+    cpsController.text = widget.dependente.cartaoPlanoSaude ?? '';
+    tipoSanguineoController.text =
+        widget.dependente.tipoSanguineo ?? 'SELECIONE';
+    alergiaMarcada = widget.dependente.alergia ?? false;
+    tipoAlergiaController.text = widget.dependente.tipoAlergia ?? '';
+    doadorMarcado = widget.dependente.doador ?? false;
+    alergiaController.text = widget.dependente.alergia.toString();
+    // doadorController.text = widget.dependente.doador.toString();
+  }
 
   @override
   Widget build(BuildContext context) {

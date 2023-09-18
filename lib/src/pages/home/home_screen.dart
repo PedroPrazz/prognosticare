@@ -3,6 +3,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:prognosticare/components/meuProntuario.dart';
 import 'package:prognosticare/src/api/service/changePasswordService.dart';
 import 'package:prognosticare/src/api/service/getFindbyIDService.dart';
+import 'package:prognosticare/src/models/dependente.dart';
+import 'package:prognosticare/src/pages/auth/meusDependentes.dart';
 // import 'package:prognosticare/src/pages/auth/agendar.dart';
 import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
 import 'package:prognosticare/src/models/pessoa.dart';
@@ -25,6 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
   // final AgendamentoProvider _agendamentoProvider = AgendamentoProvider();
   Pessoa? pessoa;
   String? nome;
+  Dependente? dependente;
 
   @override
   void initState() {
@@ -86,14 +89,12 @@ class _HomeScreenState extends State<HomeScreen> {
               leading: const Icon(Icons.emoji_emotions),
               title: const Text('Meus Dependentes'),
               onTap: () async {
-                if (pessoa == null) {
-                  pessoa = await GetFindbyIDService.getFindbyID();
-                }
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ProfileTabDepentende(),
-                    ));
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MeusDependentes(),
+                  ),
+                );
               },
             ),
 

@@ -2,6 +2,7 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:prognosticare/components/changePassword.dart';
+import 'package:prognosticare/components/forgotPassword.dart';
 import 'package:prognosticare/components/validation.dart';
 import 'package:prognosticare/src/api/service/loginService.dart';
 import 'package:prognosticare/src/auth/pages-antigas/forgotPassword.dart';

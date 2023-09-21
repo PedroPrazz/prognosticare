@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:prognosticare/src/api/service/scheduleService.dart';
-import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/pages/auth/agendamentos.dart';
 import 'package:prognosticare/src/pages/common_widgets/custom_text_field.dart';
 

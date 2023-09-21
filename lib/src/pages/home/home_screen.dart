@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:prognosticare/components/changePassword.dart';
 import 'package:prognosticare/components/meuProntuario.dart';
-import 'package:prognosticare/src/api/service/changePasswordService.dart';
 import 'package:prognosticare/src/api/service/getFindbyIDService.dart';
-import 'package:prognosticare/src/pages/auth/agendar.dart';
+import 'package:prognosticare/src/pages/auth/schedule_list_screen.dart';
 import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
 import 'package:prognosticare/src/models/pessoa.dart';
 import 'package:prognosticare/src/pages/profile/profile_tab.dart';
@@ -65,10 +64,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   pessoa = await GetFindbyIDService.getFindbyID();
                 }
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ProfileTab(pessoa: pessoa!),
-                    ));
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProfileTab(pessoa: pessoa!),
+                  ),
+                );
               },
             ),
 
@@ -90,10 +90,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   pessoa = await GetFindbyIDService.getFindbyID();
                 }
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ProfileTabDepentende(),
-                    ));
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProfileTabDepentende(),
+                  ),
+                );
               },
             ),
 
@@ -101,7 +102,14 @@ class _HomeScreenState extends State<HomeScreen> {
             ListTile(
               leading: const Icon(Icons.auto_stories),
               title: const Text('Minha Agenda'),
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ScheduleListScreen(),
+                  ),
+                );
+              },
             ),
 
             //Alterar Senha
@@ -148,18 +156,6 @@ class _HomeScreenState extends State<HomeScreen> {
         foregroundColor: Colors.white,
         centerTitle: true,
       ),
-      body: Container(
-          alignment: Alignment.center,
-          child: ListView(
-            children: [
-              // Text(_agendamentoProvider.agendamento?.especialista ?? ''),
-              // Text(_agendamentoProvider.agendamento?.descricao ?? ''),
-              // Text(_agendamentoProvider.agendamento?.dataHorario ?? ''),
-              // Text(_agendamentoProvider.agendamento?.local ?? ''),
-              // Text(_agendamentoProvider.agendamento?.observacoes ?? ''),
-            ],
-          )),
-      //
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           PopupMenuButton(

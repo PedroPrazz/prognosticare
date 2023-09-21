@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:prognosticare/components/validation.dart';
 import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
 import 'package:prognosticare/src/pages/common_widgets/custom_text_field.dart';
-import 'package:prognosticare/src/pages/home/home_screen.dart';
 import '../src/api/service/changePasswordService.dart';
 
 class ChangePasswordDialog extends StatelessWidget {

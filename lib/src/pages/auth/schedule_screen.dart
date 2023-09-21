@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:prognosticare/src/api/service/scheduleService.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
-import 'package:prognosticare/src/pages/auth/agendamentos.dart';
+import 'package:prognosticare/src/pages/auth/schedule_list_screen.dart';
 import 'package:prognosticare/src/pages/common_widgets/custom_text_field.dart';
 
 class ScheduleScreen extends StatefulWidget {
@@ -178,7 +178,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 if (schedule) {
                   Navigator.of(context)
                       .pushReplacement(MaterialPageRoute(builder: (c) {
-                    return Agendamentos();
+                    return ScheduleListScreen();
                   }));
                 }
               },

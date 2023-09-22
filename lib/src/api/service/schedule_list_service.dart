@@ -7,8 +7,9 @@ import 'package:prognosticare/src/models/schedule_model.dart';
 final storage = FlutterSecureStorage();
 
 class ScheduleListService {
-  static Future<Schedule> getScheduleList() async {
+  static Future<List<Schedule>> getScheduleList() async {
     String? idPessoa = await storage.read(key: 'user_id');
+    String? token = await storage.read(key: 'token');
 
     final url =
         Uri.parse(UriServer.url.toString() + '/to-scheduling/list/$idPessoa');
@@ -18,15 +19,18 @@ class ScheduleListService {
         url,
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
         },
       );
 
       if (response.statusCode == 200) {
-        Map<String, dynamic> jsonData = json.decode(response.body);
+        List<dynamic> jsonDataList = json.decode(response.body);
 
-        Schedule schedule = Schedule.fromJson(jsonData);
+        List<Schedule> schedules = jsonDataList.map((jsonData) {
+          return Schedule.fromJson(jsonData);
+        }).toList();
 
-        return schedule;
+        return schedules;
       } else {
         print('Response Status Code: ${response.statusCode}');
         throw Exception('Exeption no método find');

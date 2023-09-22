@@ -24,6 +24,7 @@ class _ListDependentsState extends State<ListDependents> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Lista de Dependentes'),
+        foregroundColor: Colors.white,
       ),
       body: FutureBuilder<List<Dependente>>(
         future: dependentsFuture,
@@ -42,6 +43,18 @@ class _ListDependentsState extends State<ListDependents> {
                 final dependente = dependentes[index];
                 return ListTile(
                   title: Text(dependente.nome),
+                  leading: IconButton(
+                    icon: Icon(Icons.edit),
+                    onPressed: () {
+                      // Coloque aqui a lógica para editar o dependente
+                    },
+                  ),
+                  trailing: IconButton(
+                    icon: Icon(Icons.delete),
+                    onPressed: () {
+                      // Coloque aqui a lógica para excluir o dependente
+                    },
+                  ),
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
                       builder: (c) {

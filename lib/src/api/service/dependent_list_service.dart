@@ -9,6 +9,7 @@ final storage = FlutterSecureStorage();
 class DependentListService {
   static Future<List<Dependente>> getDependentList() async {
     String? idPessoa = await storage.read(key: 'user_id');
+    String? token = await storage.read(key: 'token');
 
     final url = Uri.parse(
         UriServer.url.toString() + '/register-person/list-dependents/$idPessoa');
@@ -18,13 +19,13 @@ class DependentListService {
         url,
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
         },
       );
 
       if (response.statusCode == 200) {
         List<dynamic> jsonDataList = json.decode(response.body);
 
-        // Mapeie a lista de objetos JSON para uma lista de Dependente
         List<Dependente> dependentes = jsonDataList.map((jsonData) {
           return Dependente.fromJson(jsonData);
         }).toList();

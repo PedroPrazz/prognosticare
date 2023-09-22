@@ -11,7 +11,6 @@ class Agendar extends StatefulWidget {
 }
 class _AgendarState extends State<Agendar> {
   @override
-  bool realizado = false;
 
   Widget build(BuildContext context) {
     TextEditingController _especialista = TextEditingController();
@@ -20,7 +19,7 @@ class _AgendarState extends State<Agendar> {
     TextEditingController _dataHorario = TextEditingController();
     TextEditingController _observacoes = TextEditingController();
     TextEditingController _tipoExame = TextEditingController();
-    TextEditingController _intervalo = TextEditingController();
+    bool realizado = false;
 
     return Center(
       child: Scaffold(

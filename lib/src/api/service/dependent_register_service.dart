@@ -2,38 +2,30 @@ import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:prognosticare/src/config/uri.dart';
+import 'package:prognosticare/src/models/dependent_model.dart';
 
 final storage = FlutterSecureStorage();
 
 class RegisterServiceDepents {
-  static Future<bool> getRegisterD(
-      String nome,
-      String cpf,
-      String data,
-      String tipoSanguineo,
-      bool alergia,
-      String tipoAlergia,
-      String cartaoNacional,
-      String cartaoPlanoSaude) async {
+  static Future<bool> getRegisterD(Dependente dependente) async {
     String? idPessoa = await storage.read(key: 'user_id');
     String? token = await storage.read(key: 'token');
 
     final url =
-        Uri.parse(UriServer.url.toString() + '/add-dependent/$idPessoa');
+        Uri.parse(UriServer.url.toString() + '/register-person/add-dependent/$idPessoa');
 
     try {
       final response = await http.post(
         url,
         body: json.encode({
-          'pessoa_id': idPessoa,
-          'nome': nome,
-          'cpf': cpf,
-          'dataNascimento': data,
-          'tipoSanguineo': tipoSanguineo,
-          'alergia': alergia,
-          'tipoAlergia': tipoAlergia,
-          'cartaoNacional': cartaoNacional,
-          'cartaoPlanoSaude': cartaoPlanoSaude,
+          'nome': dependente.nome,
+          'cpf': dependente.cpf,
+          'dataNascimento': dependente.dataNascimento,
+          'tipoSanguineo': dependente.tipoSanguineo,
+          'alergia': dependente.alergia,
+          'tipoAlergia': dependente.tipoAlergia,
+          'cartaoNacional': dependente.cartaoNacional,
+          'cartaoPlanoSaude': dependente.cartaoPlanoSaude,
         }),
         headers: {
           'Content-Type': 'application/json',

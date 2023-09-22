@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:prognosticare/components/dialogs/change_password_dialog.dart';
-import 'package:prognosticare/src/pages/auth/meuProntuario.dart';
+import 'package:prognosticare/src/pages/auth/dependents.dart';
+import 'package:prognosticare/components/dialogs/prontuario_dialog.dart';
 import 'package:prognosticare/src/api/service/findby_id_service.dart';
 import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
 import 'package:prognosticare/src/models/pessoa_model.dart';
 import 'package:prognosticare/src/pages/profile/profile_tab.dart';
-import 'package:prognosticare/src/pages/profile/profile_tab_dependente.dart';
 import 'package:prognosticare/src/pages/schedule/schedule_list_screen.dart';
 
 final storage = FlutterSecureStorage();
@@ -92,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ProfileTabDepentende(),
+                    builder: (context) => ListDependents(),
                   ),
                 );
               },

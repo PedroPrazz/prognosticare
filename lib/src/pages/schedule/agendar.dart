@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:prognosticare/src/api/service/scheduleService.dart';
+import 'package:prognosticare/src/api/service/schedule_register_service.dart';
 import 'package:prognosticare/src/pages/home/home_screen.dart';
 
 class Agendar extends StatefulWidget {

@@ -1,11 +1,11 @@
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:prognosticare/src/api/service/registerServiceDependents.dart';
+import 'package:prognosticare/src/api/service/dependent_register_service.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
 import 'package:prognosticare/src/pages/home/home_screen.dart';
-import 'package:prognosticare/src/pages/common_widgets/custom_text_field.dart';
+import 'package:prognosticare/components/common_widgets/custom_text_field.dart';
 
 class ProfileTabDepentende extends StatefulWidget {
   ProfileTabDepentende({super.key});

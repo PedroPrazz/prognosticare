@@ -1,22 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:prognosticare/src/api/service/scheduleService.dart';
-import 'package:prognosticare/src/pages/auth/agendamentos.dart';
-import 'package:prognosticare/src/pages/common_widgets/custom_text_field.dart';
+import 'package:prognosticare/src/api/service/schedule_register_service.dart';
+import 'package:prognosticare/src/config/custom_colors.dart';
+import 'package:prognosticare/src/models/schedule_model.dart';
+import 'package:prognosticare/components/common_widgets/custom_text_field.dart';
+import 'package:prognosticare/src/pages/schedule/schedule_list_screen.dart';
 
-class ToAccompanyScreen extends StatefulWidget {
-  ToAccompanyScreen({super.key});
+class ScheduleScreen extends StatefulWidget {
+  ScheduleScreen({super.key});
+
 
   @override
-  State<ToAccompanyScreen> createState() => _ToAccompanyScreenState();
+  State<ScheduleScreen> createState() => _ScheduleScreenState();
 }
 
-class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
+class _ScheduleScreenState extends State<ScheduleScreen> {
+
+  Schedule? schedule;
+
   // Lista de tipos de agendamentos
-  List<String> tipoDeAcompanhamento = [
-    'MEDICAO',
-    'PROCEDIMENTO',
+  List<String> tiposDeAgendamento = [
+    'Exames',
+    'Consultas',
+    'Internações',
+    'Vacinas',
+    'Cirurgias'
   ];
 
   // Variável para armazenar o valor selecionado na combo box
@@ -33,14 +42,14 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
   TextEditingController datahController = TextEditingController();
   TextEditingController obsController = TextEditingController();
   TextEditingController tipoAgendamentoController = TextEditingController();
-  
+  bool realizado = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Acompanhamentos',
+          'Agendamentos',
         ),
         foregroundColor: Colors.white,
       ),
@@ -56,7 +65,7 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                 focusColor: Colors.white,
                 decoration: InputDecoration(
                   hoverColor: Colors.blue,
-                  labelText: 'Tipo de Acompanhamento',
+                  labelText: 'Tipo de Agendamento',
                   labelStyle: TextStyle(color: Colors.black),
                   isDense: true,
                   border: OutlineInputBorder(
@@ -78,8 +87,11 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                   });
                 },
                 items: <String>[
-                  'MEDICACAO',
-                  'PROCEDIMENTO',
+                  'EXAME',
+                  'CONSULTA',
+                  'INTERNAÇÃO',
+                  'VACINA',
+                  'CIRURGIA',
                 ].map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
@@ -107,25 +119,25 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
           CustomTextField(
             controller: especialistaController,
             icon: Icons.person,
-            label: 'Prescrição Médica',
+            label: 'Especialista',
           ),
           //Descrição
           CustomTextField(
             controller: descricaoController,
             icon: Icons.description,
-            label: 'Medicação',
+            label: 'Descrição',
           ),
           //Local
           CustomTextField(
             controller: localController,
             icon: Icons.location_on,
-            label: 'Controloda ou Temporária',
+            label: 'Local',
           ),
           //Data e Horário
           CustomTextField(
             controller: datahController,
             icon: Icons.date_range,
-            label: 'Agendamento | Horário',
+            label: 'Data | Horário',
             inputFormatters: [dataFormatter],
           ),
           //Observações
@@ -134,7 +146,20 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
             icon: Icons.description,
             label: 'Observações',
           ),
-                    
+          //Realização do agendamento
+          CheckboxListTile(
+            title: Text('Foi realizado?'),
+            controlAffinity: ListTileControlAffinity.leading,
+            checkColor: CustomColors.customSwatchColor,
+            value: realizado,
+            onChanged: (bool? value) {
+              setState(
+                () {
+                  realizado = value ?? false;
+                },
+              );
+            },
+          ),
           // Botão de Agendar
           SizedBox(
             height: 50,
@@ -158,12 +183,12 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                 if (schedule) {
                   Navigator.of(context)
                       .pushReplacement(MaterialPageRoute(builder: (c) {
-                    return Agendamentos();
+                    return ScheduleListScreen();
                   }));
                 }
               },
               child: const Text(
-                'Salvar',
+                'Agendar',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 18,

@@ -1,26 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:prognosticare/src/api/service/scheduleService.dart';
-import 'package:prognosticare/src/config/custom_colors.dart';
-import 'package:prognosticare/src/pages/auth/schedule_list_screen.dart';
-import 'package:prognosticare/src/pages/common_widgets/custom_text_field.dart';
+import 'package:prognosticare/src/api/service/schedule_register_service.dart';
+import 'package:prognosticare/components/common_widgets/custom_text_field.dart';
+import 'package:prognosticare/src/pages/schedule/agendamentos.dart';
 
-class ScheduleScreen extends StatefulWidget {
-  ScheduleScreen({super.key});
+class ToAccompanyScreen extends StatefulWidget {
+  ToAccompanyScreen({super.key});
 
   @override
-  State<ScheduleScreen> createState() => _ScheduleScreenState();
+  State<ToAccompanyScreen> createState() => _ToAccompanyScreenState();
 }
 
-class _ScheduleScreenState extends State<ScheduleScreen> {
+class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
   // Lista de tipos de agendamentos
-  List<String> tiposDeAgendamento = [
-    'Exames',
-    'Consultas',
-    'Internações',
-    'Vacinas',
-    'Cirurgias'
+  List<String> tipoDeAcompanhamento = [
+    'MEDICAO',
+    'PROCEDIMENTO',
   ];
 
   // Variável para armazenar o valor selecionado na combo box
@@ -37,14 +33,14 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   TextEditingController datahController = TextEditingController();
   TextEditingController obsController = TextEditingController();
   TextEditingController tipoAgendamentoController = TextEditingController();
-  bool realizado = false;
+  
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Agendamentos',
+          'Acompanhamentos',
         ),
         foregroundColor: Colors.white,
       ),
@@ -60,7 +56,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 focusColor: Colors.white,
                 decoration: InputDecoration(
                   hoverColor: Colors.blue,
-                  labelText: 'Tipo de Agendamento',
+                  labelText: 'Tipo de Acompanhamento',
                   labelStyle: TextStyle(color: Colors.black),
                   isDense: true,
                   border: OutlineInputBorder(
@@ -82,11 +78,8 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                   });
                 },
                 items: <String>[
-                  'EXAME',
-                  'CONSULTA',
-                  'INTERNAÇÃO',
-                  'VACINA',
-                  'CIRURGIA',
+                  'MEDICACAO',
+                  'PROCEDIMENTO',
                 ].map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
@@ -114,25 +107,25 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
           CustomTextField(
             controller: especialistaController,
             icon: Icons.person,
-            label: 'Especialista',
+            label: 'Prescrição Médica',
           ),
           //Descrição
           CustomTextField(
             controller: descricaoController,
             icon: Icons.description,
-            label: 'Descrição',
+            label: 'Medicação',
           ),
           //Local
           CustomTextField(
             controller: localController,
             icon: Icons.location_on,
-            label: 'Local',
+            label: 'Controloda ou Temporária',
           ),
           //Data e Horário
           CustomTextField(
             controller: datahController,
             icon: Icons.date_range,
-            label: 'Data | Horário',
+            label: 'Agendamento | Horário',
             inputFormatters: [dataFormatter],
           ),
           //Observações
@@ -141,20 +134,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
             icon: Icons.description,
             label: 'Observações',
           ),
-          //Realização do agendamento
-          CheckboxListTile(
-            title: Text('Foi realizado?'),
-            controlAffinity: ListTileControlAffinity.leading,
-            checkColor: CustomColors.customSwatchColor,
-            value: realizado,
-            onChanged: (bool? value) {
-              setState(
-                () {
-                  realizado = value ?? false;
-                },
-              );
-            },
-          ),
+                    
           // Botão de Agendar
           SizedBox(
             height: 50,
@@ -178,12 +158,12 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 if (schedule) {
                   Navigator.of(context)
                       .pushReplacement(MaterialPageRoute(builder: (c) {
-                    return ScheduleListScreen();
+                    return Agendamentos();
                   }));
                 }
               },
               child: const Text(
-                'Agendar',
+                'Salvar',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 18,

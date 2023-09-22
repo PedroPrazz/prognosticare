@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:prognosticare/src/api/service/forgot_password_service.dart';
 import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
-import 'package:prognosticare/src/pages/common_widgets/custom_text_field.dart';
-import '../src/api/service/changePasswordService.dart';
+import 'package:prognosticare/components/common_widgets/custom_text_field.dart';
 
-class ChangePasswordDialog extends StatelessWidget {
-  const ChangePasswordDialog({Key? key});
+class ForgotPasswordDialog extends StatelessWidget {
+  const ForgotPasswordDialog({Key? key});
 
-  Future<bool?> updatePassword(BuildContext context) {
-    TextEditingController newPasswordController = TextEditingController();
-    TextEditingController confirmNewPasswordController =
-        TextEditingController();
+  Future<bool?> forgotPassword(BuildContext context) {
+    TextEditingController emailController = TextEditingController();
     return showDialog(
       context: context,
       builder: (context) {
@@ -29,7 +27,7 @@ class ChangePasswordDialog extends StatelessWidget {
                     const Padding(
                       padding: EdgeInsets.symmetric(vertical: 12),
                       child: Text(
-                        'Alteração de senha',
+                        'Esqueci a senha',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 18,
@@ -37,24 +35,11 @@ class ChangePasswordDialog extends StatelessWidget {
                         ),
                       ),
                     ),
-
-                    // Nova senha
                     CustomTextField(
-                      controller: newPasswordController,
-                      icon: Icons.lock,
-                      label: 'Senha',
-                      isSecret: true,
+                      controller: emailController,
+                      icon: Icons.email,
+                      label: 'E-mail',
                     ),
-
-                    // Confirmar senha
-                    CustomTextField(
-                      controller: confirmNewPasswordController,
-                      icon: Icons.lock,
-                      label: 'Confirmar Nova senha',
-                      isSecret: true,
-                    ),
-
-                    //Botão de confirmação
                     SizedBox(
                       height: 45,
                       child: ElevatedButton(
@@ -64,26 +49,26 @@ class ChangePasswordDialog extends StatelessWidget {
                           ),
                         ),
                         onPressed: () async {
-                          bool changePassword =
-                              await ChangePasswordService.getChangePassword(
-                                  newPasswordController.text);
-                          if (changePassword) {
+                          bool forgotPassowrd =
+                              await ForgotPasswordService.getNewPassword(
+                                  emailController.text);
+                          if (forgotPassowrd) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text('Senha alterada com sucesso!'),
+                                content: Text(
+                                    'Email de recuperação de senha enviado!'),
                                 duration: Duration(seconds: 3),
                                 backgroundColor: Colors.green,
                               ),
                             );
-                            Navigator.pushAndRemoveUntil(
+                            Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => SignInScreen()),
-                                (route) => false);
+                                    builder: (context) => SignInScreen()));
                           }
                         },
                         child: const Text(
-                          'Alterar',
+                          'Enviar',
                           style: TextStyle(color: Colors.white),
                         ),
                       ),

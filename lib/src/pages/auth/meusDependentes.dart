@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:prognosticare/components/dialog.dart';
-import 'package:prognosticare/src/models/pessoa.dart';
+import 'package:prognosticare/components/dialogs/dialog.dart';
+import 'package:prognosticare/src/models/pessoa_model.dart';
 import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
 import 'package:prognosticare/src/pages/profile/profile_tab.dart';
-import '../../api/service/getFindbyIDService.dart';
+import '../../api/service/findby_id_service.dart';
 
 List pessoa_id = [];
 

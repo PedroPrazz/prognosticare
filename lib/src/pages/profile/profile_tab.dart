@@ -2,12 +2,12 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:prognosticare/src/api/service/personUpdateService.dart';
+import 'package:prognosticare/src/api/service/person_update_service.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
-import 'package:prognosticare/src/models/pessoa.dart';
+import 'package:prognosticare/src/models/pessoa_model.dart';
 import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
 import 'package:prognosticare/src/pages/home/home_screen.dart';
-import 'package:prognosticare/src/pages/common_widgets/custom_text_field.dart';
+import 'package:prognosticare/components/common_widgets/custom_text_field.dart';
 
 class ProfileTab extends StatefulWidget {
   ProfileTab({super.key, required this.pessoa});
@@ -264,8 +264,10 @@ class _ProfileTabState extends State<ProfileTab> {
                   setState(() {
                     widget.pessoa = pessoaAtualizado;
                   });
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => HomeScreen()));
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomeScreen()),
+                    (route) => false);
                 } else {
                   print("id: ${pessoaAtualizada.pessoaId}");
                   print("Nome: ${pessoaAtualizada.nome}");

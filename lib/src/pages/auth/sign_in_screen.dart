@@ -1,27 +1,36 @@
-// imports
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:prognosticare/components/changePassword.dart';
-import 'package:prognosticare/components/forgotPassword.dart';
-import 'package:prognosticare/components/validation.dart';
-import 'package:prognosticare/src/api/service/loginService.dart';
-import 'package:prognosticare/src/pages/auth/forgotPassword.dart';
-import 'package:prognosticare/src/pages/common_widgets/custom_text_field.dart';
+import 'package:prognosticare/components/dialogs/change_password_dialog.dart';
+import 'package:prognosticare/components/dialogs/forgot_password_dialog.dart';
+import 'package:prognosticare/src/api/service/firebase_messaging_service.dart';
+import 'package:prognosticare/src/api/service/login_service.dart';
+import 'package:prognosticare/components/common_widgets/custom_text_field.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
-import 'package:prognosticare/src/pages_routes/app_pages.dart';
+import 'package:prognosticare/src/routes/app_pages.dart';
 
 class SignInScreen extends StatelessWidget {
   SignInScreen({Key? key}) : super(key: key);
 
   final _formKey = GlobalKey<FormState>();
 
+  Future<String?> _getFCMToken() async {
+    FirebaseMessagingService firebaseMessagingService = FirebaseMessagingService();
+    String? fcmToken = await firebaseMessagingService.getFirebaseToken();
+    return fcmToken;
+  }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final emailController = TextEditingController();
     final passwordController = TextEditingController();
+
+    _getFCMToken().then((fcmToken) {
+      if (fcmToken != null) {
+        print("Token FCM: $fcmToken");
+      }
+    });
 
     return Scaffold(
       backgroundColor: CustomColors.customSwatchColor,
@@ -103,11 +112,12 @@ class SignInScreen extends StatelessWidget {
                         icon: Icons.email,
                         label: 'Email',
                         validator: (email) {
-                          if (email == null || email.isEmpty)
+                          if (email == null || email.isEmpty) {
                             return 'Digite seu email!';
-
-                          if (!email.isEmail) return 'Digite um email válido!';
-
+                          }
+                          if (!email.isEmail) {
+                            return 'Digite um email válido!';
+                          }
                           return null;
                         },
                       ),
@@ -123,7 +133,7 @@ class SignInScreen extends StatelessWidget {
                             return 'Digite sua senha!';
                           }
                           if (senha.length < 8) {
-                            return 'Digite uma senha com pelo menos 7 caracteres.';
+                            return 'Senha deve conter no mínimo 8 caracteres!';
                           }
                           return null;
                         },
@@ -139,22 +149,11 @@ class SignInScreen extends StatelessWidget {
                             ),
                           ),
                           onPressed: () async {
-                            if (emailController.text.isEmpty ||
-                                passwordController.text.isEmpty) {
-                              ValidationAlertDialog().camposVaziosAlert(context);
-                              return;
+                            if (_formKey.currentState!.validate()) {
+                              print('Todos os campos estão válidos');
+                            } else {
+                              print('Campos não válidos');
                             }
-
-                            if (!emailController.text.contains("@")) {
-                              ValidationAlertDialog().emailInvalidoAlert(context);
-                              return;
-                            }
-
-                            if (passwordController.text.length < 8) {
-                              ValidationAlertDialog().senhaInvalidaAlert(context);
-                              return;
-                            }
-
                             bool loggedIn = await LoginService.getLogin(
                                 emailController.text, passwordController.text);
                             if (loggedIn) {
@@ -164,16 +163,14 @@ class SignInScreen extends StatelessWidget {
                                 Get.offNamed(PagesRoutes.homeRoute);
                               }
                             } else {
-                              ValidationAlertDialog().loginSenhaInvalidoAlert(context);
-                              print(
-                                  'Seu email e senha não correspondem. Tente novamente!');
-                              return;
-                            }
-
-                            if (_formKey.currentState!.validate()) {
-                              print('Todos os campos estão válidos');
-                            } else {
-                              print('Campos não válidos');
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                    'Email e/ou senha incorretos!',
+                                  ),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
                             }
                           },
                           child: const Text(
@@ -191,8 +188,7 @@ class SignInScreen extends StatelessWidget {
                         alignment: Alignment.centerRight,
                         child: TextButton(
                           onPressed: () {
-                            Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => ForgotPassword()));
+                            ForgotPasswordDialog().forgotPassword(context);
                           },
                           child: Text(
                             'Esqueceu a senha?',
@@ -216,7 +212,7 @@ class SignInScreen extends StatelessWidget {
                             ),
                             const Padding(
                               padding: EdgeInsets.symmetric(horizontal: 15),
-                              child: Text('Ou'),
+                              child: Text('OU'),
                             ),
                             Expanded(
                               child: Divider(

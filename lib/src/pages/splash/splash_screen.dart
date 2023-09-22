@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:prognosticare/src/pages_routes/app_pages.dart';
+import 'package:prognosticare/src/routes/app_pages.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

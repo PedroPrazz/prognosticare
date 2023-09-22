@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:prognosticare/src/api/service/schedule.dart';
+import 'package:prognosticare/src/api/service/schedule_register_service.dart';
 import 'package:prognosticare/src/pages/home/home_screen.dart';
 
 class Agendar extends StatefulWidget {
@@ -9,35 +9,6 @@ class Agendar extends StatefulWidget {
   @override
   State<Agendar> createState() => _AgendarState();
 }
-
-// class AgendamentoModel {
-//   final String especialista;
-//   final String descricao;
-//   final String dataHorario;
-//   final String local;
-//   final String observacoes;
-
-//   AgendamentoModel({
-//     required this.especialista,
-//     required this.descricao,
-//     required this.dataHorario,
-//     required this.local,
-//     required this.observacoes,
-//   });
-// }
-
-// Crie um provedor para as informações do agendamento
-// class AgendamentoProvider with ChangeNotifier {
-//   AgendamentoModel? _agendamento;
-
-//   AgendamentoModel? get agendamento => _agendamento;
-
-//   void setAgendamento(AgendamentoModel agendamento) {
-//     _agendamento = agendamento;
-//     notifyListeners();
-//   }
-// }
-
 class _AgendarState extends State<Agendar> {
   @override
   bool realizado = false;
@@ -50,7 +21,6 @@ class _AgendarState extends State<Agendar> {
     TextEditingController _observacoes = TextEditingController();
     TextEditingController _tipoExame = TextEditingController();
     TextEditingController _intervalo = TextEditingController();
-    // final AgendamentoProvider _agendamentoProvider = AgendamentoProvider();
 
     return Center(
       child: Scaffold(
@@ -214,15 +184,8 @@ class _AgendarState extends State<Agendar> {
                           _descricao.text,
                           _observacoes.text,
                           _especialista.text,
-                          _tipoExame.text,
-                          _intervalo.text);
+                          _tipoExame.text);
                       if (agendar) {
-                        // _agendamentoProvider.setAgendamento(AgendamentoModel(
-                        //   especialista: _especialista.text,
-                        //   descricao: _descricao.text,
-                        //   dataHorario: _dataHorario.text,
-                        //   local: _local.text,
-                        //   observacoes: _observacoes.text,
                         Navigator.of(context)
                             .pushReplacement(MaterialPageRoute(builder: (c) {
                           return HomeScreen();

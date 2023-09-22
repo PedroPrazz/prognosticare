@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 import 'package:get/get_core/get_core.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:prognosticare/components/dialog.dart';
 import 'package:prognosticare/src/pages_routes/app_pages.dart';
+=======
+import 'package:prognosticare/components/dialogs/dialog.dart';
+import 'package:prognosticare/src/models/pessoa_model.dart';
+import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
+import 'package:prognosticare/src/pages/profile/profile_tab.dart';
+import '../../api/service/findby_id_service.dart';
+>>>>>>> 9ea04e8418db39e23f4f4bcdaa6ee88f313035ec
 
 List dependente_id = [];
 

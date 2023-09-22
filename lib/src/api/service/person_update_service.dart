@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:prognosticare/src/config/uri.dart';
-import 'package:prognosticare/src/models/pessoa.dart';
+import 'package:prognosticare/src/models/pessoa_model.dart';
 
 final storage = FlutterSecureStorage();
 class PersonUpdateService {

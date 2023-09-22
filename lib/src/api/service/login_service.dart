@@ -1,9 +1,11 @@
+// ignore_for_file: unused_local_variable
+
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:prognosticare/src/api/service/getFindbyIDService.dart';
+import 'package:prognosticare/src/api/service/findby_id_service.dart';
 import 'package:prognosticare/src/config/uri.dart';
-import '../../models/pessoa.dart';
+import '../../models/pessoa_model.dart';
 
 final storage = FlutterSecureStorage();
 

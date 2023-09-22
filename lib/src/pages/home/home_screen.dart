@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+<<<<<<< HEAD
 import 'package:prognosticare/components/meuProntuario.dart';
 import 'package:prognosticare/src/api/service/changePasswordService.dart';
 import 'package:prognosticare/src/api/service/getFindbyIDService.dart';
 import 'package:prognosticare/src/models/dependente.dart';
 import 'package:prognosticare/src/pages/auth/meusDependentes.dart';
 // import 'package:prognosticare/src/pages/auth/agendar.dart';
+=======
+import 'package:prognosticare/components/dialogs/change_password_dialog.dart';
+import 'package:prognosticare/src/pages/auth/meuProntuario.dart';
+import 'package:prognosticare/src/api/service/findby_id_service.dart';
+>>>>>>> 9ea04e8418db39e23f4f4bcdaa6ee88f313035ec
 import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
-import 'package:prognosticare/src/models/pessoa.dart';
-import 'package:prognosticare/src/pages/common_widgets/custom_text_field.dart';
+import 'package:prognosticare/src/models/pessoa_model.dart';
 import 'package:prognosticare/src/pages/profile/profile_tab.dart';
 import 'package:prognosticare/src/pages/profile/profile_tab_dependente.dart';
+import 'package:prognosticare/src/pages/schedule/schedule_list_screen.dart';
 
 final storage = FlutterSecureStorage();
 
@@ -68,10 +74,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   pessoa = await GetFindbyIDService.getFindbyID();
                 }
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ProfileTab(pessoa: pessoa!),
-                    ));
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProfileTab(pessoa: pessoa!),
+                  ),
+                );
               },
             ),
 
@@ -92,7 +99,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
+<<<<<<< HEAD
                     builder: (context) => MeusDependentes(),
+=======
+                    builder: (context) => ProfileTabDepentende(),
+>>>>>>> 9ea04e8418db39e23f4f4bcdaa6ee88f313035ec
                   ),
                 );
               },
@@ -102,7 +113,14 @@ class _HomeScreenState extends State<HomeScreen> {
             ListTile(
               leading: const Icon(Icons.auto_stories),
               title: const Text('Minha Agenda'),
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ScheduleListScreen(),
+                  ),
+                );
+              },
             ),
 
             //Alterar Senha
@@ -110,7 +128,7 @@ class _HomeScreenState extends State<HomeScreen> {
               leading: const Icon(Icons.miscellaneous_services),
               title: const Text('Alterar Senha'),
               onTap: () {
-                updatePassword();
+                ChangePasswordDialog().updatePassword(context);
               },
             ),
 
@@ -149,18 +167,6 @@ class _HomeScreenState extends State<HomeScreen> {
         foregroundColor: Colors.white,
         centerTitle: true,
       ),
-      body: Container(
-          alignment: Alignment.center,
-          child: ListView(
-            children: [
-              // Text(_agendamentoProvider.agendamento?.especialista ?? ''),
-              // Text(_agendamentoProvider.agendamento?.descricao ?? ''),
-              // Text(_agendamentoProvider.agendamento?.dataHorario ?? ''),
-              // Text(_agendamentoProvider.agendamento?.local ?? ''),
-              // Text(_agendamentoProvider.agendamento?.observacoes ?? ''),
-            ],
-          )),
-      //
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           PopupMenuButton(
@@ -183,99 +189,6 @@ class _HomeScreenState extends State<HomeScreen> {
         child: const Icon(Icons.add, color: Colors.white),
         backgroundColor: const Color.fromRGBO(255, 143, 171, 1),
       ),
-    );
-  }
-
-//Dialog Alterar Senha
-  Future<bool?> updatePassword() {
-    return showDialog(
-      context: context,
-      builder: (context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Stack(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // Titulo
-                    const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 12),
-                      child: Text(
-                        'Alteração de senha',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-
-                    // Nova senha
-                    CustomTextField(
-                      isSecret: true,
-                      controller: passwordController,
-                      icon: Icons.lock_outlined,
-                      label: 'Nova Senha',
-                    ),
-
-                    // Confirmar senha
-                    CustomTextField(
-                      controller: confirmPasswordController,
-                      isSecret: true,
-                      icon: Icons.lock_outlined,
-                      label: 'Confirmar nova Senha',
-                    ),
-
-                    //Botão de confirmação
-                    SizedBox(
-                      height: 45,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                        ),
-                        onPressed: () async {
-                          bool changePassword =
-                              await ChangePasswordService.getChangePassword(
-                                  passwordController.text);
-                          if (changePassword) {
-                            Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SignInScreen()),
-                                (route) => false);
-                          }
-                        },
-                        child: const Text(
-                          'Alterar',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Positioned(
-                top: 5,
-                right: 5,
-                child: IconButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  icon: const Icon(Icons.close),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
     );
   }
 }

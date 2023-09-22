@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:prognosticare/src/pages/auth/agendar.dart';
+import 'package:prognosticare/src/pages/schedule/agendar.dart';
 
 class Agendamentos extends StatefulWidget {
   const Agendamentos({Key? key}) : super(key: key);

@@ -6,7 +6,7 @@ class ProntuarioDialog extends StatelessWidget {
   const ProntuarioDialog({Key? key});
 
   Future<bool?> prontuarioDialog(BuildContext context) {
-    TextEditingController _emailController = TextEditingController();
+    // TextEditingController _emailController = TextEditingController();
     return showDialog(
       context: context,
       builder: (context) {

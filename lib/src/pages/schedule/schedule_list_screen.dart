@@ -11,6 +11,8 @@ class ScheduleListScreen extends StatefulWidget {
 }
 
 class _ScheduleListScreenState extends State<ScheduleListScreen> {
+  late Future<List<Schedule>> schedulesFuture;
+
   String? tipoSelecionado;
   List<String> tiposDeAgendamento = [
     'Exames',
@@ -19,8 +21,6 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
     'Vacinas',
     'Cirurgias'
   ];
-
-  late Future<List<Schedule>> schedulesFuture;
 
   @override
   void initState() {
@@ -68,58 +68,63 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
                   border: OutlineInputBorder(),
                 ),
               ),
-              FutureBuilder<List<Schedule>>(
-                future: schedulesFuture,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Center(
-                        child: Text('Erro ao carregar a lista de agendamentos'));
-                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return Center(child: Text('Nenhum agendamento encontrado'));
-                  } else {
-                    final schedules = snapshot.data!;
-                    return ListView.builder(
-                      itemCount: schedules.length,
-                      itemBuilder: (context, index) {
-                        final schedule = schedules[index];
-                        return ListTile(
-                          title: Text(schedule.descricao),
-                          leading: IconButton(
-                            icon: Icon(Icons.edit),
-                            onPressed: () {
-                              // Coloque aqui a lógica para editar o dependente
+              Expanded(
+                child: FutureBuilder<List<Schedule>>(
+                  future: schedulesFuture,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(
+                          child:
+                              Text('Erro ao carregar a lista de agendamentos'));
+                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return Center(
+                          child: Text('Nenhum agendamento encontrado'));
+                    } else {
+                      final schedules = snapshot.data!;
+                      return ListView.builder(
+                        itemCount: schedules.length,
+                        itemBuilder: (context, index) {
+                          final schedule = schedules[index];
+                          return ListTile(
+                            title: Text(schedule.descricao),
+                            leading: IconButton(
+                              icon: Icon(Icons.edit),
+                              onPressed: () {
+                                // Coloque aqui a lógica para editar o dependente
+                              },
+                            ),
+                            trailing: IconButton(
+                              icon: Icon(Icons.delete),
+                              onPressed: () {
+                                // Coloque aqui a lógica para excluir o dependente
+                              },
+                            ),
+                            onTap: () {
+                              // Navigator.of(context).push(MaterialPageRoute(
+                              //   builder: (c) {
+                              //     return ProfileTabDepentende();
+                              //   },
+                              // ));
                             },
-                          ),
-                          trailing: IconButton(
-                            icon: Icon(Icons.delete),
-                            onPressed: () {
-                              // Coloque aqui a lógica para excluir o dependente
-                            },
-                          ),
-                          onTap: () {
-                            // Navigator.of(context).push(MaterialPageRoute(
-                            //   builder: (c) {
-                            //     return ProfileTabDepentende();
-                            //   },
-                            // ));
-                          },
-                        );
-                      },
-                    );
-                  }
-                },
+                          );
+                        },
+                      );
+                    }
+                  },
+                ),
               ),
               Spacer(), // Espaço flexível para empurrar o botão para a parte inferior
               ElevatedButton(
                 onPressed: () async {
                   // Verifique se um tipo de agendamento foi selecionado
                   if (tipoSelecionado != null) {
-                    Navigator.push(
-                      context,
+                    Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
-                        builder: (context) => ScheduleScreen(),
+                        builder: (c) {
+                          return ScheduleScreen();
+                        },
                       ),
                     );
                   } else {

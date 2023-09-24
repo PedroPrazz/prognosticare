@@ -1,6 +1,7 @@
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:prognosticare/src/api/service/dependent_register_service.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
@@ -9,14 +10,15 @@ import 'package:prognosticare/src/pages/home/home_screen.dart';
 import 'package:prognosticare/components/common_widgets/custom_text_field.dart';
 
 class ProfileTabDepentende extends StatefulWidget {
-  ProfileTabDepentende({super.key});
+  final Dependente? dependente;
+
+  ProfileTabDepentende({Key? key, this.dependente}) : super(key: key);
 
   @override
   State<ProfileTabDepentende> createState() => _ProfileTabDepentendeState();
 }
 
 class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
-
   final cpfFormartter = MaskTextInputFormatter(
     mask: '###.###.###-##',
     filter: {'#': RegExp(r'[0-9]')},
@@ -39,19 +41,25 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
   TextEditingController tipoAlergiaController = TextEditingController();
   TextEditingController alergiaController = TextEditingController();
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   nomeController.text = widget.pessoa.nome;
-  //   cpfController.text = widget.pessoa.cpf;
-  //   dataController.text = widget.pessoa.dataNascimento;
-  //   cnsController.text = widget.pessoa.cartaoNacional ?? '';
-  //   cpsController.text = widget.pessoa.cartaoPlanoSaude ?? '';
-  //   tipoSanguineoController.text = widget.pessoa.tipoSanguineo ?? 'SELECIONE';
-  //   alergiaMarcada = widget.pessoa.alergia ?? false;
-  //   tipoAlergiaController.text = widget.pessoa.tipoAlergia ?? '';
-  //   alergiaController.text = widget.pessoa.alergia.toString();
-  // }
+  @override
+  void initState() {
+    super.initState();
+    if (widget.dependente != null) {
+      nomeController.text = widget.dependente!.nome;
+      cpfController.text = widget.dependente!.cpf;
+      // Formatando a data no formato desejado (10/10/2008)
+      if (widget.dependente!.dataNascimento != null) {
+        final formattedDate = DateFormat('dd/MM/yyyy').format(DateTime.parse(widget.dependente!.dataNascimento));
+        dataController.text = formattedDate;
+      }
+      cnsController.text = widget.dependente!.cartaoNacional ?? '';
+      cpsController.text = widget.dependente!.cartaoPlanoSaude ?? '';
+      tipoSanguineoController.text = widget.dependente!.tipoSanguineo ?? 'SELECIONE';
+      alergiaMarcada = widget.dependente!.alergia ?? false;
+      tipoAlergiaController.text = widget.dependente!.tipoAlergia ?? '';
+      alergiaController.text = widget.dependente!.alergia.toString();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -200,6 +208,7 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
               onPressed: () async {
                 bool saveDependent = await RegisterServiceDepents.getRegisterD(
                   Dependente(
+                    id: widget.dependente!.id,
                     nome: nomeController.text,
                     cpf: cpfController.text,
                     dataNascimento: dataController.text,

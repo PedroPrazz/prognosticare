@@ -40,4 +40,37 @@ class DependentListService {
       throw Exception('Exeption no método find Erro no Try/Catch');
     }
   }
+
+  static Future<bool> deleteDependent(String dependentId) async {
+    String? token = await storage.read(key: 'token');
+    final url = Uri.parse(
+        UriServer.url.toString() + '/delete-dependent/$dependentId');
+
+    try {
+      final response = await http.delete(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 204) {
+        // Exclusão bem-sucedida, o servidor retornou um código 204 (No Content).
+        return true;
+      } else if (response.statusCode == 404) {
+        // Dependente não encontrado, você pode lidar com isso de acordo com suas necessidades.
+        return false;
+      } else {
+        print('Response Status Code: ${response.statusCode}');
+        throw Exception('Exeption no método deleteDependent');
+      }
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('Exeption no método deleteDependent Erro no Try/Catch');
+    }
+  }
+  
 }
+
+

@@ -32,7 +32,8 @@ class _ListDependentsState extends State<ListDependents> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text('Erro ao carregar a lista de dependentes'));
+            return Center(
+                child: Text('Erro ao carregar a lista de dependentes'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return Center(child: Text('Nenhum dependente encontrado'));
           } else {
@@ -46,13 +47,27 @@ class _ListDependentsState extends State<ListDependents> {
                   leading: IconButton(
                     icon: Icon(Icons.edit),
                     onPressed: () {
-                      // Coloque aqui a lógica para editar o dependente
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (c) {
+                          // Passe o dependente selecionado para a tela de edição
+                          return ProfileTabDepentende(dependente: dependente);
+                        },
+                      ));
                     },
                   ),
                   trailing: IconButton(
                     icon: Icon(Icons.delete),
-                    onPressed: () {
-                      // Coloque aqui a lógica para excluir o dependente
+                    onPressed: () async {
+                      final deleted =
+                          await DependentListService.deleteDependent(
+                              dependente.id!);
+                      if (deleted) {
+                        setState(() {
+                          // Atualize a lista de dependentes chamando dependentsFuture novamente
+                          dependentsFuture =
+                              DependentListService.getDependentList();
+                        });
+                      }
                     },
                   ),
                   onTap: () {

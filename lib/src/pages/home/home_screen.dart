@@ -21,7 +21,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
-  // final AgendamentoProvider _agendamentoProvider = AgendamentoProvider();
   Pessoa? pessoa;
   String? nome;
 
@@ -103,12 +102,6 @@ class _HomeScreenState extends State<HomeScreen> {
               leading: const Icon(Icons.auto_stories),
               title: const Text('Minha Agenda'),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ScheduleListScreen(),
-                  ),
-                );
               },
             ),
 

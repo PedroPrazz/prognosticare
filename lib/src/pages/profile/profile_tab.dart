@@ -9,6 +9,7 @@ import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
 import 'package:prognosticare/src/pages/home/home_screen.dart';
 import 'package:prognosticare/components/common_widgets/custom_text_field.dart';
 
+// ignore: must_be_immutable
 class ProfileTab extends StatefulWidget {
   ProfileTab({super.key, required this.pessoa});
 

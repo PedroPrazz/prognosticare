@@ -6,10 +6,13 @@ import 'package:prognosticare/src/config/uri.dart';
 final storage = FlutterSecureStorage();
 
 class ScheduleService {
-  static Future<bool> getSchedule(String data, String local, String descricao, String observacoes, String especialista, String tipoExame) async {
-  String? idPessoa = await storage.read(key: 'user_id');
+  static Future<bool> getSchedule(String data, String local, String descricao,
+    String observacoes, String especialista, String tipoExame) async {
+    String? idPessoa = await storage.read(key: 'user_id');
+    String? token = await storage.read(key: 'token');
 
-    final url = Uri.parse(UriServer.url.toString()+'/to-scheduling/save/$idPessoa');
+    final url =
+        Uri.parse(UriServer.url.toString() + '/to-scheduling/save/$idPessoa');
 
     try {
       final response = await http.post(
@@ -22,7 +25,10 @@ class ScheduleService {
           'especialista': especialista,
           'tipoExame': tipoExame,
         }),
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {

@@ -3,7 +3,7 @@ class Schedule {
   String? dataAgenda;
   String? local;
   String? statusEvento;
-  String? descricao;
+  String descricao;
   int? intervaloData;
   String? observacao;
   String? especialista;
@@ -35,29 +35,29 @@ class Schedule {
     );
   }
 
-  Schedule copyWith({
-    String? id,
-    String? dataAgenda,
-    String? local,
-    String? statusEvento,
-    String? descricao,
-    int? intervaloData,
-    String? observacao,
-    String? especialista,
-    String? tipoAgendamento,
-  }) {
-    return Schedule(
-    id: id ?? this.id,
-    dataAgenda: dataAgenda ?? this.dataAgenda,
-    local: local ?? this.local,
-    statusEvento: statusEvento ?? this.statusEvento,
-    descricao: descricao ?? this.descricao,
-    intervaloData: intervaloData ?? this.intervaloData,
-    observacao: observacao ?? this.observacao,
-    especialista: especialista ?? this.especialista,
-    tipoAgendamento: tipoAgendamento ?? this.tipoAgendamento,
-    );
-  }
+  // Schedule copyWith({
+  //   String? id,
+  //   String? dataAgenda,
+  //   String? local,
+  //   String? statusEvento,
+  //   String? descricao,
+  //   int? intervaloData,
+  //   String? observacao,
+  //   String? especialista,
+  //   String? tipoAgendamento,
+  // }) {
+  //   return Schedule(
+  //   id: id ?? this.id,
+  //   dataAgenda: dataAgenda ?? this.dataAgenda,
+  //   local: local ?? this.local,
+  //   statusEvento: statusEvento ?? this.statusEvento,
+  //   descricao: descricao ?? this.descricao,
+  //   intervaloData: intervaloData ?? this.intervaloData,
+  //   observacao: observacao ?? this.observacao,
+  //   especialista: especialista ?? this.especialista,
+  //   tipoAgendamento: tipoAgendamento ?? this.tipoAgendamento,
+  //   );
+  // }
 
   Map<String, dynamic> toJson() {
     return {

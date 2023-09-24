@@ -1,10 +1,15 @@
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:prognosticare/src/api/service/dependent_register_service.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
+<<<<<<< HEAD
 import 'package:prognosticare/src/models/dependente.dart';
 import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
+=======
+import 'package:prognosticare/src/models/dependent_model.dart';
+>>>>>>> 348acbd8b6dbff923c2aa92fc29e969bf467b912
 import 'package:prognosticare/src/pages/home/home_screen.dart';
 import 'package:prognosticare/components/common_widgets/custom_text_field.dart';
 
@@ -16,8 +21,24 @@ class ProfileTabDependente extends StatefulWidget {
   @override
   State<ProfileTabDependente> createState() => _ProfileTabDependenteState();
 }
+<<<<<<< HEAD
 
 class _ProfileTabDependenteState extends State<ProfileTabDependente> {
+=======
+
+class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
+
+  final cpfFormartter = MaskTextInputFormatter(
+    mask: '###.###.###-##',
+    filter: {'#': RegExp(r'[0-9]')},
+  );
+
+  final dataFormartter = MaskTextInputFormatter(
+    mask: '##/##/####',
+    filter: {'#': RegExp(r'[0-9]')},
+  );
+
+>>>>>>> 348acbd8b6dbff923c2aa92fc29e969bf467b912
   bool doadorMarcado = false;
   bool alergiaMarcada = false;
 
@@ -30,6 +51,7 @@ class _ProfileTabDependenteState extends State<ProfileTabDependente> {
   TextEditingController tipoAlergiaController = TextEditingController();
   TextEditingController alergiaController = TextEditingController();
 
+<<<<<<< HEAD
   @override
   void initState() {
     super.initState();
@@ -46,6 +68,21 @@ class _ProfileTabDependenteState extends State<ProfileTabDependente> {
     alergiaController.text = widget.dependente.alergia.toString();
     // doadorController.text = widget.dependente.doador.toString();
   }
+=======
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   nomeController.text = widget.pessoa.nome;
+  //   cpfController.text = widget.pessoa.cpf;
+  //   dataController.text = widget.pessoa.dataNascimento;
+  //   cnsController.text = widget.pessoa.cartaoNacional ?? '';
+  //   cpsController.text = widget.pessoa.cartaoPlanoSaude ?? '';
+  //   tipoSanguineoController.text = widget.pessoa.tipoSanguineo ?? 'SELECIONE';
+  //   alergiaMarcada = widget.pessoa.alergia ?? false;
+  //   tipoAlergiaController.text = widget.pessoa.tipoAlergia ?? '';
+  //   alergiaController.text = widget.pessoa.alergia.toString();
+  // }
+>>>>>>> 348acbd8b6dbff923c2aa92fc29e969bf467b912
 
   @override
   Widget build(BuildContext context) {
@@ -55,20 +92,6 @@ class _ProfileTabDependenteState extends State<ProfileTabDependente> {
           'Perfil do Dependente',
         ),
         foregroundColor: Colors.white,
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => SignInScreen()),
-                  (route) => false);
-            },
-            icon: const Icon(
-              Icons.logout,
-              color: Colors.white,
-            ),
-          ),
-        ],
       ),
       body: ListView(
         physics: const BouncingScrollPhysics(),
@@ -84,12 +107,14 @@ class _ProfileTabDependenteState extends State<ProfileTabDependente> {
           CustomTextField(
             controller: cpfController,
             icon: Icons.file_copy,
+            inputFormatters: [cpfFormartter],
             label: 'CPF',
           ),
           //Data de Nascimento
           CustomTextField(
             controller: dataController,
             icon: Icons.date_range,
+            inputFormatters: [dataFormartter],
             label: 'Data de Nascimento',
           ),
           //CNS
@@ -107,6 +132,10 @@ class _ProfileTabDependenteState extends State<ProfileTabDependente> {
             controller: cpsController,
             icon: Icons.payment_outlined,
             label: 'Cartão do Plano de Saúde',
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly,
+              CNSInputFormatter()
+            ],
           ),
           //Tipo Sanguíneo
           Container(
@@ -201,19 +230,25 @@ class _ProfileTabDependenteState extends State<ProfileTabDependente> {
               ),
               onPressed: () async {
                 bool saveDependent = await RegisterServiceDepents.getRegisterD(
-                    nomeController.text,
-                    cpfController.text,
-                    dataController.text,
-                    tipoSanguineoController.text,
-                    alergiaMarcada,
-                    tipoAlergiaController.text,
-                    cnsController.text,
-                    cpsController.text);
+                  Dependente(
+                    nome: nomeController.text,
+                    cpf: cpfController.text,
+                    dataNascimento: dataController.text,
+                    tipoSanguineo: tipoSanguineoController.text,
+                    alergia: alergiaMarcada,
+                    tipoAlergia: tipoAlergiaController.text,
+                    cartaoNacional: cnsController.text,
+                    cartaoPlanoSaude: cpsController.text,
+                  ),
+                );
                 if (saveDependent) {
-                  Navigator.of(context)
-                      .pushReplacement(MaterialPageRoute(builder: (c) {
-                    return HomeScreen();
-                  }));
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (c) {
+                        return HomeScreen();
+                      },
+                    ),
+                  );
                 }
               },
               child: const Text(

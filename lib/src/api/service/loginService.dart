@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:prognosticare/src/api/service/getFindbyIDService.dart';
+import 'package:prognosticare/src/api/service/tokenFCM.dart';
 import 'package:prognosticare/src/config/uri.dart';
 import '../../models/pessoa.dart';
 
@@ -11,7 +12,7 @@ class LoginService {
   static Future<bool> getLogin(String email, String password) async {
 
 
-    final url = Uri.parse(UriServer.url.toString()+'/login');
+    final url = Uri.parse(UriTest.url.toString()+'/login');
 
     try {
       final response = await http.post(
@@ -36,6 +37,9 @@ class LoginService {
         String? idPessoa = await storage.read(key: 'user_id');
         String? nome = await storage.read(key: 'nome');
         Pessoa pessoa = await GetFindbyIDService.getFindbyID();
+
+         Future<bool> token= TokenFCM.postToken();
+         print(token);
 
         return true;
       } else {

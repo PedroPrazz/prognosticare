@@ -48,6 +48,7 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
       nomeController.text = widget.dependente!.nome;
       cpfController.text = widget.dependente!.cpf;
       // Formatando a data no formato desejado (10/10/2008)
+      // ignore: unnecessary_null_comparison
       if (widget.dependente!.dataNascimento != null) {
         final formattedDate = DateFormat('dd/MM/yyyy').format(DateTime.parse(widget.dependente!.dataNascimento));
         dataController.text = formattedDate;

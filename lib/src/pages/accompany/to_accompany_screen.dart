@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:prognosticare/src/api/service/schedule_register_service.dart';
 import 'package:prognosticare/components/common_widgets/custom_text_field.dart';
-import 'package:prognosticare/src/pages/schedule/agendamentos.dart';
+import 'package:prognosticare/src/api/service/to_accompany_register_service.dart';
+import 'package:prognosticare/src/models/to_accompany_model.dart';
+import 'package:prognosticare/src/pages/accompany/to_accompany_list_screen.dart';
 
 class ToAccompanyScreen extends StatefulWidget {
   ToAccompanyScreen({super.key});
@@ -13,6 +14,8 @@ class ToAccompanyScreen extends StatefulWidget {
 }
 
 class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
+
+  Accompany? accompany;
   // Lista de tipos de agendamentos
   List<String> tipoDeAcompanhamento = [
     'MEDICAO',
@@ -27,13 +30,11 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
     filter: {"#": RegExp(r'[0-9]')}, // Define os caracteres permitidos
   );
 
-  TextEditingController especialistaController = TextEditingController();
-  TextEditingController descricaoController = TextEditingController();
-  TextEditingController localController = TextEditingController();
-  TextEditingController datahController = TextEditingController();
-  TextEditingController obsController = TextEditingController();
-  TextEditingController tipoAgendamentoController = TextEditingController();
-  
+  TextEditingController tipoAcompanhamentoController = TextEditingController();
+  TextEditingController prescricaoMedicaController = TextEditingController();
+  TextEditingController medicacaoController = TextEditingController();
+  TextEditingController tipoMedicacaoController = TextEditingController();
+  TextEditingController dataAcompanhamentoController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -69,12 +70,12 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                     ),
                   ),
                 ),
-                value: tipoAgendamentoController.text.isEmpty
+                value: tipoAcompanhamentoController.text.isEmpty
                     ? null
-                    : tipoAgendamentoController.text,
+                    : tipoAcompanhamentoController.text,
                 onChanged: (String? newValue) {
                   setState(() {
-                    tipoAgendamentoController.text = newValue!;
+                    tipoAcompanhamentoController.text = newValue!;
                   });
                 },
                 items: <String>[
@@ -105,36 +106,30 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
           ),
           //Especialista
           CustomTextField(
-            controller: especialistaController,
+            controller: prescricaoMedicaController,
             icon: Icons.person,
             label: 'Prescrição Médica',
           ),
           //Descrição
           CustomTextField(
-            controller: descricaoController,
+            controller: medicacaoController,
             icon: Icons.description,
             label: 'Medicação',
           ),
           //Local
           CustomTextField(
-            controller: localController,
+            controller: tipoMedicacaoController,
             icon: Icons.location_on,
             label: 'Controloda ou Temporária',
           ),
           //Data e Horário
           CustomTextField(
-            controller: datahController,
+            controller: dataAcompanhamentoController,
             icon: Icons.date_range,
             label: 'Agendamento | Horário',
             inputFormatters: [dataFormatter],
           ),
-          //Observações
-          CustomTextField(
-            controller: obsController,
-            icon: Icons.description,
-            label: 'Observações',
-          ),
-                    
+
           // Botão de Agendar
           SizedBox(
             height: 50,
@@ -147,19 +142,22 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
               onPressed: () async {
                 final dataFormatada =
                     DateFormat('dd/MM/yyyy hh:mm:ss a').format(DateTime.now());
-                    
-                bool schedule = await ScheduleService.getSchedule(
-                    dataFormatada,
-                    localController.text,
-                    descricaoController.text,
-                    obsController.text,
-                    especialistaController.text,
-                    tipoAgendamentoController.text);
-                if (schedule) {
-                  Navigator.of(context)
-                      .pushReplacement(MaterialPageRoute(builder: (c) {
-                    return Agendamentos();
-                  }));
+
+                bool accompany = await AccompanyService.getAccompany(
+                  tipoAcompanhamentoController.text,
+                  prescricaoMedicaController.text,
+                  medicacaoController.text,
+                  tipoMedicacaoController.text,
+                  dataFormatada,
+                );
+                if (accompany) {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (c) {
+                        return ToAccompanyListScreen();
+                      },
+                    ),
+                  );
                 }
               },
               child: const Text(

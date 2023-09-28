@@ -14,11 +14,11 @@ class SignInScreen extends StatelessWidget {
 
   final _formKey = GlobalKey<FormState>();
 
-  Future<String?> _getFCMToken() async {
-    FirebaseMessagingService firebaseMessagingService = FirebaseMessagingService();
-    String? fcmToken = await firebaseMessagingService.getFirebaseToken();
-    return fcmToken;
-  }
+  // Future<String?> _getFCMToken() async {
+  //   FirebaseMessagingService firebaseMessagingService = FirebaseMessagingService();
+  //   String? fcmToken = await firebaseMessagingService.getFirebaseToken();
+  //   return fcmToken;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -26,11 +26,7 @@ class SignInScreen extends StatelessWidget {
     final emailController = TextEditingController();
     final passwordController = TextEditingController();
 
-    _getFCMToken().then((fcmToken) {
-      if (fcmToken != null) {
-        print("Token FCM: $fcmToken");
-      }
-    });
+    
 
     return Scaffold(
       backgroundColor: CustomColors.customSwatchColor,

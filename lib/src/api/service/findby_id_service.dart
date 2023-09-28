@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:prognosticare/src/config/uri.dart';
 import 'package:prognosticare/src/models/pessoa_model.dart';
 
 final storage = FlutterSecureStorage();
@@ -11,7 +12,7 @@ class GetFindbyIDService {
     String? token = await storage.read(key: 'token');
 
 
-    final url = Uri.parse('http://prognosticare.ddns.net:8085/register-person/find/$idPessoa');
+    final url = Uri.parse(UriTest.url.toString()+'/register-person/find/$idPessoa');
 
     try {
       final response = await http.get(

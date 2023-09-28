@@ -20,6 +20,16 @@ class Dependente {
     required this.cartaoNacional,
     required this.cartaoPlanoSaude,
   });
+  Dependente.cadastro ({
+    required this.nome,
+    required this.cpf,
+    required this.dataNascimento,
+    required this.tipoSanguineo,
+    required this.alergia,
+    required this.tipoAlergia,
+    required this.cartaoNacional,
+    required this.cartaoPlanoSaude,
+  });
 
   // Dependente copyWith({
   //   String? nome,

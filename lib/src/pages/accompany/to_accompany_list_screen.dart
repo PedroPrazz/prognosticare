@@ -17,7 +17,6 @@ class _ToAccompanyListScreenState extends State<ToAccompanyListScreen> {
   List<String> tiposAcompanhamentos = [
     'MEDICACAO',
     'PROCEDIMENTO',
-    'VACINA',
   ];
 
   @override
@@ -61,8 +60,8 @@ class _ToAccompanyListScreenState extends State<ToAccompanyListScreen> {
                   );
                 }).toList(),
                 decoration: InputDecoration(
-                  labelText: 'Tipo de Agendamento',
-                  hintText: 'Selecione um tipo de agendamento...',
+                  labelText: 'Tipo de Acompanhamento',
+                  hintText: 'Selecione um tipo de acompanhamento...',
                   border: OutlineInputBorder(),
                 ),
               ),

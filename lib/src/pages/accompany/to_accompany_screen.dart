@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:prognosticare/components/common_widgets/custom_text_field.dart';
 import 'package:prognosticare/src/api/service/to_accompany_register_service.dart';
+import 'package:prognosticare/components/common_widgets/custom_text_field.dart';
 import 'package:prognosticare/src/models/to_accompany_model.dart';
 import 'package:prognosticare/src/pages/accompany/to_accompany_list_screen.dart';
 
 class ToAccompanyScreen extends StatefulWidget {
   ToAccompanyScreen({super.key});
+
 
   @override
   State<ToAccompanyScreen> createState() => _ToAccompanyScreenState();
@@ -16,10 +17,11 @@ class ToAccompanyScreen extends StatefulWidget {
 class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
 
   Accompany? accompany;
+
   // Lista de tipos de agendamentos
   List<String> tipoDeAcompanhamento = [
-    'MEDICAO',
-    'PROCEDIMENTO',
+    'Medicacao',
+    'Procedimentos'
   ];
 
   // Variável para armazenar o valor selecionado na combo box
@@ -30,11 +32,11 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
     filter: {"#": RegExp(r'[0-9]')}, // Define os caracteres permitidos
   );
 
-  TextEditingController tipoAcompanhamentoController = TextEditingController();
   TextEditingController prescricaoMedicaController = TextEditingController();
   TextEditingController medicacaoController = TextEditingController();
   TextEditingController tipoMedicacaoController = TextEditingController();
-  TextEditingController dataAcompanhamentoController = TextEditingController();
+  TextEditingController datahController = TextEditingController();
+  TextEditingController tipoAcompanhamentoController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -120,17 +122,16 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
           CustomTextField(
             controller: tipoMedicacaoController,
             icon: Icons.location_on,
-            label: 'Controloda ou Temporária',
+            label: 'Controlada ou Temporaria',
           ),
           //Data e Horário
           CustomTextField(
-            controller: dataAcompanhamentoController,
+            controller: datahController,
             icon: Icons.date_range,
-            label: 'Agendamento | Horário',
+            label: 'Data | Horário',
             inputFormatters: [dataFormatter],
           ),
-
-          // Botão de Agendar
+          // Botão de Acompanhar
           SizedBox(
             height: 50,
             child: ElevatedButton(
@@ -142,26 +143,22 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
               onPressed: () async {
                 final dataFormatada =
                     DateFormat('dd/MM/yyyy hh:mm:ss a').format(DateTime.now());
-
+                    
                 bool accompany = await AccompanyService.getAccompany(
-                  tipoAcompanhamentoController.text,
-                  prescricaoMedicaController.text,
-                  medicacaoController.text,
-                  tipoMedicacaoController.text,
-                  dataFormatada,
-                );
+                    dataFormatada,
+                    tipoAcompanhamentoController.text,
+                    prescricaoMedicaController.text,
+                    medicacaoController.text,
+                    tipoMedicacaoController.text);
                 if (accompany) {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (c) {
-                        return ToAccompanyListScreen();
-                      },
-                    ),
-                  );
+                  Navigator.of(context)
+                      .pushReplacement(MaterialPageRoute(builder: (c) {
+                    return ToAccompanyListScreen();
+                  }));
                 }
               },
               child: const Text(
-                'Salvar',
+                'Agendar',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 18,

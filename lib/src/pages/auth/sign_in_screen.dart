@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:prognosticare/components/dialogs/change_password_dialog.dart';
 import 'package:prognosticare/components/dialogs/forgot_password_dialog.dart';
-import 'package:prognosticare/src/api/service/firebase_messaging_service.dart';
 import 'package:prognosticare/src/api/service/login_service.dart';
 import 'package:prognosticare/components/common_widgets/custom_text_field.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';

@@ -3,7 +3,7 @@
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:prognosticare/src/api/service/FirebaseMessagingService.dart';
+import 'package:prognosticare/src/api/service/firebase_messaging_service.dart';
 import 'package:prognosticare/src/config/uri.dart';
 
 

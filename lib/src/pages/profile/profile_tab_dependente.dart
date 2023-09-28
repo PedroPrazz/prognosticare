@@ -50,12 +50,14 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
       // Formatando a data no formato desejado (10/10/2008)
       // ignore: unnecessary_null_comparison
       if (widget.dependente!.dataNascimento != null) {
-        final formattedDate = DateFormat('dd/MM/yyyy').format(DateTime.parse(widget.dependente!.dataNascimento));
+        final formattedDate = DateFormat('dd/MM/yyyy')
+            .format(DateTime.parse(widget.dependente!.dataNascimento));
         dataController.text = formattedDate;
       }
       cnsController.text = widget.dependente!.cartaoNacional ?? '';
       cpsController.text = widget.dependente!.cartaoPlanoSaude ?? '';
-      tipoSanguineoController.text = widget.dependente!.tipoSanguineo ?? 'SELECIONE';
+      tipoSanguineoController.text =
+          widget.dependente!.tipoSanguineo ?? 'SELECIONE';
       alergiaMarcada = widget.dependente!.alergia ?? false;
       tipoAlergiaController.text = widget.dependente!.tipoAlergia ?? '';
       alergiaController.text = widget.dependente!.alergia.toString();
@@ -207,19 +209,17 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                 ),
               ),
               onPressed: () async {
-                bool saveDependent = await RegisterServiceDepents.getRegisterD(
-                  Dependente(
-                    id: widget.dependente!.id,
-                    nome: nomeController.text,
-                    cpf: cpfController.text,
-                    dataNascimento: dataController.text,
-                    tipoSanguineo: tipoSanguineoController.text,
-                    alergia: alergiaMarcada,
-                    tipoAlergia: tipoAlergiaController.text,
-                    cartaoNacional: cnsController.text,
-                    cartaoPlanoSaude: cpsController.text,
-                  ),
+                Dependente dependente = new Dependente.cadastro(
+                  nome: nomeController.text,
+                  cpf: cpfController.text,
+                  dataNascimento: dataController.text,
+                  tipoSanguineo: tipoSanguineoController.text,
+                  alergia: alergiaMarcada,
+                  tipoAlergia: tipoAlergiaController.text,
+                  cartaoNacional: cnsController.text,
+                  cartaoPlanoSaude: cpsController.text,
                 );
+                bool saveDependent = await RegisterServiceDepents.getRegisterD(dependente);
                 if (saveDependent) {
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(

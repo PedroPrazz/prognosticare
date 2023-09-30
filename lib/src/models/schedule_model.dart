@@ -1,5 +1,5 @@
 class Schedule {
-  String id;
+  String? id;
   String? dataAgenda;
   String? local;
   String? statusEvento;

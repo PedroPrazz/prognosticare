@@ -60,16 +60,16 @@ class _ListDependentsState extends State<ListDependents> {
                   trailing: IconButton(
                     icon: Icon(Icons.delete),
                     onPressed: () async {
-                      final deleted =
-                          await DependentListService.deleteDependent(
-                              dependente.id!);
-                      if (deleted) {
-                        setState(() {
-                          // Atualize a lista de dependentes chamando dependentsFuture novamente
-                          dependentsFuture =
-                              DependentListService.getDependentList();
-                        });
-                      }
+                      // final deleted =
+                      //     await DependentListService.deleteDependent(
+                      //         dependente.id!);
+                      // if (deleted) {
+                      //   setState(() {
+                      //     // Atualize a lista de dependentes chamando dependentsFuture novamente
+                      //     dependentsFuture =
+                      //         DependentListService.getDependentList();
+                      //   });
+                      // }
                     },
                   ),
                   onTap: () {

@@ -14,7 +14,7 @@ class LoginService {
   static Future<bool> getLogin(String email, String password) async {
 
 
-    final url = Uri.parse(UriServer.url.toString()+'/login');
+    final url = Uri.parse(UriServidor.url.toString()+'/login');
 
     try {
       final response = await http.post(

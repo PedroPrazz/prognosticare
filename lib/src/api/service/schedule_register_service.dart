@@ -7,12 +7,12 @@ final storage = FlutterSecureStorage();
 
 class ScheduleService {
   static Future<bool> getSchedule(String data, String local, String descricao,
-    String observacoes, String especialista, String tipoExame) async {
+      String observacoes, String especialista, String tipoExame) async {
     String? idPessoa = await storage.read(key: 'user_id');
     String? token = await storage.read(key: 'token');
 
     final url =
-        Uri.parse(UriServer.url.toString() + '/to-scheduling/save/$idPessoa');
+        Uri.parse(UriServidor.url.toString() + '/to-scheduling/save/$idPessoa');
 
     try {
       final response = await http.post(
@@ -35,14 +35,11 @@ class ScheduleService {
         final responseBody = response.body;
         final dados = json.decode(responseBody);
 
-        await storage.write(key: 'token', value: dados['token']);
-        await storage.write(key: 'user_id', value: dados['pessoaEntity']);
+        print(dados);
 
         return true;
       } else {
         print('Response Status Code: ${response.statusCode}');
-        print({response.body});
-        print('Erro ao cadastrar evento!');
         return false;
       }
     } catch (e) {

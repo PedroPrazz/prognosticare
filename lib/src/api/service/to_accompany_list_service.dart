@@ -12,7 +12,7 @@ class ToAccompanyListService {
     String? token = await storage.read(key: 'token');
 
     final url =
-        Uri.parse(UriServer.url.toString() + '/to-accompany/list/$idPessoa');
+        Uri.parse(UriServidor.url.toString() + '/to-accompany/list/$idPessoa');
 
     try {
       final response = await http.get(

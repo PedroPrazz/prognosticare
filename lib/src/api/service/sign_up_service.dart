@@ -7,7 +7,7 @@ class RegisterService {
   static Future<bool> getRegister(String nome, String cpf, String email,
       String data, String password) async {
 
-    final url = Uri.parse(UriServer.url.toString() + '/register-person/save');
+    final url = Uri.parse(UriServidor.url.toString() + '/register-person/save');
 
     try {
       final response = await http.post(

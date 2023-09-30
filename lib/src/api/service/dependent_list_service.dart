@@ -11,7 +11,7 @@ class DependentListService {
     String? idPessoa = await storage.read(key: 'user_id');
     String? token = await storage.read(key: 'token');
 
-    final url = Uri.parse(UriServer.url.toString() +
+    final url = Uri.parse(UriServidor.url.toString() +
         '/register-person/list-dependents/$idPessoa');
 
     try {
@@ -44,7 +44,7 @@ class DependentListService {
   static Future<bool> deleteDependent(String dependentId) async {
     String? token = await storage.read(key: 'token');
     final url =
-        Uri.parse(UriServer.url.toString() + '/register-person/disable/$dependentId');
+        Uri.parse(UriServidor.url.toString() + '/register-person/disable/$dependentId');
 
     try {
       final response = await http.put(
@@ -74,13 +74,12 @@ class DependentListService {
   static Future<Dependente> updateDependent(Dependente dependente) async {
     String? token = await storage.read(key: 'token');
     final url = Uri.parse(
-        UriServer.url.toString() + '/register-person/updtae-dependent');
+        UriServidor.url.toString() + '/register-person/updtae-dependent');
 
     try {
       final response = await http.put(
         url,
         body: json.encode({
-          'id': dependente.id,
           'nome': dependente.nome,
           'cpf': dependente.cpf,
           'dataNascimento': dependente.dataNascimento,

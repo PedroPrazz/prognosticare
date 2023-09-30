@@ -9,7 +9,7 @@ class PersonUpdateService {
   static Future<Pessoa> getPerson(Pessoa pessoa) async {
 
   String? token = await storage.read(key: 'token');
-    final url = Uri.parse(UriServer.url.toString()+'/register-person/update');
+    final url = Uri.parse(UriServidor.url.toString()+'/register-person/update');
 
     try {
       final response = await http.put(

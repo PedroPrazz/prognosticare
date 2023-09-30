@@ -8,17 +8,15 @@ import 'package:prognosticare/components/common_widgets/custom_text_field.dart';
 import 'package:prognosticare/src/pages/schedule/schedule_list_screen.dart';
 
 class ScheduleScreen extends StatefulWidget {
-  ScheduleScreen({super.key});
+  final Schedule? schedule;
 
+  ScheduleScreen({Key? key, this.schedule}) : super(key: key);
 
   @override
   State<ScheduleScreen> createState() => _ScheduleScreenState();
 }
 
 class _ScheduleScreenState extends State<ScheduleScreen> {
-
-  Schedule? schedule;
-
   // Lista de tipos de agendamentos
   List<String> tiposDeAgendamento = [
     'Exames',
@@ -172,7 +170,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
               onPressed: () async {
                 final dataFormatada =
                     DateFormat('dd/MM/yyyy hh:mm:ss a').format(DateTime.now());
-                    
+
                 bool schedule = await ScheduleService.getSchedule(
                     dataFormatada,
                     localController.text,

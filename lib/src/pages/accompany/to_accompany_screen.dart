@@ -7,22 +7,17 @@ import 'package:prognosticare/src/models/to_accompany_model.dart';
 import 'package:prognosticare/src/pages/accompany/to_accompany_list_screen.dart';
 
 class ToAccompanyScreen extends StatefulWidget {
-  ToAccompanyScreen({super.key});
+  final Accompany? accompany;
 
+  ToAccompanyScreen({Key? key, this.accompany}) : super(key: key);
 
   @override
   State<ToAccompanyScreen> createState() => _ToAccompanyScreenState();
 }
 
 class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
-
-  Accompany? accompany;
-
   // Lista de tipos de agendamentos
-  List<String> tipoDeAcompanhamento = [
-    'Medicacao',
-    'Procedimentos'
-  ];
+  List<String> tipoDeAcompanhamento = ['Medicacao', 'Procedimentos'];
 
   // Variável para armazenar o valor selecionado na combo box
   String? tipoSelecionado;
@@ -32,11 +27,12 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
     filter: {"#": RegExp(r'[0-9]')}, // Define os caracteres permitidos
   );
 
-  TextEditingController prescricaoMedicaController = TextEditingController();
-  TextEditingController medicacaoController = TextEditingController();
-  TextEditingController tipoMedicacaoController = TextEditingController();
-  TextEditingController datahController = TextEditingController();
   TextEditingController tipoAcompanhamentoController = TextEditingController();
+  TextEditingController medicacaoController = TextEditingController();
+  TextEditingController dataAcompanhamentoController = TextEditingController();
+  TextEditingController tipoTemporarioControladoController =
+      TextEditingController();
+  TextEditingController prescricaoMedicaController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -106,32 +102,31 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
               ),
             ),
           ),
-          //Especialista
-          CustomTextField(
-            controller: prescricaoMedicaController,
-            icon: Icons.person,
-            label: 'Prescrição Médica',
-          ),
-          //Descrição
+          //Medicação
           CustomTextField(
             controller: medicacaoController,
-            icon: Icons.description,
+            icon: Icons.medical_information,
             label: 'Medicação',
-          ),
-          //Local
-          CustomTextField(
-            controller: tipoMedicacaoController,
-            icon: Icons.location_on,
-            label: 'Controlada ou Temporaria',
           ),
           //Data e Horário
           CustomTextField(
-            controller: datahController,
+            controller: dataAcompanhamentoController,
             icon: Icons.date_range,
             label: 'Data | Horário',
             inputFormatters: [dataFormatter],
           ),
-          // Botão de Acompanhar
+          //Controlado ou Temporario
+          CustomTextField(
+            controller: tipoTemporarioControladoController,
+            icon: Icons.content_paste_search_outlined,
+            label: 'Controlada ou Temporária',
+          ),
+          CustomTextField(
+            controller: prescricaoMedicaController,
+            icon: Icons.medical_information_outlined,
+            label: 'Prescrição Médica',
+          ),
+          // Botão de Agendar
           SizedBox(
             height: 50,
             child: ElevatedButton(
@@ -143,13 +138,13 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
               onPressed: () async {
                 final dataFormatada =
                     DateFormat('dd/MM/yyyy hh:mm:ss a').format(DateTime.now());
-                    
+
                 bool accompany = await AccompanyService.getAccompany(
                     dataFormatada,
-                    tipoAcompanhamentoController.text,
-                    prescricaoMedicaController.text,
                     medicacaoController.text,
-                    tipoMedicacaoController.text);
+                    prescricaoMedicaController.text,
+                    tipoTemporarioControladoController.text,
+                    tipoAcompanhamentoController.text);
                 if (accompany) {
                   Navigator.of(context)
                       .pushReplacement(MaterialPageRoute(builder: (c) {

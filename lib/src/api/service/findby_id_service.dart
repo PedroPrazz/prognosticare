@@ -12,7 +12,7 @@ class GetFindbyIDService {
     String? token = await storage.read(key: 'token');
 
 
-    final url = Uri.parse(UriServer.url.toString()+'/register-person/find/$idPessoa');
+    final url = Uri.parse(UriServidor.url.toString()+'/register-person/find/$idPessoa');
 
     try {
       final response = await http.get(

@@ -6,12 +6,17 @@ import 'package:prognosticare/src/config/uri.dart';
 final storage = FlutterSecureStorage();
 
 class AccompanyService {
-  static Future<bool> getAccompany(String medicacao, String dataAcompanhamento, String prescricaoMedica, String tipoTemporarioControlado, String tipoAcompanhamento) async {
+  static Future<bool> getAccompany(
+      String medicacao,
+      String dataAcompanhamento,
+      String prescricaoMedica,
+      String tipoTemporarioControlado,
+      String tipoAcompanhamento) async {
     String? idPessoa = await storage.read(key: 'user_id');
     String? token = await storage.read(key: 'token');
 
     final url =
-        Uri.parse(UriServer.url.toString() + '/to-accompany/save/$idPessoa');
+        Uri.parse(UriServidor.url.toString() + '/to-accompany/save/$idPessoa');
 
     try {
       final response = await http.post(
@@ -33,14 +38,11 @@ class AccompanyService {
         final responseBody = response.body;
         final dados = json.decode(responseBody);
 
-        await storage.write(key: 'token', value: dados['token']);
-        await storage.write(key: 'user_id', value: dados['pessoaEntity']);
+        print(dados);
 
         return true;
       } else {
         print('Response Status Code: ${response.statusCode}');
-        print({response.body});
-        print('Erro ao cadastrar evento!');
         return false;
       }
     } catch (e) {

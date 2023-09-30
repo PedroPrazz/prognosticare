@@ -1,5 +1,4 @@
 class Dependente {
-  String? id;
   String nome;
   String cpf;
   String dataNascimento;
@@ -10,7 +9,6 @@ class Dependente {
   String? cartaoPlanoSaude;
 
   Dependente ({
-    required this.id,
     required this.nome,
     required this.cpf,
     required this.dataNascimento,
@@ -20,20 +18,10 @@ class Dependente {
     required this.cartaoNacional,
     required this.cartaoPlanoSaude,
   });
-  Dependente.cadastro ({
-    required this.nome,
-    required this.cpf,
-    required this.dataNascimento,
-    required this.tipoSanguineo,
-    required this.alergia,
-    required this.tipoAlergia,
-    required this.cartaoNacional,
-    required this.cartaoPlanoSaude,
-  });
+  
 
   factory Dependente.fromJson(Map<String, dynamic> json) {
     return Dependente(
-      id: json['id'],
       nome: json['nome'],
       cpf: json['cpf'],
       dataNascimento: json['dataNascimento'],
@@ -47,7 +35,6 @@ class Dependente {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
       'nome': nome,
       'cpf': cpf,
       'dataNascimento': dataNascimento,

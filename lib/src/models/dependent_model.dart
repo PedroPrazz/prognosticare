@@ -31,28 +31,6 @@ class Dependente {
     required this.cartaoPlanoSaude,
   });
 
-  // Dependente copyWith({
-  //   String? nome,
-  //   String? cpf,
-  //   String? dataNascimento,
-  //   String? tipoSanguineo,
-  //   bool? alergia,
-  //   String? tipoAlergia,
-  //   String? cartaoNacional,
-  //   String? cartaoPlanoSaude,
-  // }) {
-  //   return Dependente(
-  //     nome: nome ?? this.nome,
-  //     cpf: cpf ?? this.cpf,
-  //     dataNascimento: dataNascimento ?? this.dataNascimento,
-  //     tipoSanguineo: tipoSanguineo ?? this.tipoSanguineo,
-  //     alergia: alergia ?? this.alergia,
-  //     tipoAlergia: tipoAlergia ?? this.tipoAlergia,
-  //     cartaoNacional: cartaoNacional ?? this.cartaoNacional,
-  //     cartaoPlanoSaude: cartaoPlanoSaude ?? this.cartaoPlanoSaude,
-  //   );
-  // }
-
   factory Dependente.fromJson(Map<String, dynamic> json) {
     return Dependente(
       id: json['id'],

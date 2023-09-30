@@ -11,8 +11,8 @@ class DependentListService {
     String? idPessoa = await storage.read(key: 'user_id');
     String? token = await storage.read(key: 'token');
 
-    final url = Uri.parse(
-        UriServer.url.toString() + '/register-person/list-dependents/$idPessoa');
+    final url = Uri.parse(UriServer.url.toString() +
+        '/register-person/list-dependents/$idPessoa');
 
     try {
       final response = await http.get(
@@ -43,11 +43,11 @@ class DependentListService {
 
   static Future<bool> deleteDependent(String dependentId) async {
     String? token = await storage.read(key: 'token');
-    final url = Uri.parse(
-        UriServer.url.toString() + '/delete-dependent/$dependentId');
+    final url =
+        Uri.parse(UriServer.url.toString() + '/register-person/disable/$dependentId');
 
     try {
-      final response = await http.delete(
+      final response = await http.put(
         url,
         headers: {
           'Content-Type': 'application/json',
@@ -70,7 +70,45 @@ class DependentListService {
       throw Exception('Exeption no método deleteDependent Erro no Try/Catch');
     }
   }
-  
+
+  static Future<Dependente> updateDependent(Dependente dependente) async {
+    String? token = await storage.read(key: 'token');
+    final url = Uri.parse(
+        UriServer.url.toString() + '/register-person/updtae-dependent');
+
+    try {
+      final response = await http.put(
+        url,
+        body: json.encode({
+          'id': dependente.id,
+          'nome': dependente.nome,
+          'cpf': dependente.cpf,
+          'dataNascimento': dependente.dataNascimento,
+          'tipoSanguineo': dependente.tipoSanguineo,
+          'alergia': dependente.alergia,
+          'tipoAlergia': dependente.tipoAlergia,
+          'cartaoNacional': dependente.cartaoNacional,
+          'cartaoPlanoSaude': dependente.cartaoPlanoSaude,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> jsonData = json.decode(response.body);
+        Dependente dependente = Dependente.fromJson(jsonData);
+
+        return dependente;
+      } else {
+        print('Response Status Code: ${response.statusCode}');
+
+        throw Exception('Erro ao atualizar Dependente');
+      }
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('Erro de Try Catch ao atualizar Dependente');
+    }
+  }
 }
-
-

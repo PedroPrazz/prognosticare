@@ -3,16 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:prognosticare/src/api/service/dependent_register_service.dart';
+import 'package:prognosticare/src/api/service/dependent_list_service.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/models/dependent_model.dart';
-import 'package:prognosticare/src/pages/home/home_screen.dart';
 import 'package:prognosticare/components/common_widgets/custom_text_field.dart';
 
 class ProfileTabDepentende extends StatefulWidget {
   final Dependente? dependente;
+  final bool isEditing;
 
-  ProfileTabDepentende({Key? key, this.dependente}) : super(key: key);
+  ProfileTabDepentende({Key? key, this.dependente, this.isEditing = false})
+      : super(key: key);
 
   @override
   State<ProfileTabDepentende> createState() => _ProfileTabDepentendeState();
@@ -41,14 +42,14 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
   TextEditingController tipoAlergiaController = TextEditingController();
   TextEditingController alergiaController = TextEditingController();
 
+  bool estaEditando = false;
+
   @override
   void initState() {
     super.initState();
-    if (widget.dependente != null) {
+    if (widget.isEditing) {
       nomeController.text = widget.dependente!.nome;
       cpfController.text = widget.dependente!.cpf;
-      // Formatando a data no formato desejado (10/10/2008)
-      // ignore: unnecessary_null_comparison
       if (widget.dependente!.dataNascimento != null) {
         final formattedDate = DateFormat('dd/MM/yyyy')
             .format(DateTime.parse(widget.dependente!.dataNascimento));
@@ -68,8 +69,8 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Perfil do Dependente',
+        title: Text(
+          estaEditando ? 'Editar Dependente' : 'Adicionar Dependente',
         ),
         foregroundColor: Colors.white,
       ),
@@ -209,24 +210,43 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                 ),
               ),
               onPressed: () async {
-                Dependente dependente = new Dependente.cadastro(
+                // Crie um objeto Dependente com base nos valores dos controladores de texto
+                Dependente dependente = Dependente(
+                  id: widget.dependente ?.id, // Certifique-se de passar o ID do dependente
                   nome: nomeController.text,
                   cpf: cpfController.text,
                   dataNascimento: dataController.text,
                   tipoSanguineo: tipoSanguineoController.text,
                   alergia: alergiaMarcada,
-                  tipoAlergia: tipoAlergiaController.text,
+                  tipoAlergia: alergiaMarcada ? tipoAlergiaController.text : null,
                   cartaoNacional: cnsController.text,
                   cartaoPlanoSaude: cpsController.text,
                 );
-                bool saveDependent = await RegisterServiceDepents.getRegisterD(dependente);
-                if (saveDependent) {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (c) {
-                        return HomeScreen();
-                      },
-                    ),
+
+                Dependente updated = await DependentListService.updateDependent(dependente);
+
+                if (updated != null) {
+                  // Atualização bem-sucedida, volte para a lista de dependentes
+                  Navigator.of(context).pop();
+                } else {
+                  // Exiba uma mensagem de erro em caso de falha
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: Text('Erro na Atualização'),
+                        content:
+                            Text('Não foi possível atualizar o dependente.'),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text('OK'),
+                          ),
+                        ],
+                      );
+                    },
                   );
                 }
               },

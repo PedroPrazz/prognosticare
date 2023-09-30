@@ -49,8 +49,10 @@ class _ListDependentsState extends State<ListDependents> {
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (c) {
-                          // Passe o dependente selecionado para a tela de edição
-                          return ProfileTabDepentende(dependente: dependente);
+                          return ProfileTabDepentende(
+                            dependente: dependente,
+                            isEditing: true, // Modo de edição ativado
+                          );
                         },
                       ));
                     },

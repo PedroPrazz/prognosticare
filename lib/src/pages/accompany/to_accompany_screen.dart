@@ -153,7 +153,7 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                 }
               },
               child: const Text(
-                'Agendar',
+                'Acompanhar',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 18,

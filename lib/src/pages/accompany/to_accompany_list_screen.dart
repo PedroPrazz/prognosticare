@@ -51,13 +51,15 @@ class _ToAccompanyListScreenState extends State<ToAccompanyListScreen> {
               itemBuilder: (context, index) {
                 final toaccompany = accompany[index];
                 return ListTile(
-                  title: Text(toaccompany.prescricaoMedica!),
+                  title: Text(toaccompany.medicacao!),
+                  subtitle: Text(toaccompany.prescricaoMedica!),
                   leading: IconButton(
                     icon: Icon(Icons.edit),
                     onPressed: () {},
                   ),
                   trailing: IconButton(
                     icon: Icon(Icons.delete),
+                    color: Colors.red,
                     onPressed: () {},
                   ),
                   onTap: () {},
@@ -79,7 +81,7 @@ class _ToAccompanyListScreenState extends State<ToAccompanyListScreen> {
           ));
         },
         label: Text(
-          'AGENDAR',
+          'ACOMPANHAR',
           style: TextStyle(color: Colors.white),
         ),
         icon: Icon(

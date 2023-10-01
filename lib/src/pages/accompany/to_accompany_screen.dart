@@ -140,11 +140,11 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                     DateFormat('dd/MM/yyyy hh:mm:ss a').format(DateTime.now());
 
                 bool accompany = await AccompanyService.getAccompany(
-                    dataFormatada,
+                    tipoAcompanhamentoController.text,
                     medicacaoController.text,
-                    prescricaoMedicaController.text,
+                    dataFormatada,
                     tipoTemporarioControladoController.text,
-                    tipoAcompanhamentoController.text);
+                    prescricaoMedicaController.text);
                 if (accompany) {
                   Navigator.of(context)
                       .pushReplacement(MaterialPageRoute(builder: (c) {

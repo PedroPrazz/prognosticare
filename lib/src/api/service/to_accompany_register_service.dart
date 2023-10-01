@@ -7,11 +7,12 @@ final storage = FlutterSecureStorage();
 
 class AccompanyService {
   static Future<bool> getAccompany(
-      String medicacao,
-      String dataAcompanhamento,
-      String prescricaoMedica,
-      String tipoTemporarioControlado,
-      String tipoAcompanhamento) async {
+    String tipoAcompanhamento,
+    String medicacao,
+    String dataAcompanhamento,
+    String tipoTemporarioControlado,
+    String prescricaoMedica,
+  ) async {
     String? idPessoa = await storage.read(key: 'user_id');
     String? token = await storage.read(key: 'token');
 

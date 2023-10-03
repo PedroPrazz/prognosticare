@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:prognosticare/src/api/service/dependent_list_service.dart';
 // import 'package:prognosticare/src/api/service/dependent_list_service.dart';
 import 'package:prognosticare/src/api/service/dependent_register_service.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
@@ -14,7 +15,7 @@ import 'package:prognosticare/src/pages/auth/dependents.dart';
 
 class ProfileTabDepentende extends StatefulWidget {
   final Dependente? dependente;
-  final bool isEditing;
+  bool isEditing;
 
   ProfileTabDepentende({Key? key, this.dependente, this.isEditing = false})
       : super(key: key);
@@ -46,7 +47,6 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
   TextEditingController tipoAlergiaController = TextEditingController();
   TextEditingController alergiaController = TextEditingController();
 
-  bool estaEditando = false;
 
   @override
   void initState() {
@@ -74,7 +74,7 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          estaEditando ? 'Editar Dependente' : 'Adicionar Dependente',
+          widget.isEditing ? 'Editar Dependente' : 'Adicionar Dependente',
         ),
         foregroundColor: Colors.white,
       ),
@@ -214,7 +214,10 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                 ),
               ),
               onPressed: () async {
-                final dependente = Dependente(
+                
+                if (widget.isEditing == true) {
+                  final dependente = Dependente(
+                  id: widget.dependente!.id,
                   nome: nomeController.text,
                   cpf: cpfController.text,
                   dataNascimento: dataController.text,
@@ -224,19 +227,52 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                   cartaoNacional: cnsController.text,
                   cartaoPlanoSaude: cpsController.text,
                 );
-
-                // Call the service to save the dependent
-                final result =
-                    await RegisterServiceDepents.getRegisterD(dependente);
-
-                if (result) {
-                 Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => ListDependents()),
-                    (route) => false);
+                  bool update =
+                      await DependentListService.updateDependent(dependente);
+                  if (update) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Dependente atualizado com sucesso',
+                        ),
+                        backgroundColor: Colors.green,
+                      ),
+                    );
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ListDependents()),
+                        (route) => false);
+                  } else{
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Erro no servidor abraço, tente depois',
+                        ),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  }
                 } else {
-                  // Failed to save
-                  // You can add code here to show an error message
+                  final dependente = Dependente.cadastar(
+                  nome: nomeController.text,
+                  cpf: cpfController.text,
+                  dataNascimento: dataController.text,
+                  tipoSanguineo: tipoSanguineoController.text,
+                  alergia: alergiaMarcada,
+                  tipoAlergia: tipoAlergiaController.text,
+                  cartaoNacional: cnsController.text,
+                  cartaoPlanoSaude: cpsController.text,
+                );
+                  bool register =
+                      await RegisterServiceDepents.getRegisterD(dependente);
+                  if (register) {
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ListDependents()),
+                        (route) => false);
+                  }
                 }
               },
               child: const Text(

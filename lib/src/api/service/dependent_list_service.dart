@@ -41,7 +41,7 @@ class DependentListService {
     }
   }
 
-  static Future<bool> deleteDependent(String dependentId) async {
+  static Future<bool> disableDependente(String dependentId) async {
     String? token = await storage.read(key: 'token');
     final url =
         Uri.parse(UriServidor.url.toString() + '/register-person/disable/$dependentId');
@@ -55,7 +55,7 @@ class DependentListService {
         },
       );
 
-      if (response.statusCode == 204) {
+      if (response.statusCode == 200) {
         // Exclusão bem-sucedida, o servidor retornou um código 204 (No Content).
         return true;
       } else if (response.statusCode == 404) {
@@ -71,15 +71,16 @@ class DependentListService {
     }
   }
 
-  static Future<Dependente> updateDependent(Dependente dependente) async {
+  static Future<bool> updateDependent(Dependente dependente) async {
     String? token = await storage.read(key: 'token');
     final url = Uri.parse(
-        UriServidor.url.toString() + '/register-person/updtae-dependent');
+        UriServidor.url.toString() + '/register-person/update-dependent');
 
     try {
       final response = await http.put(
         url,
         body: json.encode({
+          'pessoa_id': dependente.id,
           'nome': dependente.nome,
           'cpf': dependente.cpf,
           'dataNascimento': dependente.dataNascimento,
@@ -96,10 +97,8 @@ class DependentListService {
       );
 
       if (response.statusCode == 200) {
-        Map<String, dynamic> jsonData = json.decode(response.body);
-        Dependente dependente = Dependente.fromJson(jsonData);
 
-        return dependente;
+        return true;
       } else {
         print('Response Status Code: ${response.statusCode}');
 

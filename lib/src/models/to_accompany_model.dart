@@ -19,6 +19,15 @@ class Accompany {
     required this.prescricaoMedica,
   });
 
+  Accompany.criar({
+    required this.tipoAcompanhamento,
+    required this.medicacao,
+    this.statusEvento,
+    required this.dataAcompanhamento,
+    required this.tipoTemporarioControlado,
+    required this.prescricaoMedica,
+  });
+
   factory Accompany.fromJson(Map<String, dynamic> json) {
     return Accompany(
       id: json['id'],

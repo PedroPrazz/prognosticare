@@ -28,7 +28,7 @@ class _ListDependentsState extends State<ListDependents> {
       ),
       body: FutureBuilder<List<Dependente>>(
         future: dependentsFuture,
-        builder: (context, snapshot) {
+        builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
@@ -42,6 +42,7 @@ class _ListDependentsState extends State<ListDependents> {
               itemCount: dependentes.length,
               itemBuilder: (context, index) {
                 final dependente = dependentes[index];
+                if (snapshot.data[index]['ativo'] == true) {
                 return ListTile(
                   title: Text(dependente.nome),
                   leading: IconButton(
@@ -60,26 +61,22 @@ class _ListDependentsState extends State<ListDependents> {
                   trailing: IconButton(
                     icon: Icon(Icons.delete),
                     onPressed: () async {
-                      // final deleted =
-                      //     await DependentListService.deleteDependent(
-                      //         dependente.id!);
-                      // if (deleted) {
-                      //   setState(() {
-                      //     // Atualize a lista de dependentes chamando dependentsFuture novamente
-                      //     dependentsFuture =
-                      //         DependentListService.getDependentList();
-                      //   });
-                      // }
+                      final deleted =
+                          await DependentListService.disableDependente(
+                              dependente.id!);
+                      if (deleted) {
+                        setState(() {
+                          // Atualize a lista de dependentes chamando dependentsFuture novamente
+                          dependentsFuture =
+                              DependentListService.getDependentList();
+                        });
+                      }
                     },
                   ),
                   onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (c) {
-                        return ProfileTabDepentende();
-                      },
-                    ));
                   },
                 );
+                }
               },
             );
           }

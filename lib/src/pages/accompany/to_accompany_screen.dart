@@ -7,9 +7,9 @@ import 'package:prognosticare/src/models/to_accompany_model.dart';
 import 'package:prognosticare/src/pages/accompany/to_accompany_list_screen.dart';
 
 class ToAccompanyScreen extends StatefulWidget {
-  final Accompany? accompany;
+  
 
-  ToAccompanyScreen({Key? key, this.accompany}) : super(key: key);
+  ToAccompanyScreen({Key? key}) : super(key: key);
 
   @override
   State<ToAccompanyScreen> createState() => _ToAccompanyScreenState();
@@ -136,20 +136,25 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                 ),
               ),
               onPressed: () async {
-                final dataFormatada =
-                    DateFormat('dd/MM/yyyy hh:mm:ss a').format(DateTime.now());
+                // Parse the input date string to a DateTime object
+                // final inputDate = DateFormat('dd/MM/yyyy hh:mm:ss a').parse(dataAcompanhamentoController.text);
 
-                bool accompany = await AccompanyService.getAccompany(
-                    tipoAcompanhamentoController.text,
-                    medicacaoController.text,
-                    dataFormatada,
-                    tipoTemporarioControladoController.text,
-                    prescricaoMedicaController.text);
-                if (accompany) {
-                  Navigator.of(context)
-                      .pushReplacement(MaterialPageRoute(builder: (c) {
-                    return ToAccompanyListScreen();
-                  }));
+                // Format the DateTime object to the desired format
+                final formattedDate = DateFormat('dd/MM/yyyy hh:mm:ss a').format(DateTime.now());
+                Accompany accompany = new Accompany.criar(
+                    tipoAcompanhamento: tipoAcompanhamentoController.text,
+                    medicacao: medicacaoController.text,
+                    dataAcompanhamento: formattedDate,
+                    tipoTemporarioControlado: tipoTemporarioControladoController.text,
+                    prescricaoMedica: prescricaoMedicaController.text);
+                    
+                bool registerAccompany = await AccompanyService.getAccompany(accompany);
+                if (registerAccompany) {
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ToAccompanyListScreen()),
+                      (route) => false);
                 }
               },
               child: const Text(

@@ -38,7 +38,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 height:
                     30), // Espaçamento entre a imagem e o indicador de progresso.
             CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.pinkAccent),
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.greenAccent),
             ),
           ],
         ),

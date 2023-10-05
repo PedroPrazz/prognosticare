@@ -42,7 +42,7 @@ class _ListDependentsState extends State<ListDependents> {
               itemCount: dependentes.length,
               itemBuilder: (context, index) {
                 final dependente = dependentes[index];
-                if (snapshot.data[index]['ativo'] == true) {
+                if (dependente.ativo == true) {
                 return ListTile(
                   title: Text(dependente.nome),
                   leading: IconButton(

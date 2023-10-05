@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:prognosticare/src/api/service/to_accompany_register_service.dart';
 import 'package:prognosticare/components/common_widgets/custom_text_field.dart';
+import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/models/to_accompany_model.dart';
 import 'package:prognosticare/src/pages/accompany/to_accompany_list_screen.dart';
 
@@ -42,6 +43,7 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
           'Acompanhamentos',
         ),
         foregroundColor: Colors.white,
+        backgroundColor: CustomColors.customSwatchColor,
       ),
       body: ListView(
         physics: const BouncingScrollPhysics(),
@@ -64,7 +66,7 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(18),
                     borderSide: BorderSide(
-                      color: Color.fromRGBO(255, 143, 171, 1),
+                      color: CustomColors.customSwatchColor,
                     ),
                   ),
                 ),
@@ -85,12 +87,12 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                     child: Row(
                       children: [
                         Icon(Icons.library_books,
-                            color: Color.fromRGBO(255, 143, 171, 1)),
+                            color: CustomColors.customSwatchColor),
                         SizedBox(width: 10),
                         Text(
                           value,
                           style: TextStyle(
-                            color: Color.fromRGBO(255, 143, 171, 1),
+                            color: CustomColors.customSwatchColor,
                             fontSize: 12,
                             fontWeight: FontWeight.normal,
                           ),

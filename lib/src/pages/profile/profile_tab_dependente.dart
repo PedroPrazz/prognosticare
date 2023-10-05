@@ -216,7 +216,8 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
               onPressed: () async {
                 
                 if (widget.isEditing == true) {
-                  final dependente = Dependente(
+                  final dependente = Dependente.editar(
+                  ativo: widget.dependente!.ativo,
                   id: widget.dependente!.id,
                   nome: nomeController.text,
                   cpf: cpfController.text,

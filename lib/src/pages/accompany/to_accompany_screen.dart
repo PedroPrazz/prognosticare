@@ -8,9 +8,10 @@ import 'package:prognosticare/src/models/to_accompany_model.dart';
 import 'package:prognosticare/src/pages/accompany/to_accompany_list_screen.dart';
 
 class ToAccompanyScreen extends StatefulWidget {
+  final Accompany? accompany;
   
 
-  ToAccompanyScreen({Key? key}) : super(key: key);
+  ToAccompanyScreen({Key? key, this.accompany}) : super(key: key);
 
   @override
   State<ToAccompanyScreen> createState() => _ToAccompanyScreenState();

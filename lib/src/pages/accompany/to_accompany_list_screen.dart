@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:prognosticare/src/api/service/to_accompany_list_service.dart';
+import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/models/to_accompany_model.dart';
 import 'package:prognosticare/src/pages/accompany/to_accompany_screen.dart';
 
@@ -31,7 +32,7 @@ class _ToAccompanyListScreenState extends State<ToAccompanyListScreen> {
         ),
         title: Text('Acompanhamentos'),
         centerTitle: true,
-        backgroundColor: Color.fromRGBO(255, 143, 171, 1),
+        backgroundColor: CustomColors.customSwatchColor,
         foregroundColor: Colors.white,
       ),
       body: FutureBuilder<List<Accompany>>(

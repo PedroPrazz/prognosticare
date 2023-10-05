@@ -148,28 +148,6 @@ class _HomeScreenState extends State<HomeScreen> {
         foregroundColor: Colors.white,
         centerTitle: true,
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          PopupMenuButton(
-            itemBuilder: (context) => [
-              PopupMenuItem(
-                child: TextButton(
-                  onPressed: () {},
-                  child: const Text('Agendamentos'),
-                ),
-              ),
-              PopupMenuItem(
-                child: TextButton(
-                  onPressed: () {},
-                  child: const Text('Acompanhamentos'),
-                ),
-              ),
-            ],
-          );
-        },
-        child: const Icon(Icons.add, color: Colors.white),
-        backgroundColor: CustomColors.customSwatchColor,
-      ),
     );
   }
 }

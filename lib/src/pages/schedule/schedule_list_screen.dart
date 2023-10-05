@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:prognosticare/src/api/service/schedule_list_service.dart';
+import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/models/schedule_model.dart';
 import 'package:prognosticare/src/pages/schedule/schedule_screen.dart';
 
@@ -31,7 +32,7 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
         ),
         title: Text('Agendamentos'),
         centerTitle: true,
-        backgroundColor: Color.fromRGBO(255, 143, 171, 1),
+        backgroundColor: CustomColors.customSwatchColor,
         foregroundColor: Colors.white,
       ),
       body: FutureBuilder<List<Schedule>>(

@@ -54,7 +54,8 @@ class SignInScreen extends StatelessWidget {
                           TextSpan(
                             text: 'Care',
                             style: TextStyle(
-                              color: Colors.pink,
+                              color: Colors.blue,
+                              fontWeight: FontWeight.bold
                             ),
                           )
                         ],

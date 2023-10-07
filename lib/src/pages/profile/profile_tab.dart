@@ -38,7 +38,6 @@ class _ProfileTabState extends State<ProfileTab> {
   TextEditingController cpsController = TextEditingController();
   TextEditingController tipoSanguineoController = TextEditingController();
   TextEditingController tipoAlergiaController = TextEditingController();
-  
 
   @override
   void initState() {
@@ -54,8 +53,6 @@ class _ProfileTabState extends State<ProfileTab> {
     tipoAlergiaController.text = widget.pessoa.tipoAlergia ?? '';
     alergiaMarcada = widget.pessoa.alergia ?? false;
     doadorMarcado = widget.pessoa.doador ?? false;
-
-    
   }
 
   @override
@@ -135,6 +132,10 @@ class _ProfileTabState extends State<ProfileTab> {
             controller: cpsController,
             icon: Icons.payment_outlined,
             label: 'Cartão do Plano de Saúde',
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly,
+              CNSInputFormatter()
+            ],
           ),
           //Tipo Sanguíneo
           Container(
@@ -152,7 +153,7 @@ class _ProfileTabState extends State<ProfileTab> {
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(18),
                   borderSide: BorderSide(
-                    color: Color.fromRGBO(255, 143, 171, 1),
+                    color: CustomColors.customSwatchColor,
                   ),
                 ),
               ),
@@ -180,12 +181,12 @@ class _ProfileTabState extends State<ProfileTab> {
                   child: Row(
                     children: [
                       Icon(Icons.bloodtype,
-                          color: Color.fromRGBO(255, 143, 171, 1)),
+                          color: CustomColors.customSwatchColor),
                       SizedBox(width: 10),
                       Text(
                         value,
                         style: TextStyle(
-                          color: Color.fromRGBO(255, 143, 171, 1),
+                          color: CustomColors.customSwatchColor,
                           fontSize: 12,
                           fontWeight: FontWeight.normal,
                         ),
@@ -205,7 +206,7 @@ class _ProfileTabState extends State<ProfileTab> {
             onChanged: (bool? value) {
               setState(
                 () {
-                 alergiaMarcada = value ?? false;
+                  alergiaMarcada = value ?? false;
                 },
               );
             },
@@ -266,23 +267,25 @@ class _ProfileTabState extends State<ProfileTab> {
                     widget.pessoa = pessoaAtualizado;
                   });
                   Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => HomeScreen()),
-                    (route) => false);
+                      context,
+                      MaterialPageRoute(builder: (context) => HomeScreen()),
+                      (route) => false);
                 } else {
                   print("id: ${pessoaAtualizada.pessoaId}");
                   print("Nome: ${pessoaAtualizada.nome}");
                   print("CPF: ${pessoaAtualizada.cpf}");
                   print("Email: ${pessoaAtualizada.email}");
                   print("Contato: ${pessoaAtualizada.contato}");
-                  print("Data de Nascimento: ${pessoaAtualizada.dataNascimento}");
+                  print(
+                      "Data de Nascimento: ${pessoaAtualizada.dataNascimento}");
                   print("tipoSanguineo: ${pessoaAtualizada.tipoSanguineo}");
                   print("alergia: ${pessoaAtualizada.alergia}");
                   print('doador:${pessoaAtualizada.doador}');
                   print("responsavel: ${pessoaAtualizada.tipoResponsavel}");
                   print("tipoAlergia: ${pessoaAtualizada.tipoAlergia}");
                   print("cartaoNacional: ${pessoaAtualizada.cartaoNacional}");
-                  print("cartaoPlanoSaude: ${pessoaAtualizada.cartaoPlanoSaude}");
+                  print(
+                      "cartaoPlanoSaude: ${pessoaAtualizada.cartaoPlanoSaude}");
                 }
               },
               child: const Text(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:prognosticare/components/dialogs/change_password_dialog.dart';
+import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/pages/auth/dependents.dart';
 import 'package:prognosticare/components/dialogs/prontuario_dialog.dart';
 import 'package:prognosticare/src/api/service/findby_id_service.dart';
@@ -84,9 +85,6 @@ class _HomeScreenState extends State<HomeScreen> {
               leading: const Icon(Icons.emoji_emotions),
               title: const Text('Meus Dependentes'),
               onTap: () async {
-                if (pessoa == null) {
-                  pessoa = await GetFindbyIDService.getFindbyID();
-                }
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -100,8 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ListTile(
               leading: const Icon(Icons.auto_stories),
               title: const Text('Minha Agenda'),
-              onTap: () {
-              },
+              onTap: () {},
             ),
 
             //Alterar Senha
@@ -144,31 +141,9 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
         title: const Text('PrognostiCare'),
-        backgroundColor: const Color.fromRGBO(255, 143, 171, 1),
+        backgroundColor: CustomColors.customSwatchColor,
         foregroundColor: Colors.white,
         centerTitle: true,
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          PopupMenuButton(
-            itemBuilder: (context) => [
-              PopupMenuItem(
-                child: TextButton(
-                  onPressed: () {},
-                  child: const Text('Agendamentos'),
-                ),
-              ),
-              PopupMenuItem(
-                child: TextButton(
-                  onPressed: () {},
-                  child: const Text('Acompanhamentos'),
-                ),
-              ),
-            ],
-          );
-        },
-        child: const Icon(Icons.add, color: Colors.white),
-        backgroundColor: const Color.fromRGBO(255, 143, 171, 1),
       ),
     );
   }

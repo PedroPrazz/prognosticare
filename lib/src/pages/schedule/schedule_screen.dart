@@ -96,12 +96,12 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                     child: Row(
                       children: [
                         Icon(Icons.library_books,
-                            color: Color.fromRGBO(255, 143, 171, 1)),
+                            color: CustomColors.customSwatchColor),
                         SizedBox(width: 10),
                         Text(
                           value,
                           style: TextStyle(
-                            color: Color.fromRGBO(255, 143, 171, 1),
+                            color: CustomColors.customSwatchColor,
                             fontSize: 12,
                             fontWeight: FontWeight.normal,
                           ),
@@ -138,6 +138,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
             label: 'Data | Horário',
             inputFormatters: [dataFormatter],
           ),
+          
           //Observações
           CustomTextField(
             controller: obsController,

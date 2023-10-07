@@ -8,8 +8,10 @@ class Schedule {
   String? observacao;
   String? especialista;
   String? tipoAgendamento;
+  bool? realizado = false;
 
   Schedule({
+    this.realizado,
     required this.id,
     required this.dataAgenda,
     required this.local,
@@ -20,6 +22,7 @@ class Schedule {
     required this.especialista,
     required this.tipoAgendamento,
   });
+
 
   factory Schedule.fromJson(Map<String, dynamic> json) {
     return Schedule(

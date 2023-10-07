@@ -70,7 +70,8 @@ class ChangePasswordDialog extends StatelessWidget {
                           if (changePassword) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text('Senha alterada com sucesso!'),
+                                content: Text(
+                                    'Senha alterada com sucesso! Faça login novamente.'),
                                 duration: Duration(seconds: 3),
                                 backgroundColor: Colors.green,
                               ),

@@ -18,6 +18,9 @@ class ToAccompanyScreen extends StatefulWidget {
 class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
   // Lista de tipos de agendamentos
   List<String> tipoDeAcompanhamento = ['Medicacao', 'Procedimentos'];
+  List<int> intervaloHora = [2, 3, 4, 6, 8, 12];
+
+  int selectedValue = 2;
 
   // Variável para armazenar o valor selecionado na combo box
   String? tipoSelecionado;
@@ -121,6 +124,61 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
             icon: Icons.content_paste_search_outlined,
             label: 'Controlada ou Temporária',
           ),
+
+          //Intervalo de horas
+          Padding(
+            padding: const EdgeInsets.only(bottom: 15),
+            child: Container(
+              width: 300,
+              child: DropdownButtonFormField<int>(
+                focusColor: Colors.white,
+                decoration: InputDecoration(
+                  hoverColor: Colors.blue,
+                  labelText: 'Intervalo de Horas',
+                  labelStyle: TextStyle(color: Colors.black),
+                  isDense: true,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(18),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(18),
+                    borderSide: BorderSide(
+                      color: CustomColors.customSwatchColor,
+                    ),
+                  ),
+                ),
+                value: selectedValue,
+                onChanged: (int? newValue) {
+                  setState(() {
+                    selectedValue = newValue ?? 2;
+                  });
+                },
+                items: intervaloHora.map<DropdownMenuItem<int>>((int value) {
+                  return DropdownMenuItem<int>(
+                    value: value,
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.library_books,
+                          color: CustomColors.customSwatchColor,
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          value.toString(),
+                          style: TextStyle(
+                            color: CustomColors.customSwatchColor,
+                            fontSize: 12,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
+          ),
+          //Prescrição
           CustomTextField(
             controller: prescricaoMedicaController,
             icon: Icons.medical_information_outlined,
@@ -140,15 +198,18 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                 // final inputDate = DateFormat('dd/MM/yyyy hh:mm:ss a').parse(dataAcompanhamentoController.text);
 
                 // Format the DateTime object to the desired format
-                final formattedDate = DateFormat('dd/MM/yyyy hh:mm:ss a').format(DateTime.now());
+                final formattedDate =
+                    DateFormat('dd/MM/yyyy hh:mm:ss a').format(DateTime.now());
                 Accompany accompany = new Accompany.criar(
                     tipoAcompanhamento: tipoAcompanhamentoController.text,
                     medicacao: medicacaoController.text,
                     dataAcompanhamento: formattedDate,
-                    tipoTemporarioControlado: tipoTemporarioControladoController.text,
+                    tipoTemporarioControlado:
+                        tipoTemporarioControladoController.text,
                     prescricaoMedica: prescricaoMedicaController.text);
-                    
-                bool registerAccompany = await AccompanyService.getAccompany(accompany);
+
+                bool registerAccompany =
+                    await AccompanyService.getAccompany(accompany);
                 if (registerAccompany) {
                   Navigator.pushAndRemoveUntil(
                       context,
@@ -158,7 +219,7 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                 }
               },
               child: const Text(
-                'Agendar',
+                'Acompanhar',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 18,

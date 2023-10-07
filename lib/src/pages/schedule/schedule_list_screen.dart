@@ -19,6 +19,47 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
     schedulesFuture = ScheduleListService.getScheduleList();
   }
 
+  // Função para exibir o AlertDialog de confirmação
+  Future<void> _confirmarAgendamento(Schedule schedule) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirmar Agendamento'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Você deseja confirmar o agendamento:'),
+                Text(schedule.descricao),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancelar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Confirmar'),
+              onPressed: () {
+                // Defina o status do agendamento como realizado
+                schedule.realizado = true;
+                // Atualize a exibição da lista (você pode precisar chamar setState)
+                setState(() {
+                  schedulesFuture = ScheduleListService.getScheduleList();
+                });
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,14 +99,15 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
                       // Coloque aqui a lógica para editar o AGENDAMENTO
                     },
                   ),
-                  trailing: IconButton(
-                    icon: Icon(Icons.delete),
-                    onPressed: () {
-                      // Coloque aqui a lógica para excluir o AGENDAMENTO
-                    },
-                  ),
+                  // Verifique se o agendamento foi realizado e exiba um ícone correspondente.
+                  trailing: schedule.realizado != null
+                      ? Icon(Icons.check_circle,
+                          color: Colors.green) // Agendamento realizado
+                      : Icon(Icons
+                          .radio_button_unchecked), // Agendamento não realizado
                   onTap: () {
-
+                    // Ao tocar no agendamento, exiba o AlertDialog de confirmação
+                    _confirmarAgendamento(schedule);
                   },
                 );
               },

@@ -2,7 +2,6 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:prognosticare/components/dialogs/validation.dart';
 import 'package:prognosticare/src/api/service/person_update_service.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/models/pessoa_model.dart';
@@ -127,13 +126,6 @@ class _ProfileTabState extends State<ProfileTab> {
               FilteringTextInputFormatter.digitsOnly,
               CNSInputFormatter()
             ],
-            validator: (cns) {
-              if (cnsController.text.length > 1 &&
-                  cnsController.text.length < 15) {
-                return 'Cartão Nacional de Saúde inválido';
-              }
-              return null;
-            },
           ),
           //CPS
           CustomTextField(
@@ -251,22 +243,6 @@ class _ProfileTabState extends State<ProfileTab> {
                 ),
               ),
               onPressed: () async {
-                Pessoa pessoaAtualizada = widget.pessoa.copyWith(
-                  pessoaId: widget.pessoa.pessoaId,
-                  nome: widget.pessoa.nome,
-                  cpf: widget.pessoa.cpf,
-                  email: widget.pessoa.email,
-                  contato: telefoneController.text,
-                  dataNascimento: widget.pessoa.dataNascimento,
-                  tipoSanguineo: tipoSanguineoController.text,
-                  tipoAlergia: tipoAlergiaController.text,
-                  tipoResponsavel: widget.pessoa.tipoResponsavel,
-                  cartaoNacional: cnsController.text,
-                  cartaoPlanoSaude: cpsController.text,
-                  alergia: alergiaMarcada,
-                  doador: doadorMarcado,
-                );
-
                 if (telefoneController.text.length > 1 &&
                     telefoneController.text.length < 14) {
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -312,6 +288,22 @@ class _ProfileTabState extends State<ProfileTab> {
                   );
                   return;
                 }
+
+                Pessoa pessoaAtualizada = widget.pessoa.copyWith(
+                  pessoaId: widget.pessoa.pessoaId,
+                  nome: widget.pessoa.nome,
+                  cpf: widget.pessoa.cpf,
+                  email: widget.pessoa.email,
+                  contato: telefoneController.text,
+                  dataNascimento: widget.pessoa.dataNascimento,
+                  tipoSanguineo: tipoSanguineoController.text,
+                  tipoAlergia: tipoAlergiaController.text,
+                  tipoResponsavel: widget.pessoa.tipoResponsavel,
+                  cartaoNacional: cnsController.text,
+                  cartaoPlanoSaude: cpsController.text,
+                  alergia: alergiaMarcada,
+                  doador: doadorMarcado,
+                );
 
                 Pessoa pessoaAtualizado =
                     await PersonUpdateService.getPerson(pessoaAtualizada);

@@ -12,7 +12,7 @@ class ScheduleListService {
     String? token = await storage.read(key: 'token');
 
     final url =
-        Uri.parse(UriServer.url.toString() + '/to-scheduling/list/$idPessoa');
+        Uri.parse(UriServidor.url.toString() + '/to-scheduling/list/$idPessoa');
 
     try {
       final response = await http.get(

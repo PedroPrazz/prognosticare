@@ -11,8 +11,8 @@ class DependentListService {
     String? idPessoa = await storage.read(key: 'user_id');
     String? token = await storage.read(key: 'token');
 
-    final url = Uri.parse(
-        UriServer.url.toString() + '/register-person/list-dependents/$idPessoa');
+    final url = Uri.parse(UriServidor.url.toString() +
+        '/register-person/list-dependents/$idPessoa');
 
     try {
       final response = await http.get(
@@ -38,6 +38,75 @@ class DependentListService {
     } catch (e) {
       print('Error: $e');
       throw Exception('Exeption no método find Erro no Try/Catch');
+    }
+  }
+
+  static Future<bool> disableDependente(String dependentId) async {
+    String? token = await storage.read(key: 'token');
+    final url =
+        Uri.parse(UriServidor.url.toString() + '/register-person/disable/$dependentId');
+
+    try {
+      final response = await http.put(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 204) {
+        // Exclusão bem-sucedida, o servidor retornou um código 204 (No Content).
+        return true;
+      } else if (response.statusCode == 404) {
+        // Dependente não encontrado, você pode lidar com isso de acordo com suas necessidades.
+        return false;
+      } else {
+        print('Response Status Code: ${response.statusCode}');
+        throw Exception('Exeption no método deleteDependent');
+      }
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('Exeption no método deleteDependent Erro no Try/Catch');
+    }
+  }
+
+  static Future<bool> updateDependent(Dependente dependente) async {
+    String? token = await storage.read(key: 'token');
+    final url = Uri.parse(
+        UriServidor.url.toString() + '/register-person/update-dependent');
+
+    try {
+      final response = await http.put(
+        url,
+        body: json.encode({
+          'pessoa_id': dependente.id,
+          'nome': dependente.nome,
+          'cpf': dependente.cpf,
+          'dataNascimento': dependente.dataNascimento,
+          'tipoSanguineo': dependente.tipoSanguineo,
+          'alergia': dependente.alergia,
+          'tipoAlergia': dependente.tipoAlergia,
+          'cartaoNacional': dependente.cartaoNacional,
+          'cartaoPlanoSaude': dependente.cartaoPlanoSaude,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+
+        return true;
+      } else {
+        print('Response Status Code: ${response.statusCode}');
+
+        throw Exception('Erro ao atualizar Dependente');
+      }
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('Erro de Try Catch ao atualizar Dependente');
     }
   }
 }

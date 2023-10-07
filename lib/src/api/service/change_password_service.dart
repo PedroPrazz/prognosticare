@@ -11,7 +11,7 @@ class ChangePasswordService {
     final token = await storage.read(key: 'token'); // Recupere o token
 
     
-    final url = Uri.parse(UriServer.url.toString()+'/register-person/public/change-password/$userId');
+    final url = Uri.parse(UriServidor.url.toString()+'/register-person/public/change-password/$userId');
 
     try {
       final response = await http.put(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:prognosticare/src/pages/accompany/to_accompany.dart';
+import 'package:prognosticare/src/pages/accompany/to_accompany_list_screen.dart';
+import 'package:prognosticare/src/pages/accompany/to_accompany_screen.dart';
 import 'package:prognosticare/src/pages/schedule/schedule_list_screen.dart';
 
 class ProntuarioDialog extends StatelessWidget {
@@ -72,7 +73,7 @@ class ProntuarioDialog extends StatelessWidget {
                          Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ToAccompanyScreen()));
+                              builder: (context) => ToAccompanyListScreen()));
                         },
                         child: const Text(
                           'Acompanhamentos',

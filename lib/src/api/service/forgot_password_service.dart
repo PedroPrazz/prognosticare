@@ -6,7 +6,7 @@ class ForgotPasswordService {
   static Future<bool> getNewPassword(String email) async {
 
       
-    final url = Uri.parse(UriServer.url.toString()+'/register-person/public/forgot-password');
+    final url = Uri.parse(UriServidor.url.toString()+'/register-person/public/forgot-password');
 
     try {
       final response = await http.post(

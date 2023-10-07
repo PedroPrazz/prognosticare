@@ -11,12 +11,54 @@ class ListDependents extends StatefulWidget {
 }
 
 class _ListDependentsState extends State<ListDependents> {
-  late Future<List<Dependente>> dependentsFuture;
+  Future<List<Dependente>>? dependentsFuture;
 
   @override
   void initState() {
     super.initState();
     dependentsFuture = DependentListService.getDependentList();
+  }
+
+  Future<void> _showDeleteConfirmationDialog(Dependente dependente) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirmar Exclusão'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Você deseja excluir o dependente:'),
+                Text(dependente.nome),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancelar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Confirmar'),
+              onPressed: () async {
+                final deleted = await DependentListService.disableDependente(
+                    dependente.id!);
+                if (deleted) {
+                  setState(() {
+                    // Atualize a lista de dependentes chamando dependentsFuture novamente
+                    dependentsFuture = DependentListService.getDependentList();
+                  });
+                }
+                Navigator.of(context).pop(); // Fecha o diálogo
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -28,11 +70,12 @@ class _ListDependentsState extends State<ListDependents> {
       ),
       body: FutureBuilder<List<Dependente>>(
         future: dependentsFuture,
-        builder: (context, snapshot) {
+        builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text('Erro ao carregar a lista de dependentes'));
+            return Center(
+                child: Text('Erro ao carregar a lista de dependentes'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return Center(child: Text('Nenhum dependente encontrado'));
           } else {
@@ -41,28 +84,35 @@ class _ListDependentsState extends State<ListDependents> {
               itemCount: dependentes.length,
               itemBuilder: (context, index) {
                 final dependente = dependentes[index];
-                return ListTile(
-                  title: Text(dependente.nome),
-                  leading: IconButton(
-                    icon: Icon(Icons.edit),
-                    onPressed: () {
-                      // Coloque aqui a lógica para editar o dependente
-                    },
-                  ),
-                  trailing: IconButton(
-                    icon: Icon(Icons.delete),
-                    onPressed: () {
-                      // Coloque aqui a lógica para excluir o dependente
-                    },
-                  ),
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (c) {
-                        return ProfileTabDepentende();
+                if (dependente.ativo == true) {
+                  return ListTile(
+                    title: Text(dependente.nome),
+                    leading: IconButton(
+                      icon: Icon(Icons.edit),
+                      onPressed: () {
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (c) {
+                            return ProfileTabDepentende(
+                              dependente: dependente,
+                              isEditing: true, // Modo de edição ativado
+                            );
+                          },
+                        ));
                       },
-                    ));
-                  },
-                );
+                    ),
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () {
+                        _showDeleteConfirmationDialog(dependente);
+                      },
+                    ),
+                    onTap: () {
+                      // Lógica para o toque no dependente
+                    },
+                  );
+                } else {
+                  return SizedBox.shrink();
+                }
               },
             );
           }

@@ -9,6 +9,7 @@ import 'package:prognosticare/src/pages/auth/meusDependentes.dart';
 // import 'package:prognosticare/src/pages/auth/agendar.dart';
 =======
 import 'package:prognosticare/components/dialogs/change_password_dialog.dart';
+import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/pages/auth/dependents.dart';
 import 'package:prognosticare/components/dialogs/prontuario_dialog.dart';
 import 'package:prognosticare/src/api/service/findby_id_service.dart';
@@ -16,7 +17,6 @@ import 'package:prognosticare/src/api/service/findby_id_service.dart';
 import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
 import 'package:prognosticare/src/models/pessoa_model.dart';
 import 'package:prognosticare/src/pages/profile/profile_tab.dart';
-import 'package:prognosticare/src/pages/schedule/schedule_list_screen.dart';
 
 final storage = FlutterSecureStorage();
 
@@ -30,7 +30,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
-  // final AgendamentoProvider _agendamentoProvider = AgendamentoProvider();
   Pessoa? pessoa;
   String? nome;
   Dependente? dependente;
@@ -117,14 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ListTile(
               leading: const Icon(Icons.auto_stories),
               title: const Text('Minha Agenda'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ScheduleListScreen(),
-                  ),
-                );
-              },
+              onTap: () {},
             ),
 
             //Alterar Senha
@@ -167,31 +159,9 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
         title: const Text('PrognostiCare'),
-        backgroundColor: const Color.fromRGBO(255, 143, 171, 1),
+        backgroundColor: CustomColors.customSwatchColor,
         foregroundColor: Colors.white,
         centerTitle: true,
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          PopupMenuButton(
-            itemBuilder: (context) => [
-              PopupMenuItem(
-                child: TextButton(
-                  onPressed: () {},
-                  child: const Text('Agendamentos'),
-                ),
-              ),
-              PopupMenuItem(
-                child: TextButton(
-                  onPressed: () {},
-                  child: const Text('Acompanhamentos'),
-                ),
-              ),
-            ],
-          );
-        },
-        child: const Icon(Icons.add, color: Colors.white),
-        backgroundColor: const Color.fromRGBO(255, 143, 171, 1),
       ),
     );
   }

@@ -12,7 +12,7 @@ class RegisterServiceDepents {
     String? token = await storage.read(key: 'token');
 
     final url =
-        Uri.parse(UriServer.url.toString() + '/register-person/add-dependent/$idPessoa');
+        Uri.parse(UriServidor.url.toString() + '/register-person/add-dependent/$idPessoa');
 
     try {
       final response = await http.post(

@@ -264,14 +264,6 @@ class ValidationAlertDialog extends StatelessWidget {
         return AlertDialog(
           title: Text('Cadastro realizado com sucesso!'),
           content: Text('Aproveite o PrognostiCare!'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('OK'),
-            ),
-          ],
         );
       },
     );

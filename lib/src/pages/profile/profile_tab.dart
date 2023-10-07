@@ -259,6 +259,55 @@ class _ProfileTabState extends State<ProfileTab> {
                   doador: doadorMarcado,
                 );
 
+                if (telefoneController.text.length > 1 &&
+                    telefoneController.text.length < 14) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Telefone inválido!'),
+                      duration: Duration(seconds: 3),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                  return;
+                }
+
+                if (cnsController.text.length > 1 &&
+                    cnsController.text.length < 21) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Cartão Nacional de Saúde inválido'),
+                      duration: Duration(seconds: 3),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                  return;
+                }
+
+                if (cpsController.text.length > 1 &&
+                    cpsController.text.length < 21) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Cartão do Plano de Saúde inválido'),
+                      duration: Duration(seconds: 3),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                  return;
+                }
+
+                if (alergiaMarcada =
+                    true && tipoAlergiaController.text.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                          'Preencha o tipo de alergia ou desmarque a opção de alergia.'),
+                      duration: Duration(seconds: 3),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                  return;
+                }
+
                 Pessoa pessoaAtualizado =
                     await PersonUpdateService.getPerson(pessoaAtualizada);
                 // ignore: unnecessary_null_comparison

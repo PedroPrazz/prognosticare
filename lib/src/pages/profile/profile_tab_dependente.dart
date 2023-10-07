@@ -47,7 +47,6 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
   TextEditingController tipoAlergiaController = TextEditingController();
   TextEditingController alergiaController = TextEditingController();
 
-
   @override
   void initState() {
     super.initState();
@@ -75,6 +74,12 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
       appBar: AppBar(
         title: Text(
           widget.isEditing ? 'Editar Dependente' : 'Adicionar Dependente',
+        ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
         ),
         foregroundColor: Colors.white,
       ),
@@ -166,12 +171,12 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                   child: Row(
                     children: [
                       Icon(Icons.bloodtype,
-                          color: Color.fromRGBO(255, 143, 171, 1)),
+                          color: CustomColors.customSwatchColor),
                       SizedBox(width: 10),
                       Text(
                         value,
                         style: TextStyle(
-                          color: Color.fromRGBO(255, 143, 171, 1),
+                          color: CustomColors.customSwatchColor,
                           fontSize: 12,
                           fontWeight: FontWeight.normal,
                         ),
@@ -214,20 +219,19 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                 ),
               ),
               onPressed: () async {
-                
                 if (widget.isEditing == true) {
                   final dependente = Dependente.editar(
-                  ativo: widget.dependente!.ativo,
-                  id: widget.dependente!.id,
-                  nome: nomeController.text,
-                  cpf: cpfController.text,
-                  dataNascimento: dataController.text,
-                  tipoSanguineo: tipoSanguineoController.text,
-                  alergia: alergiaMarcada,
-                  tipoAlergia: tipoAlergiaController.text,
-                  cartaoNacional: cnsController.text,
-                  cartaoPlanoSaude: cpsController.text,
-                );
+                    ativo: widget.dependente!.ativo,
+                    id: widget.dependente!.id,
+                    nome: nomeController.text,
+                    cpf: cpfController.text,
+                    dataNascimento: dataController.text,
+                    tipoSanguineo: tipoSanguineoController.text,
+                    alergia: alergiaMarcada,
+                    tipoAlergia: tipoAlergiaController.text,
+                    cartaoNacional: cnsController.text,
+                    cartaoPlanoSaude: cpsController.text,
+                  );
                   bool update =
                       await DependentListService.updateDependent(dependente);
                   if (update) {
@@ -239,12 +243,12 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                         backgroundColor: Colors.green,
                       ),
                     );
-                    Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ListDependents()),
-                        (route) => false);
-                  } else{
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (c) {
+                        return ListDependents();
+                      },
+                    ));
+                  } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text(
@@ -256,23 +260,23 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                   }
                 } else {
                   final dependente = Dependente.cadastar(
-                  nome: nomeController.text,
-                  cpf: cpfController.text,
-                  dataNascimento: dataController.text,
-                  tipoSanguineo: tipoSanguineoController.text,
-                  alergia: alergiaMarcada,
-                  tipoAlergia: tipoAlergiaController.text,
-                  cartaoNacional: cnsController.text,
-                  cartaoPlanoSaude: cpsController.text,
-                );
+                    nome: nomeController.text,
+                    cpf: cpfController.text,
+                    dataNascimento: dataController.text,
+                    tipoSanguineo: tipoSanguineoController.text,
+                    alergia: alergiaMarcada,
+                    tipoAlergia: tipoAlergiaController.text,
+                    cartaoNacional: cnsController.text,
+                    cartaoPlanoSaude: cpsController.text,
+                  );
                   bool register =
                       await RegisterServiceDepents.getRegisterD(dependente);
                   if (register) {
-                    Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ListDependents()),
-                        (route) => false);
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (c) {
+                        return ListDependents();
+                      },
+                    ));
                   }
                 }
               },

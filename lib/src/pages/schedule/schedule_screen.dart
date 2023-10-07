@@ -138,6 +138,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
             label: 'Data | Horário',
             inputFormatters: [dataFormatter],
           ),
+          
           //Observações
           CustomTextField(
             controller: obsController,

@@ -3,6 +3,7 @@
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get_utils/src/get_utils/get_utils.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:prognosticare/src/api/service/dependent_list_service.dart';
@@ -92,6 +93,15 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
             controller: nomeController,
             icon: Icons.person,
             label: 'Nome',
+            validator: (nome) {
+              if (nome == null || nome.isEmpty) {
+                return 'Digite seu nome completo!';
+              }
+              if (nome.length < 3) {
+                return 'Nome deve ter no mínimo 3 caracteres!';
+              }
+              return null;
+            },
           ),
           //CPF
           CustomTextField(
@@ -99,6 +109,17 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
             icon: Icons.file_copy,
             inputFormatters: [cpfFormartter],
             label: 'CPF',
+            validator: (cpf) {
+              if (cpf == null || cpf.isEmpty) {
+                return 'Digite seu CPF!';
+              }
+              if (GetUtils.isCpf(cpf)) {
+                print('CPF Válido');
+              } else {
+                return 'CPF Inválido';
+              }
+              return null;
+            },
           ),
           //Data de Nascimento
           CustomTextField(
@@ -106,6 +127,12 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
             icon: Icons.date_range,
             inputFormatters: [dataFormartter],
             label: 'Data de Nascimento',
+            validator: (data) {
+              if (data == null || data.isEmpty) {
+                return 'Digite sua Data de Nascimento!';
+              }
+              return null;
+            },
           ),
           //CNS
           CustomTextField(
@@ -116,6 +143,13 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
               FilteringTextInputFormatter.digitsOnly,
               CNSInputFormatter()
             ],
+            validator: (cns) {
+              if (cnsController.text.length > 1 &&
+                  cnsController.text.length < 15) {
+                return 'Cartão Nacional de Saúde inválido';
+              }
+              return null;
+            },
           ),
           //CPS
           CustomTextField(
@@ -219,6 +253,43 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                 ),
               ),
               onPressed: () async {
+                // if (cnsController.text.length > 1 &&
+                //     cnsController.text.length < 15) {
+                //   ScaffoldMessenger.of(context).showSnackBar(
+                //     SnackBar(
+                //       content: Text('Cartão Nacional de Saúde inválido'),
+                //       duration: Duration(seconds: 3),
+                //       backgroundColor: Colors.red,
+                //     ),
+                //   );
+                //   return;
+                // }
+
+                if (cpsController.text.length > 1 &&
+                    cpsController.text.length < 15) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Cartão do Plano de Saúde inválido'),
+                      duration: Duration(seconds: 3),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                  return;
+                }
+
+                if (alergiaMarcada == true &&
+                    tipoAlergiaController.text.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                          'Preencha o tipo de alergia ou desmarque a opção de alergia.'),
+                      duration: Duration(seconds: 3),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                  return;
+                }
+
                 if (widget.isEditing == true) {
                   final dependente = Dependente.editar(
                     ativo: widget.dependente!.ativo,
@@ -238,7 +309,7 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text(
-                          'Dependente atualizado com sucesso',
+                          'Dependente atualizado com sucesso!',
                         ),
                         backgroundColor: Colors.green,
                       ),
@@ -272,6 +343,14 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                   bool register =
                       await RegisterServiceDepents.getRegisterD(dependente);
                   if (register) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Dependente cadastrado com sucesso!',
+                        ),
+                        backgroundColor: Colors.green,
+                      ),
+                    );
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
                       builder: (c) {
                         return ListDependents();

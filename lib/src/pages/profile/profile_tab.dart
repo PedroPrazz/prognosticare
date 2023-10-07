@@ -127,6 +127,13 @@ class _ProfileTabState extends State<ProfileTab> {
               FilteringTextInputFormatter.digitsOnly,
               CNSInputFormatter()
             ],
+            validator: (cns) {
+              if (cnsController.text.length > 1 &&
+                  cnsController.text.length < 15) {
+                return 'Cartão Nacional de Saúde inválido';
+              }
+              return null;
+            },
           ),
           //CPS
           CustomTextField(
@@ -277,7 +284,6 @@ class _ProfileTabState extends State<ProfileTab> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('Cartão Nacional de Saúde inválido'),
-                      duration: Duration(seconds: 3),
                       backgroundColor: Colors.red,
                     ),
                   );
@@ -289,7 +295,6 @@ class _ProfileTabState extends State<ProfileTab> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('Cartão do Plano de Saúde inválido'),
-                      duration: Duration(seconds: 3),
                       backgroundColor: Colors.red,
                     ),
                   );
@@ -302,7 +307,6 @@ class _ProfileTabState extends State<ProfileTab> {
                     SnackBar(
                       content: Text(
                           'Preencha o tipo de alergia ou desmarque a opção de alergia.'),
-                      duration: Duration(seconds: 3),
                       backgroundColor: Colors.red,
                     ),
                   );
@@ -316,8 +320,12 @@ class _ProfileTabState extends State<ProfileTab> {
                   setState(() {
                     widget.pessoa = pessoaAtualizado;
                   });
-                  ValidationAlertDialog().perfilSucessoAlert(context);
-                  await Future.delayed(Duration(seconds: 3));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Dados atualizados com sucesso!'),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
                   Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(builder: (context) => HomeScreen()),

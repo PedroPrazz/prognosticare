@@ -8,11 +8,11 @@ final storage = FlutterSecureStorage();
 
 class AccompanyService {
   static Future<bool> getAccompany(Accompany accompany) async {
-
     String? idPessoa = await storage.read(key: 'user_id');
     String? token = await storage.read(key: 'token');
 
-    final url = Uri.parse(UriServidor.url.toString() + '/to-accompany/save/$idPessoa');
+    final url =
+        Uri.parse(UriServidor.url.toString() + '/to-accompany/save/$idPessoa');
 
     try {
       final response = await http.post(

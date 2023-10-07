@@ -1,19 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-<<<<<<< HEAD
-import 'package:prognosticare/components/meuProntuario.dart';
-import 'package:prognosticare/src/api/service/changePasswordService.dart';
-import 'package:prognosticare/src/api/service/getFindbyIDService.dart';
-import 'package:prognosticare/src/models/dependente.dart';
-import 'package:prognosticare/src/pages/auth/meusDependentes.dart';
-// import 'package:prognosticare/src/pages/auth/agendar.dart';
-=======
 import 'package:prognosticare/components/dialogs/change_password_dialog.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/pages/auth/dependents.dart';
 import 'package:prognosticare/components/dialogs/prontuario_dialog.dart';
 import 'package:prognosticare/src/api/service/findby_id_service.dart';
->>>>>>> 9ea04e8418db39e23f4f4bcdaa6ee88f313035ec
 import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
 import 'package:prognosticare/src/models/pessoa_model.dart';
 import 'package:prognosticare/src/pages/profile/profile_tab.dart';
@@ -32,7 +23,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final confirmPasswordController = TextEditingController();
   Pessoa? pessoa;
   String? nome;
-  Dependente? dependente;
 
   @override
   void initState() {
@@ -98,15 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-<<<<<<< HEAD
-<<<<<<< HEAD
-                    builder: (context) => MeusDependentes(),
-=======
-                    builder: (context) => ProfileTabDepentende(),
->>>>>>> 9ea04e8418db39e23f4f4bcdaa6ee88f313035ec
-=======
                     builder: (context) => ListDependents(),
->>>>>>> 348acbd8b6dbff923c2aa92fc29e969bf467b912
                   ),
                 );
               },

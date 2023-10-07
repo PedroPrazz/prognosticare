@@ -1,4 +1,5 @@
 class Dependente {
+  String id;
   String nome;
   String cpf;
   String dataNascimento;
@@ -8,7 +9,8 @@ class Dependente {
   String? cartaoNacional;
   String? cartaoPlanoSaude;
 
-  Dependente ({
+  Dependente({
+    required this.id,
     required this.nome,
     required this.cpf,
     required this.dataNascimento,
@@ -43,6 +45,7 @@ class Dependente {
 
   factory Dependente.fromJson(Map<String, dynamic> json) {
     return Dependente(
+      id: json['id'],
       nome: json['nome'],
       cpf: json['cpf'],
       dataNascimento: json['dataNascimento'],

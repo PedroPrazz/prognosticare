@@ -269,6 +269,18 @@ class ValidationAlertDialog extends StatelessWidget {
     );
   }
 
+  //alerta de cadastro com sucesso
+  Future<void> perfilSucessoAlert(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Dados atualizados com sucesso!'),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     throw UnimplementedError();

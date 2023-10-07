@@ -2,6 +2,7 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:prognosticare/components/dialogs/validation.dart';
 import 'package:prognosticare/src/api/service/person_update_service.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/models/pessoa_model.dart';
@@ -272,7 +273,7 @@ class _ProfileTabState extends State<ProfileTab> {
                 }
 
                 if (cnsController.text.length > 1 &&
-                    cnsController.text.length < 21) {
+                    cnsController.text.length < 15) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('Cartão Nacional de Saúde inválido'),
@@ -284,7 +285,7 @@ class _ProfileTabState extends State<ProfileTab> {
                 }
 
                 if (cpsController.text.length > 1 &&
-                    cpsController.text.length < 21) {
+                    cpsController.text.length < 15) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('Cartão do Plano de Saúde inválido'),
@@ -295,8 +296,8 @@ class _ProfileTabState extends State<ProfileTab> {
                   return;
                 }
 
-                if (alergiaMarcada =
-                    true && tipoAlergiaController.text.isEmpty) {
+                if (alergiaMarcada == true &&
+                    tipoAlergiaController.text.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(
@@ -315,6 +316,8 @@ class _ProfileTabState extends State<ProfileTab> {
                   setState(() {
                     widget.pessoa = pessoaAtualizado;
                   });
+                  ValidationAlertDialog().perfilSucessoAlert(context);
+                  await Future.delayed(Duration(seconds: 3));
                   Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(builder: (context) => HomeScreen()),

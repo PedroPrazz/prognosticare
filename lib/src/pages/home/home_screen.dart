@@ -85,9 +85,6 @@ class _HomeScreenState extends State<HomeScreen> {
               leading: const Icon(Icons.emoji_emotions),
               title: const Text('Meus Dependentes'),
               onTap: () async {
-                if (pessoa == null) {
-                  pessoa = await GetFindbyIDService.getFindbyID();
-                }
                 Navigator.push(
                   context,
                   MaterialPageRoute(

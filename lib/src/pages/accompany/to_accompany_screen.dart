@@ -20,6 +20,9 @@ class ToAccompanyScreen extends StatefulWidget {
 class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
   // Lista de tipos de agendamentos
   List<String> tipoDeAcompanhamento = ['Medicacao', 'Procedimentos'];
+  List<int> intervaloHora = [2, 3, 4, 6, 8, 12];
+
+  int selectedValue = 2;
 
   // Variável para armazenar o valor selecionado na combo box
   String? tipoSelecionado;

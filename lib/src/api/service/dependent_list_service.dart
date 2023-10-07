@@ -55,7 +55,7 @@ class DependentListService {
         },
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 204) {
         // Exclusão bem-sucedida, o servidor retornou um código 204 (No Content).
         return true;
       } else if (response.statusCode == 404) {

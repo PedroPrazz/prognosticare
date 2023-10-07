@@ -11,7 +11,7 @@ class ListDependents extends StatefulWidget {
 }
 
 class _ListDependentsState extends State<ListDependents> {
-  late Future<List<Dependente>> dependentsFuture;
+  Future<List<Dependente>>? dependentsFuture;
 
   @override
   void initState() {
@@ -76,6 +76,8 @@ class _ListDependentsState extends State<ListDependents> {
                   onTap: () {
                   },
                 );
+                }else {
+                  return SizedBox.shrink();
                 }
               },
             );

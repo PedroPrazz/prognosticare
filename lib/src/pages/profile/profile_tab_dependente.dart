@@ -330,7 +330,7 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                     );
                   }
                 } else {
-                  final dependente = Dependente.cadastar(
+                  final dependente = Dependente.cadastrar(
                     nome: nomeController.text,
                     cpf: cpfController.text,
                     dataNascimento: dataController.text,

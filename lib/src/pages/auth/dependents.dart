@@ -19,6 +19,48 @@ class _ListDependentsState extends State<ListDependents> {
     dependentsFuture = DependentListService.getDependentList();
   }
 
+  Future<void> _showDeleteConfirmationDialog(Dependente dependente) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirmar Exclusão'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Você deseja excluir o dependente:'),
+                Text(dependente.nome),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancelar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Confirmar'),
+              onPressed: () async {
+                final deleted = await DependentListService.disableDependente(
+                    dependente.id!);
+                if (deleted) {
+                  setState(() {
+                    // Atualize a lista de dependentes chamando dependentsFuture novamente
+                    dependentsFuture = DependentListService.getDependentList();
+                  });
+                }
+                Navigator.of(context).pop(); // Fecha o diálogo
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,40 +85,32 @@ class _ListDependentsState extends State<ListDependents> {
               itemBuilder: (context, index) {
                 final dependente = dependentes[index];
                 if (dependente.ativo == true) {
-                return ListTile(
-                  title: Text(dependente.nome),
-                  leading: IconButton(
-                    icon: Icon(Icons.edit),
-                    onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (c) {
-                          return ProfileTabDepentende(
-                            dependente: dependente,
-                            isEditing: true, // Modo de edição ativado
-                          );
-                        },
-                      ));
+                  return ListTile(
+                    title: Text(dependente.nome),
+                    leading: IconButton(
+                      icon: Icon(Icons.edit),
+                      onPressed: () {
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (c) {
+                            return ProfileTabDepentende(
+                              dependente: dependente,
+                              isEditing: true, // Modo de edição ativado
+                            );
+                          },
+                        ));
+                      },
+                    ),
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () {
+                        _showDeleteConfirmationDialog(dependente);
+                      },
+                    ),
+                    onTap: () {
+                      // Lógica para o toque no dependente
                     },
-                  ),
-                  trailing: IconButton(
-                    icon: Icon(Icons.delete),
-                    onPressed: () async {
-                      final deleted =
-                          await DependentListService.disableDependente(
-                              dependente.id!);
-                      if (deleted) {
-                        setState(() {
-                          // Atualize a lista de dependentes chamando dependentsFuture novamente
-                          dependentsFuture =
-                              DependentListService.getDependentList();
-                        });
-                      }
-                    },
-                  ),
-                  onTap: () {
-                  },
-                );
-                }else {
+                  );
+                } else {
                   return SizedBox.shrink();
                 }
               },

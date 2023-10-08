@@ -163,8 +163,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               if (senha.trim().length < 8) {
                                 return 'Digite uma senha com pelo menos 8 caracteres.';
                               }
-                              if (confirmPasswordController.text.trim() !=
-                                  passwordController.text.trim()) {
+                              if (passwordController.text.trim() !=
+                                  confirmPasswordController.text.trim()) {
                                 return 'As senhas não coincidem';
                               }
                               return null;
@@ -205,6 +205,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 } else {
                                   print('Campos não válidos');
                                 }
+                                if (nomeController.text.trim().isEmpty ||
+                                    nomeController.text.trim().length < 3 ||
+                                    cpfController.text.trim().isEmpty ||
+                                    !GetUtils.isCpf(
+                                        cpfController.text.trim()) ||
+                                    emailController.text.trim().isEmpty ||
+                                    !emailController.text.trim().isEmail ||
+                                    dataController.text.trim().isEmpty ||
+                                    !isOld ||
+                                    passwordController.text.trim().isEmpty ||
+                                    passwordController.text.trim().length < 8 ||
+                                    confirmPasswordController.text
+                                        .trim()
+                                        .isEmpty ||
+                                    confirmPasswordController.text
+                                            .trim()
+                                            .length <
+                                        8 ||
+                                    passwordController.text.trim() !=
+                                        confirmPasswordController.text.trim()) {
+                                  return;
+                                }
                                 bool signIn = await RegisterService.getRegister(
                                     nomeController.text.trim(),
                                     cpfController.text.trim(),
@@ -223,8 +245,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text(
-                                          'Erro interno tente novamente mais tarde!'),
-                                      duration: Duration(seconds: 3),
+                                          'CPF e/ou Email já cadastrados!'),
                                       backgroundColor:
                                           Color.fromARGB(255, 212, 31, 18),
                                     ),

@@ -25,8 +25,6 @@ class SignInScreen extends StatelessWidget {
     final emailController = TextEditingController();
     final passwordController = TextEditingController();
 
-    
-
     return Scaffold(
       backgroundColor: CustomColors.customSwatchColor,
       body: SingleChildScrollView(
@@ -54,9 +52,8 @@ class SignInScreen extends StatelessWidget {
                           TextSpan(
                             text: 'Care',
                             style: TextStyle(
-                              color: Colors.blue,
-                              fontWeight: FontWeight.bold
-                            ),
+                                color: Colors.blue,
+                                fontWeight: FontWeight.bold),
                           )
                         ],
                       ),
@@ -150,10 +147,18 @@ class SignInScreen extends StatelessWidget {
                             } else {
                               print('Campos não válidos');
                             }
+                            if (emailController.text.trim().isEmpty ||
+                                !emailController.text.trim().isEmail ||
+                                passwordController.text.trim().isEmpty ||
+                                passwordController.text.trim().length < 8) {
+                              return;
+                            }
                             bool loggedIn = await LoginService.getLogin(
-                                emailController.text.trim(), passwordController.text.trim());
+                                emailController.text.trim(),
+                                passwordController.text.trim());
                             if (loggedIn) {
-                              if (passwordController.text.trim() == 'abcdefgh') {
+                              if (passwordController.text.trim() ==
+                                  'abcdefgh') {
                                 ChangePasswordDialog().updatePassword(context);
                               } else {
                                 Get.offNamed(PagesRoutes.homeRoute);

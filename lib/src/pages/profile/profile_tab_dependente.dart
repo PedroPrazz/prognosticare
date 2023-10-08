@@ -39,6 +39,8 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
   bool doadorMarcado = false;
   bool alergiaMarcada = false;
 
+  bool dataValida = false;
+
   final _formKey = GlobalKey<FormState>();
 
   TextEditingController nomeController = TextEditingController();
@@ -99,10 +101,10 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                 icon: Icons.person,
                 label: 'Nome',
                 validator: (nome) {
-                  if (nome == null || nome.isEmpty) {
-                    return 'Digite seu nome completo!';
+                  if (nome == null || nome.trim().isEmpty) {
+                    return 'Digite o nome completo!';
                   }
-                  if (nome.length < 3) {
+                  if (nome.trim().length < 3) {
                     return 'Nome deve ter no mínimo 3 caracteres!';
                   }
                   return null;
@@ -115,10 +117,10 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                 inputFormatters: [cpfFormartter],
                 label: 'CPF',
                 validator: (cpf) {
-                  if (cpf == null || cpf.isEmpty) {
-                    return 'Digite seu CPF!';
+                  if (cpf == null || cpf.trim().isEmpty) {
+                    return 'Digite o CPF!';
                   }
-                  if (GetUtils.isCpf(cpf)) {
+                  if (GetUtils.isCpf(cpf.trim())) {
                     print('CPF Válido');
                   } else {
                     return 'CPF Inválido';
@@ -133,16 +135,17 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                 inputFormatters: [dataFormartter],
                 label: 'Data de Nascimento',
                 validator: (data) {
-                  if (data == null || data.isEmpty) {
-                    return 'Digite sua Data de Nascimento!';
+                  if (data == null || data.trim().isEmpty) {
+                    return 'Digite a Data de Nascimento!';
                   }
                   DateTime dataNascimento =
-                      DateFormat('dd/MM/yyyy').parse(data);
+                      DateFormat('dd/MM/yyyy').parse(data.trim());
                   DateTime dataAtual = DateTime.now();
                   // Verifique se a data de nascimento é maior do que a data atual
                   if (dataNascimento.isAfter(dataAtual)) {
-                    return 'Data de nascimento não pode ser maior do que a data atual!';
+                    return 'Data de nascimento inválida.';
                   }
+                  dataValida = true;
                   return null;
                 },
               ),
@@ -156,11 +159,11 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                   CNSInputFormatter()
                 ],
                 validator: (cns) {
-                  // if (cns == null || cns.isEmpty) {
-                  //   return 'Digite seu Cartão Nacional de Saúde!';
-                  // }
-                  if (cnsController.text.length > 0 &&
-                      cnsController.text.length < 18) {
+                  if (cns == null || cns.isEmpty) {
+                    return 'Digite seu Cartão Nacional de Saúde!';
+                  }
+                  if (cnsController.text.trim().length > 0 &&
+                      cnsController.text.trim().length < 18) {
                     return 'Cartão Nacional de Saúde inválido!';
                   }
                   return null;
@@ -176,12 +179,12 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                   CNSInputFormatter()
                 ],
                 validator: (cps) {
-                  // if (cps == null || cps.isEmpty) {
-                  //   return 'Digite seu Cartão Nacional de Saúde!';
-                  // }
-                  if (cpsController.text.length > 0 &&
-                      cpsController.text.length < 18) {
-                    return 'Cartão Nacional de Saúde inválido!';
+                  if (cps == null || cps.isEmpty) {
+                    return 'Digite seu Cartão Nacional de Saúde!';
+                  }
+                  if (cpsController.text.trim().length > 0 &&
+                      cpsController.text.trim().length < 18) {
+                    return 'Cartão do Plano de Saúde inválido!';
                   }
                   return null;
                 },
@@ -206,9 +209,9 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                       ),
                     ),
                   ),
-                  value: tipoSanguineoController.text.isEmpty
+                  value: tipoSanguineoController.text.trim().isEmpty
                       ? null
-                      : tipoSanguineoController.text,
+                      : tipoSanguineoController.text.trim(),
                   onChanged: (String? newValue) {
                     setState(() {
                       tipoSanguineoController.text = newValue!;
@@ -267,8 +270,12 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                   icon: Icons.medication,
                   label: 'Tipo de Alergia',
                   validator: (tipoAlergia) {
-                    if (tipoAlergiaController.text.isEmpty) {
+                    if (tipoAlergiaController.text.trim().isEmpty) {
                       return 'Digite o tipo de alergia ou desmarque o campo de alergia!';
+                    }
+                    if (tipoAlergiaController.text.trim().length > 0 &&
+                        tipoAlergiaController.text.trim().length < 3) {
+                      return 'Tipo de alergia inválido!';
                     }
                     return null;
                   },
@@ -290,8 +297,16 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                       print('Campos não válidos');
                     }
 
-                    if (alergiaMarcada == true &&
-                        tipoAlergiaController.text.isEmpty) {
+                    if (nomeController.text.trim().isEmpty ||
+                        nomeController.text.trim().length < 3 ||
+                        cpfController.text.trim().isEmpty ||
+                        !GetUtils.isCpf(cpfController.text.trim()) ||
+                        dataController.text.trim().isEmpty ||
+                        dataValida == false ||
+                        alergiaMarcada == true &&
+                            tipoAlergiaController.text.trim().isEmpty ||
+                        tipoAlergiaController.text.trim().length > 0 &&
+                            tipoAlergiaController.text.trim().length < 3) {
                       return;
                     }
 
@@ -299,14 +314,14 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                       final dependente = Dependente.editar(
                         ativo: widget.dependente!.ativo,
                         id: widget.dependente!.id,
-                        nome: nomeController.text,
-                        cpf: cpfController.text,
-                        dataNascimento: dataController.text,
-                        tipoSanguineo: tipoSanguineoController.text,
+                        nome: nomeController.text.trim(),
+                        cpf: cpfController.text.trim(),
+                        dataNascimento: dataController.text.trim(),
+                        tipoSanguineo: tipoSanguineoController.text.trim(),
                         alergia: alergiaMarcada,
-                        tipoAlergia: tipoAlergiaController.text,
-                        cartaoNacional: cnsController.text,
-                        cartaoPlanoSaude: cpsController.text,
+                        tipoAlergia: tipoAlergiaController.text.trim(),
+                        cartaoNacional: cnsController.text.trim(),
+                        cartaoPlanoSaude: cpsController.text.trim(),
                       );
                       bool update = await DependentListService.updateDependent(
                           dependente);
@@ -336,14 +351,14 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                       }
                     } else {
                       final dependente = Dependente.cadastar(
-                        nome: nomeController.text,
-                        cpf: cpfController.text,
-                        dataNascimento: dataController.text,
-                        tipoSanguineo: tipoSanguineoController.text,
+                        nome: nomeController.text.trim(),
+                        cpf: cpfController.text.trim(),
+                        dataNascimento: dataController.text.trim(),
+                        tipoSanguineo: tipoSanguineoController.text.trim(),
                         alergia: alergiaMarcada,
-                        tipoAlergia: tipoAlergiaController.text,
-                        cartaoNacional: cnsController.text,
-                        cartaoPlanoSaude: cpsController.text,
+                        tipoAlergia: tipoAlergiaController.text.trim(),
+                        cartaoNacional: cnsController.text.trim(),
+                        cartaoPlanoSaude: cpsController.text.trim(),
                       );
                       bool register =
                           await RegisterServiceDepents.getRegisterD(dependente);

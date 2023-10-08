@@ -122,8 +122,8 @@ class _ProfileTabState extends State<ProfileTab> {
                 label: 'Telefone',
                 inputFormatters: [phoneFormatter],
                 validator: (telefone) {
-                  if (telefoneController.text.length > 0 &&
-                      telefoneController.text.length < 14) {
+                  if (telefoneController.text.trim().length > 0 &&
+                      telefoneController.text.trim().length < 14) {
                     return 'Telefone inválido!';
                   }
                   return null;
@@ -142,8 +142,8 @@ class _ProfileTabState extends State<ProfileTab> {
                   // if (cns == null || cns.isEmpty) {
                   //   return 'Digite seu Cartão Nacional de Saúde!';
                   // }
-                  if (cnsController.text.length > 0 &&
-                      cnsController.text.length < 18) {
+                  if (cnsController.text.trim().length > 0 &&
+                      cnsController.text.trim().length < 18) {
                     return 'Cartão Nacional de Saúde inválido!';
                   }
                   return null;
@@ -162,9 +162,9 @@ class _ProfileTabState extends State<ProfileTab> {
                   // if (cps == null || cps.isEmpty) {
                   //   return 'Digite seu Cartão Nacional de Saúde!';
                   // }
-                  if (cpsController.text.length > 0 &&
-                      cpsController.text.length < 18) {
-                    return 'Cartão Nacional de Saúde inválido!';
+                  if (cpsController.text.trim().length > 0 &&
+                      cpsController.text.trim().length < 18) {
+                    return 'Cartão do Plano de Saúde inválido!';
                   }
                   return null;
                 },
@@ -189,9 +189,9 @@ class _ProfileTabState extends State<ProfileTab> {
                       ),
                     ),
                   ),
-                  value: tipoSanguineoController.text.isEmpty
+                  value: tipoSanguineoController.text.trim().isEmpty
                       ? null
-                      : tipoSanguineoController.text,
+                      : tipoSanguineoController.text.trim(),
                   onChanged: (String? newValue) {
                     setState(() {
                       tipoSanguineoController.text = newValue!;
@@ -250,8 +250,12 @@ class _ProfileTabState extends State<ProfileTab> {
                   icon: Icons.medication,
                   label: 'Tipo de Alergia',
                   validator: (tipoAlergia) {
-                    if (tipoAlergiaController.text.isEmpty) {
+                    if (tipoAlergiaController.text.trim().isEmpty) {
                       return 'Digite o tipo de alergia ou desmarque o campo de alergia!';
+                    }
+                    if (tipoAlergiaController.text.trim().length > 0 &&
+                        tipoAlergiaController.text.trim().length < 3) {
+                      return 'Tipo de alergia inválido!';
                     }
                     return null;
                   },
@@ -288,40 +292,37 @@ class _ProfileTabState extends State<ProfileTab> {
                     }
 
                     if (alergiaMarcada == true &&
-                        tipoAlergiaController.text.isEmpty) {
+                            tipoAlergiaController.text.trim().isEmpty ||
+                        tipoAlergiaController.text.trim().length > 0 &&
+                            tipoAlergiaController.text.trim().length < 3) {
                       return;
                     }
 
-                    if (telefoneController.text.isEmpty &&
-                        cnsController.text.isEmpty &&
-                        cpsController.text.isEmpty &&
-                        tipoSanguineoController.text.isEmpty &&
-                        alergiaMarcada == false &&
-                        doadorMarcado == false) {
+                    if (telefoneController.text.trim().isEmpty &&
+                        cnsController.text.trim().isEmpty &&
+                        cpsController.text.trim().isEmpty &&
+                        tipoSanguineoController.text.trim() == 'SELECIONE') {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text('Você não alterou nenhum dado!'),
-                          backgroundColor: Colors.blue,
+                          backgroundColor: Colors.yellow[800],
                         ),
                       );
-                      Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(builder: (context) => HomeScreen()),
-                          (route) => false);
+                      return;
                     }
 
                     Pessoa pessoaAtualizada = widget.pessoa.copyWith(
-                      pessoaId: widget.pessoa.pessoaId,
-                      nome: widget.pessoa.nome,
-                      cpf: widget.pessoa.cpf,
-                      email: widget.pessoa.email,
-                      contato: telefoneController.text,
-                      dataNascimento: widget.pessoa.dataNascimento,
-                      tipoSanguineo: tipoSanguineoController.text,
-                      tipoAlergia: tipoAlergiaController.text,
+                      pessoaId: widget.pessoa.pessoaId.trim(),
+                      nome: widget.pessoa.nome.trim(),
+                      cpf: widget.pessoa.cpf.trim(),
+                      email: widget.pessoa.email.trim(),
+                      contato: telefoneController.text.trim(),
+                      dataNascimento: widget.pessoa.dataNascimento.trim(),
+                      tipoSanguineo: tipoSanguineoController.text.trim(),
+                      tipoAlergia: tipoAlergiaController.text.trim(),
                       tipoResponsavel: widget.pessoa.tipoResponsavel,
-                      cartaoNacional: cnsController.text,
-                      cartaoPlanoSaude: cpsController.text,
+                      cartaoNacional: cnsController.text.trim(),
+                      cartaoPlanoSaude: cpsController.text.trim(),
                       alergia: alergiaMarcada,
                       doador: doadorMarcado,
                     );
@@ -344,13 +345,13 @@ class _ProfileTabState extends State<ProfileTab> {
                           MaterialPageRoute(builder: (context) => HomeScreen()),
                           (route) => false);
                     } else {
-                      print("id: ${pessoaAtualizada.pessoaId}");
-                      print("Nome: ${pessoaAtualizada.nome}");
-                      print("CPF: ${pessoaAtualizada.cpf}");
-                      print("Email: ${pessoaAtualizada.email}");
+                      print("id: ${pessoaAtualizada.pessoaId.trim()}");
+                      print("Nome: ${pessoaAtualizada.nome.trim()}");
+                      print("CPF: ${pessoaAtualizada.cpf.trim()}");
+                      print("Email: ${pessoaAtualizada.email.trim()}");
                       print("Contato: ${pessoaAtualizada.contato}");
                       print(
-                          "Data de Nascimento: ${pessoaAtualizada.dataNascimento}");
+                          "Data de Nascimento: ${pessoaAtualizada.dataNascimento.trim()}");
                       print("tipoSanguineo: ${pessoaAtualizada.tipoSanguineo}");
                       print("alergia: ${pessoaAtualizada.alergia}");
                       print('doador:${pessoaAtualizada.doador}');

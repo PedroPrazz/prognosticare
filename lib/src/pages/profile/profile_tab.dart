@@ -242,6 +242,52 @@ class _ProfileTabState extends State<ProfileTab> {
                 ),
               ),
               onPressed: () async {
+                if (telefoneController.text.length > 1 &&
+                    telefoneController.text.length < 14) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Telefone inválido!'),
+                      duration: Duration(seconds: 3),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                  return;
+                }
+
+                if (cnsController.text.length > 1 &&
+                    cnsController.text.length < 15) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Cartão Nacional de Saúde inválido'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                  return;
+                }
+
+                if (cpsController.text.length > 1 &&
+                    cpsController.text.length < 15) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Cartão do Plano de Saúde inválido'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                  return;
+                }
+
+                if (alergiaMarcada == true &&
+                    tipoAlergiaController.text.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                          'Preencha o tipo de alergia ou desmarque a opção de alergia.'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                  return;
+                }
+
                 Pessoa pessoaAtualizada = widget.pessoa.copyWith(
                   pessoaId: widget.pessoa.pessoaId,
                   nome: widget.pessoa.nome,
@@ -265,6 +311,12 @@ class _ProfileTabState extends State<ProfileTab> {
                   setState(() {
                     widget.pessoa = pessoaAtualizado;
                   });
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Dados atualizados com sucesso!'),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
                   Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(builder: (context) => HomeScreen()),

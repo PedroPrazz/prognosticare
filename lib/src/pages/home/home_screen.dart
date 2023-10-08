@@ -9,6 +9,7 @@ import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
 import 'package:prognosticare/src/models/pessoa_model.dart';
 import 'package:prognosticare/src/pages/profile/profile_tab.dart';
 import 'package:prognosticare/src/pages/schedule/my_schedule_screen.dart';
+import 'package:prognosticare/src/pages/vaccine_screen.dart';
 
 final storage = FlutterSecureStorage();
 
@@ -112,6 +113,20 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
 
+            //Cartilha de Vacinação
+            ListTile(
+              leading: const Icon(Icons.vaccines_outlined),
+              title: const Text('Minhas Vacinas'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => VaccineScreen(),
+                  ),
+                );
+              },
+            ),
+
             //Alterar Senha
             ListTile(
               leading: const Icon(Icons.miscellaneous_services),
@@ -177,8 +192,8 @@ class _HomeScreenState extends State<HomeScreen> {
         },
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home_filled),
-            label: 'Home',
+            icon: Icon(Icons.vaccines),
+            label: 'Vacinas',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.task),

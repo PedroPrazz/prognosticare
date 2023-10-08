@@ -25,14 +25,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Pessoa? pessoa;
   String? nome;
 
-  //navbar
   int _selectIndex = 0;
-  final _screens = [
-    HomeScreen(),
-    Container(),
-    Container(),
-    Container(),
-  ];
+  int contador = 0;
 
   @override
   void initState() {
@@ -163,45 +157,42 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: true,
       ),
 
-      // Body
-      backgroundColor: Colors.green,
-      body: _screens[_selectIndex],
-      bottomNavigationBar: Container(
-        height: 80,
-        child: BottomNavigationBar(
-          backgroundColor: Colors.white,
-          type: BottomNavigationBarType.fixed,
-          selectedItemColor: Colors.green,
-          unselectedItemColor: Colors.grey,
-          selectedLabelStyle: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 15,
-          ),
-          currentIndex: _selectIndex,
-          onTap: (index) {
-            setState(() {
-              _selectIndex = index;
-            });
-          },
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home_filled),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home_filled),
-              label: 'Prontuário',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home_filled),
-              label: 'Dependentes',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home_filled),
-              label: 'Agenda',
-            ),
-          ],
+      //navbar
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: CustomColors.customSwatchColor,
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: Colors.black,
+        unselectedItemColor: Colors.white,
+        selectedLabelStyle: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 15,
         ),
+        currentIndex: _selectIndex,
+        onTap: (index) {
+          setState(() {
+            PageController().animateToPage(index,
+                duration: Duration(milliseconds: 200), curve: Curves.ease);
+            _selectIndex = index;
+          });
+        },
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_filled),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.task),
+            label: 'Prontuário',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Dependentes',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.schedule),
+            label: 'Agenda',
+          ),
+        ],
       ),
     );
   }

@@ -15,7 +15,8 @@ class SignInScreen extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
 
   Future<String?> _getFCMToken() async {
-    FirebaseMessagingService firebaseMessagingService = FirebaseMessagingService();
+    FirebaseMessagingService firebaseMessagingService =
+        FirebaseMessagingService();
     String? fcmToken = await firebaseMessagingService.getFirebaseToken();
     return fcmToken;
   }
@@ -59,7 +60,7 @@ class SignInScreen extends StatelessWidget {
                           TextSpan(
                             text: 'Care',
                             style: TextStyle(
-                              color: Colors.pink,
+                              color: Colors.blue,
                             ),
                           )
                         ],

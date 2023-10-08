@@ -25,6 +25,15 @@ class _HomeScreenState extends State<HomeScreen> {
   Pessoa? pessoa;
   String? nome;
 
+  //navbar
+  int _selectIndex = 0;
+  final _screens = [
+    HomeScreen(),
+    Container(),
+    Container(),
+    Container(),
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -152,6 +161,47 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: CustomColors.customSwatchColor,
         foregroundColor: Colors.white,
         centerTitle: true,
+      ),
+
+      // Body
+      backgroundColor: Colors.green,
+      body: _screens[_selectIndex],
+      bottomNavigationBar: Container(
+        height: 80,
+        child: BottomNavigationBar(
+          backgroundColor: Colors.white,
+          type: BottomNavigationBarType.fixed,
+          selectedItemColor: Colors.green,
+          unselectedItemColor: Colors.grey,
+          selectedLabelStyle: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 15,
+          ),
+          currentIndex: _selectIndex,
+          onTap: (index) {
+            setState(() {
+              _selectIndex = index;
+            });
+          },
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_filled),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_filled),
+              label: 'Prontuário',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_filled),
+              label: 'Dependentes',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_filled),
+              label: 'Agenda',
+            ),
+          ],
+        ),
       ),
     );
   }

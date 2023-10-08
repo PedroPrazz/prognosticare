@@ -23,7 +23,7 @@ class Dependente {
     required this.cartaoPlanoSaude,
   });
 
-  Dependente.cadastrrar({
+  Dependente.cadastrar({
     required this.nome,
     required this.cpf,
     required this.dataNascimento,

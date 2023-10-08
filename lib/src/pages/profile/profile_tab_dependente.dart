@@ -39,6 +39,8 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
   bool doadorMarcado = false;
   bool alergiaMarcada = false;
 
+  final _formKey = GlobalKey<FormState>();
+
   TextEditingController nomeController = TextEditingController();
   TextEditingController cpfController = TextEditingController();
   TextEditingController dataController = TextEditingController();
@@ -84,291 +86,296 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
         ),
         foregroundColor: Colors.white,
       ),
-      body: ListView(
-        physics: const BouncingScrollPhysics(),
-        padding: const EdgeInsets.fromLTRB(16, 32, 16, 16),
-        children: [
-          //Nome
-          CustomTextField(
-            controller: nomeController,
-            icon: Icons.person,
-            label: 'Nome',
-            validator: (nome) {
-              if (nome == null || nome.isEmpty) {
-                return 'Digite seu nome completo!';
-              }
-              if (nome.length < 3) {
-                return 'Nome deve ter no mínimo 3 caracteres!';
-              }
-              return null;
-            },
-          ),
-          //CPF
-          CustomTextField(
-            controller: cpfController,
-            icon: Icons.file_copy,
-            inputFormatters: [cpfFormartter],
-            label: 'CPF',
-            validator: (cpf) {
-              if (cpf == null || cpf.isEmpty) {
-                return 'Digite seu CPF!';
-              }
-              if (GetUtils.isCpf(cpf)) {
-                print('CPF Válido');
-              } else {
-                return 'CPF Inválido';
-              }
-              return null;
-            },
-          ),
-          //Data de Nascimento
-          CustomTextField(
-            controller: dataController,
-            icon: Icons.date_range,
-            inputFormatters: [dataFormartter],
-            label: 'Data de Nascimento',
-            validator: (data) {
-              if (data == null || data.isEmpty) {
-                return 'Digite sua Data de Nascimento!';
-              }
-              return null;
-            },
-          ),
-          //CNS
-          CustomTextField(
-            controller: cnsController,
-            icon: Icons.payment_outlined,
-            label: 'Cartão Nacional de Saúde',
-            inputFormatters: [
-              FilteringTextInputFormatter.digitsOnly,
-              CNSInputFormatter()
-            ],
-            validator: (cns) {
-              if (cnsController.text.length > 1 &&
-                  cnsController.text.length < 15) {
-                return 'Cartão Nacional de Saúde inválido';
-              }
-              return null;
-            },
-          ),
-          //CPS
-          CustomTextField(
-            controller: cpsController,
-            icon: Icons.payment_outlined,
-            label: 'Cartão do Plano de Saúde',
-            inputFormatters: [
-              FilteringTextInputFormatter.digitsOnly,
-              CNSInputFormatter()
-            ],
-          ),
-          //Tipo Sanguíneo
-          Container(
-            width: 300,
-            child: DropdownButtonFormField<String>(
-              focusColor: Colors.white,
-              decoration: InputDecoration(
-                hoverColor: Colors.blue,
-                labelText: 'Tipo Sanguíneo',
-                labelStyle: TextStyle(color: Colors.black),
-                isDense: true,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(18),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(18),
-                  borderSide: BorderSide(
-                    color: CustomColors.customSwatchColor,
-                  ),
-                ),
-              ),
-              value: tipoSanguineoController.text.isEmpty
-                  ? null
-                  : tipoSanguineoController.text,
-              onChanged: (String? newValue) {
-                setState(() {
-                  tipoSanguineoController.text = newValue!;
-                });
-              },
-              items: <String>[
-                'A_POSITIVO',
-                'A_NEGATIVO',
-                'B_POSITIVO',
-                'B_NEGATIVO',
-                'O_POSITIVO',
-                'O_NEGATIVO',
-                'AB_POSITIVO',
-                'AB_NEGATIVO',
-                'SELECIONE'
-              ].map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Row(
-                    children: [
-                      Icon(Icons.bloodtype,
-                          color: CustomColors.customSwatchColor),
-                      SizedBox(width: 10),
-                      Text(
-                        value,
-                        style: TextStyle(
-                          color: CustomColors.customSwatchColor,
-                          fontSize: 12,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              }).toList(),
-            ),
-          ),
-          //Alergia a Medicamentos
-          CheckboxListTile(
-            title: Text('Alergia a Medicamentos?'),
-            controlAffinity: ListTileControlAffinity.leading,
-            checkColor: CustomColors.customSwatchColor,
-            value: alergiaMarcada,
-            onChanged: (bool? value) {
-              setState(
-                () {
-                  alergiaMarcada = value ?? false;
+      body: Container(
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.fromLTRB(16, 32, 16, 16),
+            children: [
+              //Nome
+              CustomTextField(
+                controller: nomeController,
+                icon: Icons.person,
+                label: 'Nome',
+                validator: (nome) {
+                  if (nome == null || nome.isEmpty) {
+                    return 'Digite seu nome completo!';
+                  }
+                  if (nome.length < 3) {
+                    return 'Nome deve ter no mínimo 3 caracteres!';
+                  }
+                  return null;
                 },
-              );
-            },
-          ),
-          Visibility(
-            visible: alergiaMarcada,
-            child: CustomTextField(
-              controller: tipoAlergiaController,
-              icon: Icons.medication,
-              label: 'Tipo de Alergia',
-            ),
-          ),
-          // Botão de Cadastrar
-          SizedBox(
-            height: 50,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18),
-                ),
               ),
-              onPressed: () async {
-                // if (cnsController.text.length > 1 &&
-                //     cnsController.text.length < 15) {
-                //   ScaffoldMessenger.of(context).showSnackBar(
-                //     SnackBar(
-                //       content: Text('Cartão Nacional de Saúde inválido'),
-                //       duration: Duration(seconds: 3),
-                //       backgroundColor: Colors.red,
-                //     ),
-                //   );
-                //   return;
-                // }
-
-                if (cpsController.text.length > 1 &&
-                    cpsController.text.length < 15) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Cartão do Plano de Saúde inválido'),
-                      duration: Duration(seconds: 3),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
-                  return;
-                }
-
-                if (alergiaMarcada == true &&
-                    tipoAlergiaController.text.isEmpty) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                          'Preencha o tipo de alergia ou desmarque a opção de alergia.'),
-                      duration: Duration(seconds: 3),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
-                  return;
-                }
-
-                if (widget.isEditing == true) {
-                  final dependente = Dependente.editar(
-                    ativo: widget.dependente!.ativo,
-                    id: widget.dependente!.id,
-                    nome: nomeController.text,
-                    cpf: cpfController.text,
-                    dataNascimento: dataController.text,
-                    tipoSanguineo: tipoSanguineoController.text,
-                    alergia: alergiaMarcada,
-                    tipoAlergia: tipoAlergiaController.text,
-                    cartaoNacional: cnsController.text,
-                    cartaoPlanoSaude: cpsController.text,
-                  );
-                  bool update =
-                      await DependentListService.updateDependent(dependente);
-                  if (update) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text(
-                          'Dependente atualizado com sucesso!',
-                        ),
-                        backgroundColor: Colors.green,
-                      ),
-                    );
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (c) {
-                        return ListDependents();
-                      },
-                    ));
+              //CPF
+              CustomTextField(
+                controller: cpfController,
+                icon: Icons.file_copy,
+                inputFormatters: [cpfFormartter],
+                label: 'CPF',
+                validator: (cpf) {
+                  if (cpf == null || cpf.isEmpty) {
+                    return 'Digite seu CPF!';
+                  }
+                  if (GetUtils.isCpf(cpf)) {
+                    print('CPF Válido');
                   } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text(
-                          'Erro no servidor abraço, tente depois',
-                        ),
-                        backgroundColor: Colors.red,
+                    return 'CPF Inválido';
+                  }
+                  return null;
+                },
+              ),
+              //Data de Nascimento
+              CustomTextField(
+                controller: dataController,
+                icon: Icons.date_range,
+                inputFormatters: [dataFormartter],
+                label: 'Data de Nascimento',
+                validator: (data) {
+                  if (data == null || data.isEmpty) {
+                    return 'Digite sua Data de Nascimento!';
+                  }
+                  DateTime dataNascimento =
+                      DateFormat('dd/MM/yyyy').parse(data);
+                  DateTime dataAtual = DateTime.now();
+                  // Verifique se a data de nascimento é maior do que a data atual
+                  if (dataNascimento.isAfter(dataAtual)) {
+                    return 'Data de nascimento não pode ser maior do que a data atual!';
+                  }
+                  return null;
+                },
+              ),
+              //CNS
+              CustomTextField(
+                controller: cnsController,
+                icon: Icons.payment_outlined,
+                label: 'Cartão Nacional de Saúde',
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  CNSInputFormatter()
+                ],
+                validator: (cns) {
+                  // if (cns == null || cns.isEmpty) {
+                  //   return 'Digite seu Cartão Nacional de Saúde!';
+                  // }
+                  if (cnsController.text.length > 0 &&
+                      cnsController.text.length < 18) {
+                    return 'Cartão Nacional de Saúde inválido!';
+                  }
+                  return null;
+                },
+              ),
+              //CPS
+              CustomTextField(
+                controller: cpsController,
+                icon: Icons.payment_outlined,
+                label: 'Cartão do Plano de Saúde',
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  CNSInputFormatter()
+                ],
+                validator: (cps) {
+                  // if (cps == null || cps.isEmpty) {
+                  //   return 'Digite seu Cartão Nacional de Saúde!';
+                  // }
+                  if (cpsController.text.length > 0 &&
+                      cpsController.text.length < 18) {
+                    return 'Cartão Nacional de Saúde inválido!';
+                  }
+                  return null;
+                },
+              ),
+              //Tipo Sanguíneo
+              Container(
+                width: 300,
+                child: DropdownButtonFormField<String>(
+                  focusColor: Colors.white,
+                  decoration: InputDecoration(
+                    hoverColor: Colors.blue,
+                    labelText: 'Tipo Sanguíneo',
+                    labelStyle: TextStyle(color: Colors.black),
+                    isDense: true,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(18),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(18),
+                      borderSide: BorderSide(
+                        color: CustomColors.customSwatchColor,
+                      ),
+                    ),
+                  ),
+                  value: tipoSanguineoController.text.isEmpty
+                      ? null
+                      : tipoSanguineoController.text,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      tipoSanguineoController.text = newValue!;
+                    });
+                  },
+                  items: <String>[
+                    'A_POSITIVO',
+                    'A_NEGATIVO',
+                    'B_POSITIVO',
+                    'B_NEGATIVO',
+                    'O_POSITIVO',
+                    'O_NEGATIVO',
+                    'AB_POSITIVO',
+                    'AB_NEGATIVO',
+                    'SELECIONE'
+                  ].map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Row(
+                        children: [
+                          Icon(Icons.bloodtype,
+                              color: CustomColors.customSwatchColor),
+                          SizedBox(width: 10),
+                          Text(
+                            value,
+                            style: TextStyle(
+                              color: CustomColors.customSwatchColor,
+                              fontSize: 12,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                        ],
                       ),
                     );
-                  }
-                } else {
-                  final dependente = Dependente.cadastar(
-                    nome: nomeController.text,
-                    cpf: cpfController.text,
-                    dataNascimento: dataController.text,
-                    tipoSanguineo: tipoSanguineoController.text,
-                    alergia: alergiaMarcada,
-                    tipoAlergia: tipoAlergiaController.text,
-                    cartaoNacional: cnsController.text,
-                    cartaoPlanoSaude: cpsController.text,
-                  );
-                  bool register =
-                      await RegisterServiceDepents.getRegisterD(dependente);
-                  if (register) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text(
-                          'Dependente cadastrado com sucesso!',
-                        ),
-                        backgroundColor: Colors.green,
-                      ),
-                    );
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (c) {
-                        return ListDependents();
-                      },
-                    ));
-                  }
-                }
-              },
-              child: const Text(
-                'Salvar',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
+                  }).toList(),
                 ),
               ),
-            ),
+              //Alergia a Medicamentos
+              CheckboxListTile(
+                title: Text('Alergia a Medicamentos?'),
+                controlAffinity: ListTileControlAffinity.leading,
+                checkColor: CustomColors.customSwatchColor,
+                value: alergiaMarcada,
+                onChanged: (bool? value) {
+                  setState(
+                    () {
+                      alergiaMarcada = value ?? false;
+                    },
+                  );
+                },
+              ),
+              Visibility(
+                visible: alergiaMarcada,
+                child: CustomTextField(
+                  controller: tipoAlergiaController,
+                  icon: Icons.medication,
+                  label: 'Tipo de Alergia',
+                  validator: (tipoAlergia) {
+                    if (tipoAlergiaController.text.isEmpty) {
+                      return 'Digite o tipo de alergia ou desmarque o campo de alergia!';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              // Botão de Cadastrar
+              SizedBox(
+                height: 50,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18),
+                    ),
+                  ),
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      print('Todos os campos estão válidos');
+                    } else {
+                      print('Campos não válidos');
+                    }
+
+                    if (alergiaMarcada == true &&
+                        tipoAlergiaController.text.isEmpty) {
+                      return;
+                    }
+
+                    if (widget.isEditing == true) {
+                      final dependente = Dependente.editar(
+                        ativo: widget.dependente!.ativo,
+                        id: widget.dependente!.id,
+                        nome: nomeController.text,
+                        cpf: cpfController.text,
+                        dataNascimento: dataController.text,
+                        tipoSanguineo: tipoSanguineoController.text,
+                        alergia: alergiaMarcada,
+                        tipoAlergia: tipoAlergiaController.text,
+                        cartaoNacional: cnsController.text,
+                        cartaoPlanoSaude: cpsController.text,
+                      );
+                      bool update = await DependentListService.updateDependent(
+                          dependente);
+                      if (update) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              'Dependente atualizado com sucesso!',
+                            ),
+                            backgroundColor: Colors.green,
+                          ),
+                        );
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (c) {
+                            return ListDependents();
+                          },
+                        ));
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              'Erro no servidor abraço, tente depois',
+                            ),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      }
+                    } else {
+                      final dependente = Dependente.cadastar(
+                        nome: nomeController.text,
+                        cpf: cpfController.text,
+                        dataNascimento: dataController.text,
+                        tipoSanguineo: tipoSanguineoController.text,
+                        alergia: alergiaMarcada,
+                        tipoAlergia: tipoAlergiaController.text,
+                        cartaoNacional: cnsController.text,
+                        cartaoPlanoSaude: cpsController.text,
+                      );
+                      bool register =
+                          await RegisterServiceDepents.getRegisterD(dependente);
+                      if (register) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              'Dependente cadastrado com sucesso!',
+                            ),
+                            backgroundColor: Colors.green,
+                          ),
+                        );
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (c) {
+                            return ListDependents();
+                          },
+                        ));
+                      }
+                    }
+                  },
+                  child: const Text(
+                    'Salvar',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

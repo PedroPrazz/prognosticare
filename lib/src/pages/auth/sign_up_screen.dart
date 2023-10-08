@@ -85,10 +85,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             label: 'Nome',
                             controller: nomeController,
                             validator: (nome) {
-                              if (nome == null || nome.isEmpty) {
+                              if (nome == null || nome.trim().isEmpty) {
                                 return 'Digite seu nome completo!';
                               }
-                              if (nome.length < 3) {
+                              if (nome.trim().length < 3) {
                                 return 'Nome deve ter no mínimo 3 caracteres!';
                               }
                               return null;
@@ -102,10 +102,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             inputFormatters: [cpfFormartter],
                             controller: cpfController,
                             validator: (cpf) {
-                              if (cpf == null || cpf.isEmpty) {
+                              if (cpf == null || cpf.trim().isEmpty) {
                                 return 'Digite seu CPF!';
                               }
-                              if (GetUtils.isCpf(cpf)) {
+                              if (GetUtils.isCpf(cpf.trim())) {
                                 print('CPF Válido');
                               } else {
                                 return 'CPF Inválido';
@@ -120,9 +120,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             label: 'Email',
                             controller: emailController,
                             validator: (email) {
-                              if (email == null || email.isEmpty)
+                              if (email == null || email.trim().isEmpty)
                                 return 'Digite seu email!';
-                              if (!email.isEmail)
+                              if (!email.trim().isEmail)
                                 return 'Digite um email válido!';
                               return null;
                             },
@@ -135,11 +135,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             controller: dataController,
                             inputFormatters: [dataFormartter],
                             validator: (data) {
-                              if (data == null || data.isEmpty) {
+                              if (data == null || data.trim().isEmpty) {
                                 return 'Digite sua Data de Nascimento!';
                               }
                               DateTime dataNascimento =
-                                  DateFormat('dd/MM/yyyy').parse(data);
+                                  DateFormat('dd/MM/yyyy').parse(data.trim());
                               int idade =
                                   DateTime.now().year - dataNascimento.year;
                               if (idade < 18) {
@@ -157,14 +157,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             isSecret: true,
                             controller: passwordController,
                             validator: (senha) {
-                              if (senha == null || senha.isEmpty) {
+                              if (senha == null || senha.trim().isEmpty) {
                                 return 'Digite sua senha!';
                               }
-                              if (senha.length < 8) {
+                              if (senha.trim().length < 8) {
                                 return 'Digite uma senha com pelo menos 8 caracteres.';
                               }
-                              if (confirmPasswordController.text !=
-                                  passwordController.text) {
+                              if (confirmPasswordController.text.trim() !=
+                                  passwordController.text.trim()) {
                                 return 'As senhas não coincidem';
                               }
                               return null;
@@ -179,11 +179,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             controller: confirmPasswordController,
                             validator: (confirmSenha) {
                               if (confirmSenha == null ||
-                                  confirmSenha.isEmpty) {
+                                  confirmSenha.trim().isEmpty) {
                                 return 'Confirme sua senha!';
                               }
-                              if (passwordController.text !=
-                                  confirmPasswordController.text) {
+                              if (passwordController.text.trim() !=
+                                  confirmPasswordController.text.trim()) {
                                 return 'As senhas não coincidem';
                               }
                               return null;
@@ -206,11 +206,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   print('Campos não válidos');
                                 }
                                 bool signIn = await RegisterService.getRegister(
-                                    nomeController.text,
-                                    cpfController.text,
-                                    emailController.text,
-                                    dataController.text,
-                                    passwordController.text);
+                                    nomeController.text.trim(),
+                                    cpfController.text.trim(),
+                                    emailController.text.trim(),
+                                    dataController.text.trim(),
+                                    passwordController.text.trim());
                                 if (signIn) {
                                   ValidationAlertDialog()
                                       .cadastroSucessoAlert(context);

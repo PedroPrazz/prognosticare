@@ -28,6 +28,8 @@ class _ProfileTabState extends State<ProfileTab> {
   bool doadorMarcado = false;
   bool alergiaMarcada = false;
 
+  final _formKey = GlobalKey<FormState>();
+
   TextEditingController Controller = TextEditingController();
   TextEditingController nomeController = TextEditingController();
   TextEditingController cpfController = TextEditingController();
@@ -78,278 +80,300 @@ class _ProfileTabState extends State<ProfileTab> {
           ),
         ],
       ),
-      body: ListView(
-        physics: const BouncingScrollPhysics(),
-        padding: const EdgeInsets.fromLTRB(16, 32, 16, 16),
-        children: [
-          //Nome
-          CustomTextField(
-            readOnly: true,
-            initialValue: widget.pessoa.nome,
-            icon: Icons.person,
-            label: 'Nome',
-          ),
-          //CPF
-          CustomTextField(
-            readOnly: true,
-            initialValue: widget.pessoa.cpf,
-            icon: Icons.file_copy,
-            label: 'CPF',
-          ),
-          //Data de Nascimento
-          CustomTextField(
-            readOnly: true,
-            initialValue: widget.pessoa.dataNascimento,
-            icon: Icons.date_range,
-            label: 'Data de Nascimento',
-          ),
-          //Email
-          CustomTextField(
-            readOnly: true,
-            initialValue: widget.pessoa.email,
-            icon: Icons.email,
-            label: 'Email',
-          ),
-          //Telefone
-          CustomTextField(
-            controller: telefoneController,
-            icon: Icons.phone,
-            label: 'Telefone',
-            inputFormatters: [phoneFormatter],
-          ),
-          //CNS
-          CustomTextField(
-            controller: cnsController,
-            icon: Icons.payment_outlined,
-            label: 'Cartão Nacional de Saúde',
-            inputFormatters: [
-              FilteringTextInputFormatter.digitsOnly,
-              CNSInputFormatter()
-            ],
-          ),
-          //CPS
-          CustomTextField(
-            controller: cpsController,
-            icon: Icons.payment_outlined,
-            label: 'Cartão do Plano de Saúde',
-            inputFormatters: [
-              FilteringTextInputFormatter.digitsOnly,
-              CNSInputFormatter()
-            ],
-          ),
-          //Tipo Sanguíneo
-          Container(
-            width: 300,
-            child: DropdownButtonFormField<String>(
-              focusColor: Colors.white,
-              decoration: InputDecoration(
-                hoverColor: Colors.blue,
-                labelText: 'Tipo Sanguíneo',
-                labelStyle: TextStyle(color: Colors.black),
-                isDense: true,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(18),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(18),
-                  borderSide: BorderSide(
-                    color: CustomColors.customSwatchColor,
-                  ),
-                ),
+      body: Container(
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.fromLTRB(16, 32, 16, 16),
+            children: [
+              //Nome
+              CustomTextField(
+                readOnly: true,
+                initialValue: widget.pessoa.nome,
+                icon: Icons.person,
+                label: 'Nome',
               ),
-              value: tipoSanguineoController.text.isEmpty
-                  ? null
-                  : tipoSanguineoController.text,
-              onChanged: (String? newValue) {
-                setState(() {
-                  tipoSanguineoController.text = newValue!;
-                });
-              },
-              items: <String>[
-                'A_POSITIVO',
-                'A_NEGATIVO',
-                'B_POSITIVO',
-                'B_NEGATIVO',
-                'O_POSITIVO',
-                'O_NEGATIVO',
-                'AB_POSITIVO',
-                'AB_NEGATIVO',
-                'SELECIONE'
-              ].map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Row(
-                    children: [
-                      Icon(Icons.bloodtype,
-                          color: CustomColors.customSwatchColor),
-                      SizedBox(width: 10),
-                      Text(
-                        value,
-                        style: TextStyle(
-                          color: CustomColors.customSwatchColor,
-                          fontSize: 12,
-                          fontWeight: FontWeight.normal,
-                        ),
+              //CPF
+              CustomTextField(
+                readOnly: true,
+                initialValue: widget.pessoa.cpf,
+                icon: Icons.file_copy,
+                label: 'CPF',
+              ),
+              //Data de Nascimento
+              CustomTextField(
+                readOnly: true,
+                initialValue: widget.pessoa.dataNascimento,
+                icon: Icons.date_range,
+                label: 'Data de Nascimento',
+              ),
+              //Email
+              CustomTextField(
+                readOnly: true,
+                initialValue: widget.pessoa.email,
+                icon: Icons.email,
+                label: 'Email',
+              ),
+              //Telefone
+              CustomTextField(
+                controller: telefoneController,
+                icon: Icons.phone,
+                label: 'Telefone',
+                inputFormatters: [phoneFormatter],
+                validator: (telefone) {
+                  if (telefoneController.text.length > 0 &&
+                      telefoneController.text.length < 14) {
+                    return 'Telefone inválido!';
+                  }
+                  return null;
+                },
+              ),
+              //CNS
+              CustomTextField(
+                controller: cnsController,
+                icon: Icons.payment_outlined,
+                label: 'Cartão Nacional de Saúde',
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  CNSInputFormatter()
+                ],
+                validator: (cns) {
+                  // if (cns == null || cns.isEmpty) {
+                  //   return 'Digite seu Cartão Nacional de Saúde!';
+                  // }
+                  if (cnsController.text.length > 0 &&
+                      cnsController.text.length < 18) {
+                    return 'Cartão Nacional de Saúde inválido!';
+                  }
+                  return null;
+                },
+              ),
+              //CPS
+              CustomTextField(
+                controller: cpsController,
+                icon: Icons.payment_outlined,
+                label: 'Cartão do Plano de Saúde',
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  CNSInputFormatter()
+                ],
+                validator: (cps) {
+                  // if (cps == null || cps.isEmpty) {
+                  //   return 'Digite seu Cartão Nacional de Saúde!';
+                  // }
+                  if (cpsController.text.length > 0 &&
+                      cpsController.text.length < 18) {
+                    return 'Cartão Nacional de Saúde inválido!';
+                  }
+                  return null;
+                },
+              ),
+              //Tipo Sanguíneo
+              Container(
+                width: 300,
+                child: DropdownButtonFormField<String>(
+                  focusColor: Colors.white,
+                  decoration: InputDecoration(
+                    hoverColor: Colors.blue,
+                    labelText: 'Tipo Sanguíneo',
+                    labelStyle: TextStyle(color: Colors.black),
+                    isDense: true,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(18),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(18),
+                      borderSide: BorderSide(
+                        color: CustomColors.customSwatchColor,
                       ),
-                    ],
+                    ),
                   ),
-                );
-              }).toList(),
-            ),
-          ),
-          //Alergia a Medicamentos
-          CheckboxListTile(
-            title: Text('Alergia a Medicamentos?'),
-            controlAffinity: ListTileControlAffinity.leading,
-            checkColor: CustomColors.customSwatchColor,
-            value: alergiaMarcada,
-            onChanged: (bool? value) {
-              setState(
-                () {
-                  alergiaMarcada = value ?? false;
-                },
-              );
-            },
-          ),
-          Visibility(
-            visible: alergiaMarcada,
-            child: CustomTextField(
-              controller: tipoAlergiaController,
-              icon: Icons.medication,
-              label: 'Tipo de Alergia',
-            ),
-          ),
-          //É doador de orgãos
-          CheckboxListTile(
-            title: Text('É doador de Orgãos?'),
-            controlAffinity: ListTileControlAffinity.leading,
-            checkColor: CustomColors.customSwatchColor,
-            value: doadorMarcado,
-            onChanged: (bool? value) {
-              setState(
-                () {
-                  doadorMarcado = value ?? false;
-                },
-              );
-            },
-          ),
-          // Botão de Cadastrar
-          SizedBox(
-            height: 50,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18),
+                  value: tipoSanguineoController.text.isEmpty
+                      ? null
+                      : tipoSanguineoController.text,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      tipoSanguineoController.text = newValue!;
+                    });
+                  },
+                  items: <String>[
+                    'A_POSITIVO',
+                    'A_NEGATIVO',
+                    'B_POSITIVO',
+                    'B_NEGATIVO',
+                    'O_POSITIVO',
+                    'O_NEGATIVO',
+                    'AB_POSITIVO',
+                    'AB_NEGATIVO',
+                    'SELECIONE'
+                  ].map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Row(
+                        children: [
+                          Icon(Icons.bloodtype,
+                              color: CustomColors.customSwatchColor),
+                          SizedBox(width: 10),
+                          Text(
+                            value,
+                            style: TextStyle(
+                              color: CustomColors.customSwatchColor,
+                              fontSize: 12,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }).toList(),
                 ),
               ),
-              onPressed: () async {
-                if (telefoneController.text.length > 1 &&
-                    telefoneController.text.length < 14) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Telefone inválido!'),
-                      duration: Duration(seconds: 3),
-                      backgroundColor: Colors.red,
-                    ),
+              //Alergia a Medicamentos
+              CheckboxListTile(
+                title: Text('Alergia a Medicamentos?'),
+                controlAffinity: ListTileControlAffinity.leading,
+                checkColor: CustomColors.customSwatchColor,
+                value: alergiaMarcada,
+                onChanged: (bool? value) {
+                  setState(
+                    () {
+                      alergiaMarcada = value ?? false;
+                    },
                   );
-                  return;
-                }
-
-                if (cnsController.text.length > 1 &&
-                    cnsController.text.length < 15) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Cartão Nacional de Saúde inválido'),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
-                  return;
-                }
-
-                if (cpsController.text.length > 1 &&
-                    cpsController.text.length < 15) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Cartão do Plano de Saúde inválido'),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
-                  return;
-                }
-
-                if (alergiaMarcada == true &&
-                    tipoAlergiaController.text.isEmpty) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                          'Preencha o tipo de alergia ou desmarque a opção de alergia.'),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
-                  return;
-                }
-
-                Pessoa pessoaAtualizada = widget.pessoa.copyWith(
-                  pessoaId: widget.pessoa.pessoaId,
-                  nome: widget.pessoa.nome,
-                  cpf: widget.pessoa.cpf,
-                  email: widget.pessoa.email,
-                  contato: telefoneController.text,
-                  dataNascimento: widget.pessoa.dataNascimento,
-                  tipoSanguineo: tipoSanguineoController.text,
-                  tipoAlergia: tipoAlergiaController.text,
-                  tipoResponsavel: widget.pessoa.tipoResponsavel,
-                  cartaoNacional: cnsController.text,
-                  cartaoPlanoSaude: cpsController.text,
-                  alergia: alergiaMarcada,
-                  doador: doadorMarcado,
-                );
-
-                Pessoa pessoaAtualizado =
-                    await PersonUpdateService.getPerson(pessoaAtualizada);
-                // ignore: unnecessary_null_comparison
-                if (pessoaAtualizado != null) {
-                  setState(() {
-                    widget.pessoa = pessoaAtualizado;
-                  });
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Dados atualizados com sucesso!'),
-                      backgroundColor: Colors.green,
-                    ),
-                  );
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (context) => HomeScreen()),
-                      (route) => false);
-                } else {
-                  print("id: ${pessoaAtualizada.pessoaId}");
-                  print("Nome: ${pessoaAtualizada.nome}");
-                  print("CPF: ${pessoaAtualizada.cpf}");
-                  print("Email: ${pessoaAtualizada.email}");
-                  print("Contato: ${pessoaAtualizada.contato}");
-                  print(
-                      "Data de Nascimento: ${pessoaAtualizada.dataNascimento}");
-                  print("tipoSanguineo: ${pessoaAtualizada.tipoSanguineo}");
-                  print("alergia: ${pessoaAtualizada.alergia}");
-                  print('doador:${pessoaAtualizada.doador}');
-                  print("responsavel: ${pessoaAtualizada.tipoResponsavel}");
-                  print("tipoAlergia: ${pessoaAtualizada.tipoAlergia}");
-                  print("cartaoNacional: ${pessoaAtualizada.cartaoNacional}");
-                  print(
-                      "cartaoPlanoSaude: ${pessoaAtualizada.cartaoPlanoSaude}");
-                }
-              },
-              child: const Text(
-                'Salvar',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
+                },
+              ),
+              Visibility(
+                visible: alergiaMarcada,
+                child: CustomTextField(
+                  controller: tipoAlergiaController,
+                  icon: Icons.medication,
+                  label: 'Tipo de Alergia',
+                  validator: (tipoAlergia) {
+                    if (tipoAlergiaController.text.isEmpty) {
+                      return 'Digite o tipo de alergia ou desmarque o campo de alergia!';
+                    }
+                    return null;
+                  },
                 ),
               ),
-            ),
+              //É doador de orgãos
+              CheckboxListTile(
+                title: Text('É doador de Orgãos?'),
+                controlAffinity: ListTileControlAffinity.leading,
+                checkColor: CustomColors.customSwatchColor,
+                value: doadorMarcado,
+                onChanged: (bool? value) {
+                  setState(
+                    () {
+                      doadorMarcado = value ?? false;
+                    },
+                  );
+                },
+              ),
+              // Botão de Cadastrar
+              SizedBox(
+                height: 50,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18),
+                    ),
+                  ),
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      print('Todos os campos estão válidos');
+                    } else {
+                      print('Campos não válidos');
+                    }
+
+                    if (alergiaMarcada == true &&
+                        tipoAlergiaController.text.isEmpty) {
+                      return;
+                    }
+
+                    if (telefoneController.text.isEmpty &&
+                        cnsController.text.isEmpty &&
+                        cpsController.text.isEmpty &&
+                        tipoSanguineoController.text.isEmpty &&
+                        alergiaMarcada == false &&
+                        doadorMarcado == false) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Você não alterou nenhum dado!'),
+                          backgroundColor: Colors.blue,
+                        ),
+                      );
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(builder: (context) => HomeScreen()),
+                          (route) => false);
+                    }
+
+                    Pessoa pessoaAtualizada = widget.pessoa.copyWith(
+                      pessoaId: widget.pessoa.pessoaId,
+                      nome: widget.pessoa.nome,
+                      cpf: widget.pessoa.cpf,
+                      email: widget.pessoa.email,
+                      contato: telefoneController.text,
+                      dataNascimento: widget.pessoa.dataNascimento,
+                      tipoSanguineo: tipoSanguineoController.text,
+                      tipoAlergia: tipoAlergiaController.text,
+                      tipoResponsavel: widget.pessoa.tipoResponsavel,
+                      cartaoNacional: cnsController.text,
+                      cartaoPlanoSaude: cpsController.text,
+                      alergia: alergiaMarcada,
+                      doador: doadorMarcado,
+                    );
+
+                    Pessoa pessoaAtualizado =
+                        await PersonUpdateService.getPerson(pessoaAtualizada);
+                    // ignore: unnecessary_null_comparison
+                    if (pessoaAtualizado != null) {
+                      setState(() {
+                        widget.pessoa = pessoaAtualizado;
+                      });
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Dados atualizados com sucesso!'),
+                          backgroundColor: Colors.green,
+                        ),
+                      );
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(builder: (context) => HomeScreen()),
+                          (route) => false);
+                    } else {
+                      print("id: ${pessoaAtualizada.pessoaId}");
+                      print("Nome: ${pessoaAtualizada.nome}");
+                      print("CPF: ${pessoaAtualizada.cpf}");
+                      print("Email: ${pessoaAtualizada.email}");
+                      print("Contato: ${pessoaAtualizada.contato}");
+                      print(
+                          "Data de Nascimento: ${pessoaAtualizada.dataNascimento}");
+                      print("tipoSanguineo: ${pessoaAtualizada.tipoSanguineo}");
+                      print("alergia: ${pessoaAtualizada.alergia}");
+                      print('doador:${pessoaAtualizada.doador}');
+                      print("responsavel: ${pessoaAtualizada.tipoResponsavel}");
+                      print("tipoAlergia: ${pessoaAtualizada.tipoAlergia}");
+                      print(
+                          "cartaoNacional: ${pessoaAtualizada.cartaoNacional}");
+                      print(
+                          "cartaoPlanoSaude: ${pessoaAtualizada.cartaoPlanoSaude}");
+                    }
+                  },
+                  child: const Text(
+                    'Salvar',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

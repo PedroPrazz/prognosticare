@@ -25,8 +25,6 @@ class SignInScreen extends StatelessWidget {
     final emailController = TextEditingController();
     final passwordController = TextEditingController();
 
-    
-
     return Scaffold(
       backgroundColor: CustomColors.customSwatchColor,
       body: SingleChildScrollView(
@@ -54,9 +52,8 @@ class SignInScreen extends StatelessWidget {
                           TextSpan(
                             text: 'Care',
                             style: TextStyle(
-                              color: Colors.blue,
-                              fontWeight: FontWeight.bold
-                            ),
+                                color: Colors.blue,
+                                fontWeight: FontWeight.bold),
                           )
                         ],
                       ),
@@ -108,10 +105,10 @@ class SignInScreen extends StatelessWidget {
                         icon: Icons.email,
                         label: 'Email',
                         validator: (email) {
-                          if (email == null || email.isEmpty) {
+                          if (email == null || email.trim().isEmpty) {
                             return 'Digite seu email!';
                           }
-                          if (!email.isEmail) {
+                          if (!email.trim().isEmail) {
                             return 'Digite um email válido!';
                           }
                           return null;
@@ -125,10 +122,10 @@ class SignInScreen extends StatelessWidget {
                         label: 'Senha',
                         isSecret: true,
                         validator: (senha) {
-                          if (senha == null || senha.isEmpty) {
+                          if (senha == null || senha.trim().isEmpty) {
                             return 'Digite sua senha!';
                           }
-                          if (senha.length < 8) {
+                          if (senha.trim().length < 8) {
                             return 'Senha deve conter no mínimo 8 caracteres!';
                           }
                           return null;
@@ -150,10 +147,18 @@ class SignInScreen extends StatelessWidget {
                             } else {
                               print('Campos não válidos');
                             }
+                            if (emailController.text.trim().isEmpty ||
+                                !emailController.text.trim().isEmail ||
+                                passwordController.text.trim().isEmpty ||
+                                passwordController.text.trim().length < 8) {
+                              return;
+                            }
                             bool loggedIn = await LoginService.getLogin(
-                                emailController.text, passwordController.text);
+                                emailController.text.trim(),
+                                passwordController.text.trim());
                             if (loggedIn) {
-                              if (passwordController.text == 'abcdefgh') {
+                              if (passwordController.text.trim() ==
+                                  'abcdefgh') {
                                 ChangePasswordDialog().updatePassword(context);
                               } else {
                                 Get.offNamed(PagesRoutes.homeRoute);

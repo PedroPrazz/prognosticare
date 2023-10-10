@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:prognosticare/src/api/service/schedule_list_service.dart';
 import 'package:prognosticare/src/api/service/schedule_register_service.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/models/schedule_model.dart';
@@ -9,8 +11,10 @@ import 'package:prognosticare/src/pages/schedule/schedule_list_screen.dart';
 
 class ScheduleScreen extends StatefulWidget {
   final Schedule? schedule;
+  bool isEditing;
 
-  ScheduleScreen({Key? key, this.schedule}) : super(key: key);
+  ScheduleScreen({Key? key, this.schedule, this.isEditing = false})
+      : super(key: key);
 
   @override
   State<ScheduleScreen> createState() => _ScheduleScreenState();
@@ -43,11 +47,31 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   bool realizado = false;
 
   @override
+  void initState() {
+    super.initState();
+    if (widget.isEditing) {
+      tipoAgendamentoController.text = widget.schedule!.tipoAgendamento;
+      especialistaController.text = widget.schedule!.especialista;
+      descricaoController.text = widget.schedule!.descricao;
+      localController.text = widget.schedule!.local;
+      datahController.text = widget.schedule!.dataAgenda;
+      obsController.text = widget.schedule!.observacao;
+      realizado = widget.schedule!.realizado ?? false;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Agendamentos',
+        title: Text(
+          widget.isEditing ? 'Editar Agendamento' : 'Adicionar Agendamento',
+        ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
         ),
         foregroundColor: Colors.white,
       ),
@@ -138,7 +162,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
             label: 'Data | Horário',
             inputFormatters: [dataFormatter],
           ),
-          
+
           //Observações
           CustomTextField(
             controller: obsController,
@@ -169,21 +193,67 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 ),
               ),
               onPressed: () async {
-                final dataFormatada =
-                    DateFormat('dd/MM/yyyy hh:mm:ss a').format(DateTime.now());
-
-                bool schedule = await ScheduleService.getSchedule(
-                    dataFormatada,
-                    localController.text,
-                    descricaoController.text,
-                    obsController.text,
-                    especialistaController.text,
-                    tipoAgendamentoController.text);
-                if (schedule) {
-                  Navigator.of(context)
-                      .pushReplacement(MaterialPageRoute(builder: (c) {
-                    return ScheduleListScreen();
-                  }));
+                if (widget.isEditing == true) {
+                  final schedule = Schedule.editar(
+                    id: widget.schedule!.id,
+                    dataAgenda: datahController.text,
+                    local: localController.text,
+                    descricao: descricaoController.text,
+                    observacao: obsController.text,
+                    especialista: especialistaController.text,
+                    tipoAgendamento: tipoAgendamentoController.text,
+                  );
+                  bool update =
+                      await ScheduleListService.updateSchedule(schedule);
+                  if (update) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Agendamento atualizado com sucesso!',
+                        ),
+                        backgroundColor: Colors.green,
+                      ),
+                    );
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (c) {
+                        return ScheduleListScreen();
+                      },
+                    ));
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Erro no servidor abraço, tente depois',
+                        ),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  }
+                } else {
+                  final schedule = Schedule.cadastrar(
+                    dataAgenda: datahController.text,
+                    local: localController.text,
+                    descricao: descricaoController.text,
+                    observacao: obsController.text,
+                    especialista: especialistaController.text,
+                    tipoAgendamento: tipoAgendamentoController.text,
+                  );
+                  bool register = await ScheduleService.getSchedule(schedule);
+                  if (register) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Agendamento cadastrado com sucesso!',
+                        ),
+                        backgroundColor: Colors.green,
+                      ),
+                    );
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (c) {
+                        return ScheduleListScreen();
+                      },
+                    ));
+                  }
                 }
               },
               child: const Text(

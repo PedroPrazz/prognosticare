@@ -97,8 +97,15 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
                   leading: IconButton(
                     icon: Icon(Icons.edit),
                     onPressed: () {
-                      // Coloque aqui a lógica para editar o AGENDAMENTO
-                    },
+                     Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (c) {
+                            return ScheduleScreen(
+                              schedule: schedule,
+                              isEditing: true, // Modo de edição ativado
+                            );
+                          },
+                        ));
+                      },
                   ),
                   // Verifique se o agendamento foi realizado e exiba um ícone correspondente.
                   trailing: schedule.realizado != null

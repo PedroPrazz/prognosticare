@@ -2,12 +2,12 @@ import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:prognosticare/src/config/uri.dart';
+import 'package:prognosticare/src/models/schedule_model.dart';
 
 final storage = FlutterSecureStorage();
 
 class ScheduleService {
-  static Future<bool> getSchedule(String data, String local, String descricao,
-      String observacoes, String especialista, String tipoExame) async {
+  static Future<bool> getSchedule(Schedule schedule) async {
     String? idPessoa = await storage.read(key: 'user_id');
     String? token = await storage.read(key: 'token');
 
@@ -18,12 +18,12 @@ class ScheduleService {
       final response = await http.post(
         url,
         body: json.encode({
-          'dataAgenda': data,
-          'local': local,
-          'descricao': descricao,
-          'observacao': observacoes,
-          'especialista': especialista,
-          'tipoExame': tipoExame,
+          'dataAgenda': schedule.dataAgenda,
+          'local': schedule.local,
+          'descricao': schedule.descricao,
+          'observacao': schedule.observacao,
+          'especialista': schedule.especialista,
+          'tipoExame': schedule.tipoAgendamento,
         }),
         headers: {
           'Content-Type': 'application/json',

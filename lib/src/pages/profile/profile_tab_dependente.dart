@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_null_comparison
+// ignore_for_file: unnecessary_null_comparison, must_be_immutable
 
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';

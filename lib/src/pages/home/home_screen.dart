@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:prognosticare/components/dialogs/change_password_dialog.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
+import 'package:prognosticare/src/models/vaccines.dart';
 import 'package:prognosticare/src/pages/auth/dependents.dart';
 import 'package:prognosticare/components/dialogs/prontuario_dialog.dart';
 import 'package:prognosticare/src/api/service/findby_id_service.dart';
@@ -9,6 +10,7 @@ import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
 import 'package:prognosticare/src/models/pessoa_model.dart';
 import 'package:prognosticare/src/pages/profile/profile_tab.dart';
 import 'package:prognosticare/src/pages/schedule/my_schedule_screen.dart';
+import 'package:prognosticare/src/pages/vaccines/vaccination_schedule.dart';
 
 final storage = FlutterSecureStorage();
 
@@ -104,6 +106,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => MySchedule(),
+                  ),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.auto_stories),
+              title: const Text('Calendário de Vacinas'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => VacinasList(),
                   ),
                 );
               },

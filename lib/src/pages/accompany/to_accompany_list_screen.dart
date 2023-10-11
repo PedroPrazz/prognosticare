@@ -56,7 +56,16 @@ class _ToAccompanyListScreenState extends State<ToAccompanyListScreen> {
                   subtitle: Text(toaccompany.prescricaoMedica!),
                   leading: IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (c) {
+                          return ToAccompanyScreen(
+                            accompany: toaccompany,
+                            isEditing: true, // Modo de edição ativado
+                          );
+                        },
+                      ));
+                    },
                   ),
                   trailing: IconButton(
                     icon: Icon(Icons.delete),

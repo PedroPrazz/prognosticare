@@ -47,8 +47,7 @@ dependencies:
     flutter_local_notifications: ^15.1.1
     firebase_analytics: ^10.4.5
     table_calendar: ^3.0.9
-    expansion_tile_card: ^3.0.0
-
+    expandable: ^5.0.1
 dev_dependencies:
     flutter_test:
         sdk: flutter

@@ -148,12 +148,34 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               if (data == null || data.trim().isEmpty) {
                                 return 'Digite sua Data de Nascimento!';
                               }
-                              DateTime dataNascimento =
-                                  DateFormat('dd/MM/yyyy').parse(data.trim());
+                              DateTime dataNascimento;
+                              try {
+                                dataNascimento =
+                                    DateFormat('dd/MM/yyyy').parse(data.trim());
+                              } catch (e) {
+                                return 'Data de Nascimento inválida!';
+                              }
+                              // Verificar se a data de nascimento está no futuro
+                              if (dataNascimento.isAfter(DateTime.now())) {
+                                return 'A data de nascimento não pode estar no futuro!';
+                              }
+                              // Calcular a idade
                               int idade =
                                   DateTime.now().year - dataNascimento.year;
+                              // Verificar se a pessoa tem mais de 18 anos
                               if (idade < 18) {
                                 return 'Você deve ter mais de 18 anos!';
+                              }
+                              // Verificar se a data de nascimento ocorreu há mais de 18 anos
+                              if (idade == 18) {
+                                if (dataNascimento.month >
+                                    DateTime.now().month) {
+                                  return 'Você deve ter mais de 18 anos!';
+                                } else if (dataNascimento.month ==
+                                        DateTime.now().month &&
+                                    dataNascimento.day > DateTime.now().day) {
+                                  return 'Você deve ter mais de 18 anos!';
+                                }
                               }
                               dataValida = true;
                               return null;

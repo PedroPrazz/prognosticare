@@ -74,11 +74,11 @@ class _ProfileTabState extends State<ProfileTab> {
             onPressed: () {
               Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (context) => SignInScreen()),
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
                   (route) => false);
             },
             icon: const Icon(
-              Icons.logout,
+              Icons.home,
               color: Colors.white,
             ),
           ),

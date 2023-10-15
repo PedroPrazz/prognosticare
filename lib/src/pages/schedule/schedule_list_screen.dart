@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:prognosticare/src/api/service/schedule_list_service.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/models/schedule_model.dart';
+import 'package:prognosticare/src/pages/home/home_screen.dart';
 import 'package:prognosticare/src/pages/schedule/schedule_screen.dart';
 
 class ScheduleListScreen extends StatefulWidget {
@@ -75,6 +76,20 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
         centerTitle: true,
         backgroundColor: CustomColors.customSwatchColor,
         foregroundColor: Colors.white,
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                  (route) => false);
+            },
+            icon: const Icon(
+              Icons.home,
+              color: Colors.white,
+            ),
+          ),
+        ],
       ),
       body: FutureBuilder<List<Schedule>>(
         future: schedulesFuture,
@@ -97,15 +112,15 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
                   leading: IconButton(
                     icon: Icon(Icons.edit),
                     onPressed: () {
-                     Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (c) {
-                            return ScheduleScreen(
-                              schedule: schedule,
-                              isEditing: true, // Modo de edição ativado
-                            );
-                          },
-                        ));
-                      },
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (c) {
+                          return ScheduleScreen(
+                            schedule: schedule,
+                            isEditing: true, // Modo de edição ativado
+                          );
+                        },
+                      ));
+                    },
                   ),
                   // Verifique se o agendamento foi realizado e exiba um ícone correspondente.
                   trailing: schedule.realizado != null

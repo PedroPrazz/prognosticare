@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'package:flutter/material.dart';
+import 'package:prognosticare/src/pages/home/home_screen.dart';
 import 'package:prognosticare/utils.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -57,6 +58,20 @@ class _MyScheduleState extends State<MySchedule> {
         centerTitle: true,
         title: Text('Meus Agendamentos'),
         foregroundColor: Colors.white,
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                  (route) => false);
+            },
+            icon: const Icon(
+              Icons.home,
+              color: Colors.white,
+            ),
+          ),
+        ],
       ),
       body: Column(
         children: [

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/models/vaccines.dart';
+import 'package:prognosticare/src/pages/home/home_screen.dart';
 
 class Vaccination extends StatefulWidget {
   @override
@@ -43,6 +44,20 @@ class _VaccinationState extends State<Vaccination> {
       appBar: AppBar(
         title: Text('Calendário de Vacinas'),
         foregroundColor: Colors.white,
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                  (route) => false);
+            },
+            icon: const Icon(
+              Icons.home,
+              color: Colors.white,
+            ),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Center(

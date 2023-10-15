@@ -13,6 +13,7 @@ import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/models/dependent_model.dart';
 import 'package:prognosticare/components/common_widgets/custom_text_field.dart';
 import 'package:prognosticare/src/pages/auth/dependents.dart';
+import 'package:prognosticare/src/pages/home/home_screen.dart';
 
 class ProfileTabDepentende extends StatefulWidget {
   final Dependente? dependente;
@@ -90,6 +91,20 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
             },
           ),
           foregroundColor: Colors.white,
+          actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomeScreen()),
+                    (route) => false);
+              },
+              icon: const Icon(
+                Icons.home,
+                color: Colors.white,
+              ),
+            ),
+          ],
         ),
         body: Container(
             child: Form(
@@ -143,17 +158,23 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                   if (data == null || data.trim().isEmpty) {
                     return 'Digite a Data de Nascimento!';
                   }
-                  DateTime dataNascimento =
-                      DateFormat('dd/MM/yyyy').parse(data.trim());
+                  DateTime dataNascimento;
+                  try {
+                    dataNascimento =
+                        DateFormat('dd/MM/yyyy').parse(data.trim());
+                  } catch (e) {
+                    return 'Data de Nascimento inválida.';
+                  }
                   DateTime dataAtual = DateTime.now();
-                  // Verifique se a data de nascimento é maior do que a data atual
+                  // Verifique se a data de nascimento é posterior à data atual
                   if (dataNascimento.isAfter(dataAtual)) {
-                    return 'Data de nascimento inválida.';
+                    return 'A Data de Nascimento não pode ser no futuro.';
                   }
                   dataValida = true;
                   return null;
                 },
               ),
+
               //CNS
               CustomTextField(
                 controller: cnsController,

@@ -1,12 +1,14 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:prognosticare/src/api/service/schedule_list_service.dart';
 import 'package:prognosticare/src/api/service/schedule_register_service.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/models/schedule_model.dart';
 import 'package:prognosticare/components/common_widgets/custom_text_field.dart';
+import 'package:prognosticare/src/pages/home/home_screen.dart';
 import 'package:prognosticare/src/pages/schedule/schedule_list_screen.dart';
 
 class ScheduleScreen extends StatefulWidget {
@@ -46,6 +48,14 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   TextEditingController tipoAgendamentoController = TextEditingController();
   bool realizado = false;
 
+  final _formKey = GlobalKey<FormState>();
+
+  bool especialistaValido = false;
+  bool descricaoValido = false;
+  bool localValido = false;
+  bool datahValido = false;
+  bool obsValido = false;
+
   @override
   void initState() {
     super.initState();
@@ -74,198 +84,289 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
           },
         ),
         foregroundColor: Colors.white,
-      ),
-      body: ListView(
-        physics: const BouncingScrollPhysics(),
-        padding: const EdgeInsets.fromLTRB(16, 32, 16, 16),
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 15),
-            child: Container(
-              width: 300,
-              child: DropdownButtonFormField<String>(
-                focusColor: Colors.white,
-                decoration: InputDecoration(
-                  hoverColor: Colors.blue,
-                  labelText: 'Tipo de Agendamento',
-                  labelStyle: TextStyle(color: Colors.black),
-                  isDense: true,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(18),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(18),
-                    borderSide: BorderSide(
-                      color: CustomColors.customSwatchColor,
-                    ),
-                  ),
-                ),
-                value: tipoAgendamentoController.text.isEmpty
-                    ? null
-                    : tipoAgendamentoController.text,
-                onChanged: (String? newValue) {
-                  setState(() {
-                    tipoAgendamentoController.text = newValue!;
-                  });
-                },
-                items: <String>[
-                  'EXAME',
-                  'CONSULTA',
-                  'INTERNAÇÃO',
-                  'VACINA',
-                  'CIRURGIA',
-                ].map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Row(
-                      children: [
-                        Icon(Icons.library_books,
-                            color: CustomColors.customSwatchColor),
-                        SizedBox(width: 10),
-                        Text(
-                          value,
-                          style: TextStyle(
-                            color: CustomColors.customSwatchColor,
-                            fontSize: 12,
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                }).toList(),
-              ),
-            ),
-          ),
-          //Especialista
-          CustomTextField(
-            controller: especialistaController,
-            icon: Icons.person,
-            label: 'Especialista',
-          ),
-          //Descrição
-          CustomTextField(
-            controller: descricaoController,
-            icon: Icons.description,
-            label: 'Descrição',
-          ),
-          //Local
-          CustomTextField(
-            controller: localController,
-            icon: Icons.location_on,
-            label: 'Local',
-          ),
-          //Data e Horário
-          CustomTextField(
-            controller: datahController,
-            icon: Icons.date_range,
-            label: 'Data | Horário',
-            inputFormatters: [dataFormatter],
-          ),
-
-          //Observações
-          CustomTextField(
-            controller: obsController,
-            icon: Icons.description,
-            label: 'Observações',
-          ),
-          //Realização do agendamento
-          CheckboxListTile(
-            title: Text('Foi realizado?'),
-            controlAffinity: ListTileControlAffinity.leading,
-            checkColor: CustomColors.customSwatchColor,
-            value: realizado,
-            onChanged: (bool? value) {
-              setState(
-                () {
-                  realizado = value ?? false;
-                },
-              );
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                  (route) => false);
             },
-          ),
-          // Botão de Agendar
-          SizedBox(
-            height: 50,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18),
-                ),
-              ),
-              onPressed: () async {
-                if (widget.isEditing == true) {
-                  final schedule = Schedule.editar(
-                    id: widget.schedule!.id,
-                    dataAgenda: datahController.text,
-                    local: localController.text,
-                    descricao: descricaoController.text,
-                    observacao: obsController.text,
-                    especialista: especialistaController.text,
-                    tipoAgendamento: tipoAgendamentoController.text,
-                  );
-                  bool update =
-                      await ScheduleListService.updateSchedule(schedule);
-                  if (update) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text(
-                          'Agendamento atualizado com sucesso!',
-                        ),
-                        backgroundColor: Colors.green,
-                      ),
-                    );
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (c) {
-                        return ScheduleListScreen();
-                      },
-                    ));
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text(
-                          'Erro no servidor abraço, tente depois',
-                        ),
-                        backgroundColor: Colors.red,
-                      ),
-                    );
-                  }
-                } else {
-                  final schedule = Schedule.cadastrar(
-                    dataAgenda: datahController.text,
-                    local: localController.text,
-                    descricao: descricaoController.text,
-                    observacao: obsController.text,
-                    especialista: especialistaController.text,
-                    tipoAgendamento: tipoAgendamentoController.text,
-                  );
-                  bool register = await ScheduleService.getSchedule(schedule);
-                  if (register) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text(
-                          'Agendamento cadastrado com sucesso!',
-                        ),
-                        backgroundColor: Colors.green,
-                      ),
-                    );
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (c) {
-                        return ScheduleListScreen();
-                      },
-                    ));
-                  }
-                }
-              },
-              child: const Text(
-                'Agendar',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                ),
-              ),
+            icon: const Icon(
+              Icons.home,
+              color: Colors.white,
             ),
           ),
         ],
+      ),
+      body: Form(
+        key: _formKey,
+        child: ListView(
+          physics: const BouncingScrollPhysics(),
+          padding: const EdgeInsets.fromLTRB(16, 32, 16, 16),
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 15),
+              child: Container(
+                width: 300,
+                child: DropdownButtonFormField<String>(
+                  focusColor: Colors.white,
+                  decoration: InputDecoration(
+                    hoverColor: Colors.blue,
+                    labelText: 'Tipo de Agendamento',
+                    labelStyle: TextStyle(color: Colors.black),
+                    isDense: true,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(18),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(18),
+                      borderSide: BorderSide(
+                        color: CustomColors.customSwatchColor,
+                      ),
+                    ),
+                  ),
+                  value: tipoAgendamentoController.text.isEmpty
+                      ? null
+                      : tipoAgendamentoController.text,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      tipoAgendamentoController.text = newValue!;
+                    });
+                  },
+                  items: <String>[
+                    'EXAME',
+                    'CONSULTA',
+                    'INTERNAÇÃO',
+                    'VACINA',
+                    'CIRURGIA',
+                  ].map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Row(
+                        children: [
+                          Icon(Icons.library_books,
+                              color: CustomColors.customSwatchColor),
+                          SizedBox(width: 10),
+                          Text(
+                            value,
+                            style: TextStyle(
+                              color: CustomColors.customSwatchColor,
+                              fontSize: 12,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ),
+            ),
+            //Especialista
+            CustomTextField(
+              controller: especialistaController,
+              icon: Icons.person,
+              label: 'Especialista',
+              validator: (especialista) {
+                if (especialista == null || especialista.trim().isEmpty) {
+                  return 'Informe um especialista entre: ORTOPEDIA, CLINICO_GERAL, CARDIOLOGIA, \nGINECOLOGIA, DERMATOLOGIA ou NAO_POSSUI!';
+                }
+                // if (!especialista.trim().contains('ORTOPEDIA') ||
+                //     !especialista.trim().contains('CLINICO_GERAL') ||
+                //     !especialista.trim().contains('CARDIOLOGIA') ||
+                //     !especialista.trim().contains('GINECOLOGIA') ||
+                //     !especialista.trim().contains('NAO_POSSUI') ||
+                //     !especialista.trim().contains('DERMATOLOGIA')) {
+                //   return 'Informe um especialista entre: ORTOPEDIA, CLINICO_GERAL, CARDIOLOGIA, \nGINECOLOGIA, DERMATOLOGIA ou NAO_POSSUI!';
+                // }
+                especialistaValido = true;
+                return null;
+              },
+            ),
+            //Descrição
+            CustomTextField(
+              controller: descricaoController,
+              icon: Icons.description,
+              label: 'Descrição',
+              validator: (descricao) {
+                if (descricao == null || descricao.trim().isEmpty) {
+                  return 'Informe uma descrição!';
+                }
+                if (descricao.trim().length < 3) {
+                  return 'Descrição deve ter no mínimo 3 caracteres!';
+                }
+                descricaoValido = true;
+                return null;
+              },
+            ),
+            //Local
+            CustomTextField(
+              controller: localController,
+              icon: Icons.location_on,
+              label: 'Local',
+              validator: (local) {
+                if (local == null || local.trim().isEmpty) {
+                  return 'Informe um local!';
+                }
+                if (local.trim().length < 3) {
+                  return 'Local deve ter no mínimo 3 caracteres!';
+                }
+                localValido = true;
+                return null;
+              },
+            ),
+            //Data e Horário
+            CustomTextField(
+              controller: datahController,
+              icon: Icons.date_range,
+              label: 'Data | Horário',
+              inputFormatters: [dataFormatter],
+              validator: (data) {
+                if (data == null || data.trim().isEmpty) {
+                  return 'Informe uma data e horário!';
+                }
+                if (data.toString().trim().length > 0 &&
+                    data.toString().trim().length < 16) {
+                  return 'Informe data e horário no formato: dd/mm/aaaa hh:mm';
+                }
+                // DateTime dataAtual = DateTime.now();
+                // DateTime dataInserida =
+                //     DateFormat('dd/MM/yyyy HH:mm').parse(data.trim());
+                // if (!dataInserida.isBefore(dataAtual) ||
+                //     !dataInserida.isAfter(dataAtual)) {
+                //   return 'Data e/ou Horário inválido(s)!';
+                // }
+                datahValido = true;
+                return null;
+              },
+            ),
+            //Observações
+            CustomTextField(
+              controller: obsController,
+              icon: Icons.description,
+              label: 'Observações',
+              validator: (observacao) {
+                if (observacao == null || observacao.trim().isEmpty) {
+                  return 'Informe uma observação!';
+                }
+                if (observacao.trim().length < 3) {
+                  return 'Observação deve ter no mínimo 3 caracteres!';
+                }
+                obsValido = true;
+                return null;
+              },
+            ),
+            //Realização do agendamento
+            CheckboxListTile(
+              title: Text('Foi realizado?'),
+              controlAffinity: ListTileControlAffinity.leading,
+              checkColor: CustomColors.customSwatchColor,
+              value: realizado,
+              onChanged: (bool? value) {
+                setState(
+                  () {
+                    realizado = value ?? false;
+                  },
+                );
+              },
+            ),
+            // Botão de Agendar
+            SizedBox(
+              height: 50,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18),
+                  ),
+                ),
+                onPressed: () async {
+                  if (_formKey.currentState!.validate()) {
+                    print('Todos os campos estão válidos');
+                  } else {
+                    print('Campos não válidos');
+                  }
+                  if (!especialistaValido ||
+                      !descricaoValido ||
+                      !localValido ||
+                      !datahValido ||
+                      !obsValido) {
+                    return;
+                  }
+                  if (widget.isEditing == true) {
+                    final schedule = Schedule.editar(
+                      id: widget.schedule!.id,
+                      dataAgenda: datahController.text.trim(),
+                      local: localController.text.trim(),
+                      descricao: descricaoController.text.trim(),
+                      observacao: obsController.text.trim(),
+                      especialista: especialistaController.text.trim(),
+                      tipoAgendamento: tipoAgendamentoController.text.trim(),
+                    );
+                    bool update =
+                        await ScheduleListService.updateSchedule(schedule);
+                    if (update) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                            'Agendamento atualizado com sucesso!',
+                          ),
+                          backgroundColor: Colors.green,
+                        ),
+                      );
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (c) {
+                          return ScheduleListScreen();
+                        },
+                      ));
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                            'Erro no servidor abraço, tente depois',
+                          ),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    }
+                  } else {
+                    final schedule = Schedule.cadastrar(
+                      dataAgenda: datahController.text.trim(),
+                      local: localController.text.trim(),
+                      descricao: descricaoController.text.trim(),
+                      observacao: obsController.text.trim(),
+                      especialista: especialistaController.text.trim(),
+                      tipoAgendamento: tipoAgendamentoController.text.trim(),
+                    );
+                    bool register = await ScheduleService.getSchedule(schedule);
+                    if (register) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                            'Agendamento cadastrado com sucesso!',
+                          ),
+                          backgroundColor: Colors.green,
+                        ),
+                      );
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (c) {
+                          return ScheduleListScreen();
+                        },
+                      ));
+                    }
+                  }
+                },
+                child: const Text(
+                  'Agendar',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

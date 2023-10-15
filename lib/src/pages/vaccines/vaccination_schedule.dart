@@ -8,7 +8,8 @@ class Vaccination extends StatefulWidget {
 }
 
 class _VaccinationState extends State<Vaccination> {
-  String selectedGroup = "Vacinas para Crianças"; // Inicialmente selecionado como "Vacina para Crianças"
+  String selectedGroup =
+      "Vacinas para Crianças"; // Inicialmente selecionado como "Vacina para Crianças"
 
   void _updateSelectedGroup(String? group) {
     if (group != null) {
@@ -41,6 +42,7 @@ class _VaccinationState extends State<Vaccination> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Calendário de Vacinas'),
+        foregroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
         child: Center(

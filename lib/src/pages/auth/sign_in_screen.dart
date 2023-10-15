@@ -12,6 +12,8 @@ class SignInScreen extends StatelessWidget {
   SignInScreen({Key? key}) : super(key: key);
 
   final _formKey = GlobalKey<FormState>();
+  bool emailValido = false;
+  bool senhaValida = false;
 
   // Future<String?> _getFCMToken() async {
   //   FirebaseMessagingService firebaseMessagingService = FirebaseMessagingService();
@@ -111,6 +113,7 @@ class SignInScreen extends StatelessWidget {
                           if (!email.trim().isEmail) {
                             return 'Digite um email válido!';
                           }
+                          emailValido = true;
                           return null;
                         },
                       ),
@@ -128,6 +131,7 @@ class SignInScreen extends StatelessWidget {
                           if (senha.trim().length < 8) {
                             return 'Senha deve conter no mínimo 8 caracteres!';
                           }
+                          senhaValida = true;
                           return null;
                         },
                       ),
@@ -147,10 +151,7 @@ class SignInScreen extends StatelessWidget {
                             } else {
                               print('Campos não válidos');
                             }
-                            if (emailController.text.trim().isEmpty ||
-                                !emailController.text.trim().isEmail ||
-                                passwordController.text.trim().isEmpty ||
-                                passwordController.text.trim().length < 8) {
+                            if (!emailValido || !senhaValida) {
                               return;
                             }
                             bool loggedIn = await LoginService.getLogin(

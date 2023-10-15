@@ -36,10 +36,13 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
     filter: {'#': RegExp(r'[0-9]')},
   );
 
-  bool doadorMarcado = false;
-  bool alergiaMarcada = false;
-
+  bool nomeValido = false;
+  bool cpfValido = false;
   bool dataValida = false;
+  bool cnsValido = false;
+  bool cpsValido = false;
+  bool alergiaMarcada = false;
+  bool tipoAlergiaValido = false;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -107,6 +110,7 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                   if (nome.trim().length < 3) {
                     return 'Nome deve ter no mínimo 3 caracteres!';
                   }
+                  nomeValido = true;
                   return null;
                 },
               ),
@@ -125,6 +129,7 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                   } else {
                     return 'CPF Inválido';
                   }
+                  cpfValido = true;
                   return null;
                 },
               ),
@@ -166,6 +171,7 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                       cnsController.text.trim().length < 18) {
                     return 'Cartão Nacional de Saúde inválido!';
                   }
+                  cnsValido = true;
                   return null;
                 },
               ),
@@ -186,6 +192,7 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                       cpsController.text.trim().length < 18) {
                     return 'Cartão do Plano de Saúde inválido!';
                   }
+                  cpfValido = true;
                   return null;
                 },
               ),
@@ -277,6 +284,7 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                         tipoAlergiaController.text.trim().length < 3) {
                       return 'Tipo de alergia inválido!';
                     }
+                    tipoAlergiaValido = true;
                     return null;
                   },
                 ),
@@ -296,20 +304,9 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                     } else {
                       print('Campos não válidos');
                     }
-
-                    if (nomeController.text.trim().isEmpty ||
-                        nomeController.text.trim().length < 3 ||
-                        cpfController.text.trim().isEmpty ||
-                        !GetUtils.isCpf(cpfController.text.trim()) ||
-                        dataController.text.trim().isEmpty ||
-                        dataValida == false ||
-                        alergiaMarcada == true &&
-                            tipoAlergiaController.text.trim().isEmpty ||
-                        tipoAlergiaController.text.trim().length > 0 &&
-                            tipoAlergiaController.text.trim().length < 3) {
+                    if (alergiaMarcada && !tipoAlergiaValido) {
                       return;
                     }
-
                     if (widget.isEditing == true) {
                       final dependente = Dependente.editar(
                         ativo: widget.dependente!.ativo,

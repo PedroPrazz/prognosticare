@@ -11,6 +11,8 @@ class ChangePasswordDialog extends StatelessWidget {
     TextEditingController confirmNewPasswordController =
         TextEditingController();
     final _formKey = GlobalKey<FormState>();
+    bool novaSenhaValida = false;
+    bool confirmarNovaSenhaValida = false;
     return showDialog(
       context: context,
       builder: (context) {
@@ -58,6 +60,7 @@ class ChangePasswordDialog extends StatelessWidget {
                               confirmNewPasswordController.text.trim()) {
                             return 'As senhas não coincidem';
                           }
+                          novaSenhaValida = true;
                           return null;
                         },
                       ),
@@ -77,6 +80,7 @@ class ChangePasswordDialog extends StatelessWidget {
                               confirmNewPasswordController.text.trim()) {
                             return 'As senhas não coincidem';
                           }
+                          confirmarNovaSenhaValida = true;
                           return null;
                         },
                       ),
@@ -96,13 +100,7 @@ class ChangePasswordDialog extends StatelessWidget {
                             } else {
                               print('Campos não válidos');
                             }
-                            if (newPasswordController.text.trim().isEmpty ||
-                                newPasswordController.text.trim().length < 8 ||
-                                confirmNewPasswordController.text
-                                    .trim()
-                                    .isEmpty ||
-                                newPasswordController.text.trim() !=
-                                    confirmNewPasswordController.text.trim()) {
+                            if (!novaSenhaValida || !confirmarNovaSenhaValida) {
                               return;
                             }
                             bool changePassword =

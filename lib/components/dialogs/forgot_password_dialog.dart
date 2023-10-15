@@ -79,7 +79,7 @@ class ForgotPasswordDialog extends StatelessWidget {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text(
-                                      'Email de recuperação de senha enviado!'),
+                                      'Email de recuperação de senha enviado!\nVerifique sua caixa de entrada ou spam!'),
                                   backgroundColor: Colors.green,
                                 ),
                               );

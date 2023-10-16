@@ -8,6 +8,7 @@ import 'package:prognosticare/src/api/service/findby_id_service.dart';
 import 'package:prognosticare/src/pages/auth/info.dart';
 import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
 import 'package:prognosticare/src/models/pessoa_model.dart';
+import 'package:prognosticare/src/pages/home/home.dart';
 import 'package:prognosticare/src/pages/profile/profile_tab.dart';
 import 'package:prognosticare/src/pages/schedule/my_schedule_screen.dart';
 import 'package:prognosticare/src/pages/vaccines/vaccination_schedule.dart';
@@ -27,15 +28,14 @@ class _HomeScreenState extends State<HomeScreen> {
   Pessoa? pessoa;
   String? nome;
 
+  //navbar
   int _selectIndex = 0;
-  int contador = 0;
-
   final List<Widget> _pages = [
     Vaccination(),
-    ProntuarioDialog(),
+    Home(),
     ListDependents(),
     MySchedule(),
-  ]; //
+  ];
 
   @override
   void initState() {
@@ -187,9 +187,7 @@ class _HomeScreenState extends State<HomeScreen> {
         currentIndex: _selectIndex,
         onTap: (index) {
           setState(() {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => _pages[index],
-            ));
+            _selectIndex = index;
           });
         },
         items: [
@@ -198,8 +196,8 @@ class _HomeScreenState extends State<HomeScreen> {
             label: 'Vacinas',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.task),
-            label: 'Prontuário',
+            icon: Icon(Icons.home),
+            label: 'Home',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),

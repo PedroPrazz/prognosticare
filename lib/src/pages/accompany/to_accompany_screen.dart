@@ -1,20 +1,23 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:prognosticare/src/api/service/to_accompany_list_service.dart';
 import 'package:prognosticare/src/api/service/to_accompany_register_service.dart';
 import 'package:prognosticare/components/common_widgets/custom_text_field.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/models/to_accompany_model.dart';
+import 'package:prognosticare/src/pages/accompany/to_accompany_list_screen.dart';
 
 class ToAccompanyScreen extends StatefulWidget {
   final Accompany? accompany;
+  bool isEditing;
 
-  ToAccompanyScreen({Key? key, this.accompany}) : super(key: key);
+  ToAccompanyScreen({Key? key, this.accompany, this.isEditing = false})
+      : super(key: key);
 
   @override
-  State<ToAccompanyListScreen> createState() => _ToAccompanyListScreenState();
+  State<ToAccompanyScreen> createState() => _ToAccompanyScreenState();
 }
 
 class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
@@ -32,6 +35,19 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
     filter: {"#": RegExp(r'[0-9]')}, // Define os caracteres permitidos
   );
 
+  @override
+  void initState() {
+    super.initState();
+    if (widget.isEditing) {
+      tipoAcompanhamentoController.text = widget.accompany!.tipoAcompanhamento;
+      medicacaoController.text = widget.accompany!.medicacao;
+      dataAcompanhamentoController.text = widget.accompany!.dataAcompanhamento;
+      tipoTemporarioControladoController.text =
+          widget.accompany!.tipoTemporarioControlado;
+      prescricaoMedicaController.text = widget.accompany!.prescricaoMedica;
+    }
+  }
+
   TextEditingController tipoAcompanhamentoController = TextEditingController();
   TextEditingController medicacaoController = TextEditingController();
   TextEditingController dataAcompanhamentoController = TextEditingController();
@@ -43,11 +59,18 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Acompanhamentos',
+        title: Text(
+          widget.isEditing
+              ? 'Editar Acompanhamento'
+              : 'Adicionar Acompanhamento',
         ),
-        title: Text('Acompanhamentos'),
-        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        foregroundColor: Colors.white,
         backgroundColor: CustomColors.customSwatchColor,
       ),
       body: ListView(
@@ -198,28 +221,70 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                 ),
               ),
               onPressed: () async {
-                // Parse the input date string to a DateTime object
-                // final inputDate = DateFormat('dd/MM/yyyy hh:mm:ss a').parse(dataAcompanhamentoController.text);
-
-                // Format the DateTime object to the desired format
-                final formattedDate =
-                    DateFormat('dd/MM/yyyy hh:mm:ss a').format(DateTime.now());
-                Accompany accompany = new Accompany.criar(
+                if (widget.isEditing == true) {
+                  final accompany = Accompany.editar(
+                    id: widget.accompany!.id,
                     tipoAcompanhamento: tipoAcompanhamentoController.text,
                     medicacao: medicacaoController.text,
-                    dataAcompanhamento: formattedDate,
+                    dataAcompanhamento: dataAcompanhamentoController.text,
                     tipoTemporarioControlado:
                         tipoTemporarioControladoController.text,
-                    prescricaoMedica: prescricaoMedicaController.text);
-
-                bool registerAccompany =
-                    await AccompanyService.getAccompany(accompany);
-                if (registerAccompany) {
-                  Navigator.pushAndRemoveUntil(
-                      context,
+                    prescricaoMedica: prescricaoMedicaController.text,
+                  );
+                  bool update =
+                      await ToAccompanyListService.updateAccompany(accompany);
+                  if (update) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Acompanhamento atualizado com sucesso!',
+                        ),
+                        backgroundColor: Colors.green,
+                      ),
+                    );
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (c) {
+                        return ToAccompanyListScreen();
+                      },
+                    ));
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Erro no servidor abraço, tente depois',
+                        ),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  }
+                } else {
+                  final accompany = Accompany.criar(
+                    tipoAcompanhamento: tipoAcompanhamentoController.text,
+                    medicacao: medicacaoController.text,
+                    dataAcompanhamento: dataAcompanhamentoController.text,
+                    tipoTemporarioControlado:
+                        tipoTemporarioControladoController.text,
+                    prescricaoMedica: prescricaoMedicaController.text,
+                  );
+                  bool register =
+                      await AccompanyService.getAccompany(accompany);
+                  if (register) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Agendamento cadastrado com sucesso!',
+                        ),
+                        backgroundColor: Colors.green,
+                      ),
+                    );
+                    Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
-                          builder: (context) => ToAccompanyListScreen()),
-                      (route) => false);
+                        builder: (c) {
+                          return ToAccompanyListScreen();
+                        },
+                      ),
+                    );
+                  }
                 }
               },
               child: const Text(
@@ -233,7 +298,6 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
           ),
         ],
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

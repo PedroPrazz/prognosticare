@@ -13,16 +13,14 @@ class ScheduleScreen extends StatefulWidget {
   final Schedule? schedule;
   bool isEditing;
 
-  ScheduleScreen({Key? key, this.schedule}) : super(key: key);
+  ScheduleScreen({Key? key, this.schedule, this.isEditing = false})
+      : super(key: key);
 
   @override
   State<ScheduleScreen> createState() => _ScheduleScreenState();
 }
 
 class _ScheduleScreenState extends State<ScheduleScreen> {
-
-  Schedule? schedule;
-
   // Lista de tipos de agendamentos
   List<String> tiposDeAgendamento = [
     'Exames',
@@ -98,7 +96,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(18),
                     borderSide: BorderSide(
-                      color: Color.fromRGBO(255, 143, 171, 1),
+                      color: CustomColors.customSwatchColor,
                     ),
                   ),
                 ),
@@ -122,12 +120,12 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                     child: Row(
                       children: [
                         Icon(Icons.library_books,
-                            color: Color.fromRGBO(255, 143, 171, 1)),
+                            color: CustomColors.customSwatchColor),
                         SizedBox(width: 10),
                         Text(
                           value,
                           style: TextStyle(
-                            color: Color.fromRGBO(255, 143, 171, 1),
+                            color: CustomColors.customSwatchColor,
                             fontSize: 12,
                             fontWeight: FontWeight.normal,
                           ),
@@ -164,7 +162,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
             label: 'Data | Horário',
             inputFormatters: [dataFormatter],
           ),
-          
+
           //Observações
           CustomTextField(
             controller: obsController,
@@ -195,21 +193,67 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 ),
               ),
               onPressed: () async {
-                final dataFormatada =
-                    DateFormat('dd/MM/yyyy hh:mm:ss a').format(DateTime.now());
-
-                bool schedule = await ScheduleService.getSchedule(
-                    dataFormatada,
-                    localController.text,
-                    descricaoController.text,
-                    obsController.text,
-                    especialistaController.text,
-                    tipoAgendamentoController.text);
-                if (schedule) {
-                  Navigator.of(context)
-                      .pushReplacement(MaterialPageRoute(builder: (c) {
-                    return ScheduleListScreen();
-                  }));
+                if (widget.isEditing == true) {
+                  final schedule = Schedule.editar(
+                    id: widget.schedule!.id,
+                    dataAgenda: datahController.text,
+                    local: localController.text,
+                    descricao: descricaoController.text,
+                    observacao: obsController.text,
+                    especialista: especialistaController.text,
+                    tipoAgendamento: tipoAgendamentoController.text,
+                  );
+                  bool update =
+                      await ScheduleListService.updateSchedule(schedule);
+                  if (update) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Agendamento atualizado com sucesso!',
+                        ),
+                        backgroundColor: Colors.green,
+                      ),
+                    );
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (c) {
+                        return ScheduleListScreen();
+                      },
+                    ));
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Erro no servidor abraço, tente depois',
+                        ),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  }
+                } else {
+                  final schedule = Schedule.cadastrar(
+                    dataAgenda: datahController.text,
+                    local: localController.text,
+                    descricao: descricaoController.text,
+                    observacao: obsController.text,
+                    especialista: especialistaController.text,
+                    tipoAgendamento: tipoAgendamentoController.text,
+                  );
+                  bool register = await ScheduleService.getSchedule(schedule);
+                  if (register) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Agendamento cadastrado com sucesso!',
+                        ),
+                        backgroundColor: Colors.green,
+                      ),
+                    );
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (c) {
+                        return ScheduleListScreen();
+                      },
+                    ));
+                  }
                 }
               },
               child: const Text(

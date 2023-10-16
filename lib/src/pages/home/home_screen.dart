@@ -10,8 +10,6 @@ import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
 import 'package:prognosticare/src/models/pessoa_model.dart';
 import 'package:prognosticare/src/pages/profile/profile_tab.dart';
 import 'package:prognosticare/src/pages/schedule/my_schedule_screen.dart';
-import 'package:prognosticare/src/pages/vaccines/vaccination_schedule.dart';
-import 'package:prognosticare/src/pages/vaccine/vaccine_screen.dart';
 
 final storage = FlutterSecureStorage();
 

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:prognosticare/src/api/service/schedule_list_service.dart';
+import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/models/schedule_model.dart';
 import 'package:prognosticare/src/pages/schedule/schedule_screen.dart';
 
 class ScheduleListScreen extends StatefulWidget {
-  const ScheduleListScreen({Key? key}) : super(key: key);
+  ScheduleListScreen({Key? key}) : super(key: key);
 
   @override
   State<ScheduleListScreen> createState() => _ScheduleListScreenState();
@@ -13,19 +14,51 @@ class ScheduleListScreen extends StatefulWidget {
 class _ScheduleListScreenState extends State<ScheduleListScreen> {
   late Future<List<Schedule>> schedulesFuture;
 
-  String? tipoSelecionado;
-  List<String> tiposDeAgendamento = [
-    'Exames',
-    'Consultas',
-    'Internações',
-    'Vacinas',
-    'Cirurgias'
-  ];
-
   @override
   void initState() {
     super.initState();
     schedulesFuture = ScheduleListService.getScheduleList();
+  }
+
+  // Função para exibir o AlertDialog de confirmação
+  Future<void> _confirmarAgendamento(Schedule schedule) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirmar Agendamento'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Você deseja confirmar o agendamento:'),
+                Text(schedule.descricao),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancelar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Confirmar'),
+              onPressed: () {
+                // Defina o status do agendamento como realizado
+                schedule.realizado = true;
+                // Atualize a exibição da lista (você pode precisar chamar setState)
+                setState(() {
+                  schedulesFuture = ScheduleListService.getScheduleList();
+                });
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -40,7 +73,7 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
         ),
         title: Text('Agendamentos'),
         centerTitle: true,
-        backgroundColor: Color.fromRGBO(255, 143, 171, 1),
+        backgroundColor: CustomColors.customSwatchColor,
         foregroundColor: Colors.white,
       ),
       body: FutureBuilder<List<Schedule>>(
@@ -64,15 +97,15 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
                   leading: IconButton(
                     icon: Icon(Icons.edit),
                     onPressed: () {
-                     Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (c) {
-                            return ScheduleScreen(
-                              schedule: schedule,
-                              isEditing: true, // Modo de edição ativado
-                            );
-                          },
-                        ));
-                      },
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (c) {
+                          return ScheduleScreen(
+                            schedule: schedule,
+                            isEditing: true, // Modo de edição ativado
+                          );
+                        },
+                      ));
+                    },
                   ),
                   // Verifique se o agendamento foi realizado e exiba um ícone correspondente.
                   trailing: schedule.realizado != null

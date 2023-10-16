@@ -86,7 +86,7 @@ class _ToAccompanyListScreenState extends State<ToAccompanyListScreen> {
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(
             builder: (c) {
-              return ToAccompanyListScreen();
+              return ToAccompanyScreen();
             },
           ));
         },

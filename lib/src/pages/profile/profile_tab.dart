@@ -40,7 +40,6 @@ class _ProfileTabState extends State<ProfileTab> {
   TextEditingController cpsController = TextEditingController();
   TextEditingController tipoSanguineoController = TextEditingController();
   TextEditingController tipoAlergiaController = TextEditingController();
-  
 
   @override
   void initState() {
@@ -56,8 +55,6 @@ class _ProfileTabState extends State<ProfileTab> {
     tipoAlergiaController.text = widget.pessoa.tipoAlergia ?? '';
     alergiaMarcada = widget.pessoa.alergia ?? false;
     doadorMarcado = widget.pessoa.doador ?? false;
-
-    
   }
 
   @override
@@ -330,51 +327,54 @@ class _ProfileTabState extends State<ProfileTab> {
                       doador: doadorMarcado,
                     );
 
-                Pessoa pessoaAtualizado =
-                    await PersonUpdateService.getPerson(pessoaAtualizada);
-                // ignore: unnecessary_null_comparison
-                if (pessoaAtualizado != null) {
-                  setState(() {
-                    widget.pessoa = pessoaAtualizado;
-                  });
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Dados atualizados com sucesso!'),
-                      backgroundColor: Colors.green,
+                    Pessoa pessoaAtualizado =
+                        await PersonUpdateService.getPerson(pessoaAtualizada);
+                    // ignore: unnecessary_null_comparison
+                    if (pessoaAtualizado != null) {
+                      setState(() {
+                        widget.pessoa = pessoaAtualizado;
+                      });
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Dados atualizados com sucesso!'),
+                          backgroundColor: Colors.green,
+                        ),
+                      );
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(builder: (context) => HomeScreen()),
+                          (route) => false);
+                    } else {
+                      print("id: ${pessoaAtualizada.pessoaId.trim()}");
+                      print("Nome: ${pessoaAtualizada.nome.trim()}");
+                      print("CPF: ${pessoaAtualizada.cpf.trim()}");
+                      print("Email: ${pessoaAtualizada.email.trim()}");
+                      print("Contato: ${pessoaAtualizada.contato}");
+                      print(
+                          "Data de Nascimento: ${pessoaAtualizada.dataNascimento.trim()}");
+                      print("tipoSanguineo: ${pessoaAtualizada.tipoSanguineo}");
+                      print("alergia: ${pessoaAtualizada.alergia}");
+                      print('doador:${pessoaAtualizada.doador}');
+                      print("responsavel: ${pessoaAtualizada.tipoResponsavel}");
+                      print("tipoAlergia: ${pessoaAtualizada.tipoAlergia}");
+                      print(
+                          "cartaoNacional: ${pessoaAtualizada.cartaoNacional}");
+                      print(
+                          "cartaoPlanoSaude: ${pessoaAtualizada.cartaoPlanoSaude}");
+                    }
+                  },
+                  child: const Text(
+                    'Salvar',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
                     ),
-                  );
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (context) => HomeScreen()),
-                      (route) => false);
-                } else {
-                  print("id: ${pessoaAtualizada.pessoaId}");
-                  print("Nome: ${pessoaAtualizada.nome}");
-                  print("CPF: ${pessoaAtualizada.cpf}");
-                  print("Email: ${pessoaAtualizada.email}");
-                  print("Contato: ${pessoaAtualizada.contato}");
-                  print(
-                      "Data de Nascimento: ${pessoaAtualizada.dataNascimento}");
-                  print("tipoSanguineo: ${pessoaAtualizada.tipoSanguineo}");
-                  print("alergia: ${pessoaAtualizada.alergia}");
-                  print('doador:${pessoaAtualizada.doador}');
-                  print("responsavel: ${pessoaAtualizada.tipoResponsavel}");
-                  print("tipoAlergia: ${pessoaAtualizada.tipoAlergia}");
-                  print("cartaoNacional: ${pessoaAtualizada.cartaoNacional}");
-                  print(
-                      "cartaoPlanoSaude: ${pessoaAtualizada.cartaoPlanoSaude}");
-                }
-              },
-              child: const Text(
-                'Salvar',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
+                  ),
                 ),
               ),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

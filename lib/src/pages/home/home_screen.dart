@@ -10,6 +10,7 @@ import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
 import 'package:prognosticare/src/models/pessoa_model.dart';
 import 'package:prognosticare/src/pages/profile/profile_tab.dart';
 import 'package:prognosticare/src/pages/schedule/my_schedule_screen.dart';
+import 'package:prognosticare/src/pages/vaccines/vaccination_schedule.dart';
 
 final storage = FlutterSecureStorage();
 
@@ -28,6 +29,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   int _selectIndex = 0;
   int contador = 0;
+
+  final List<Widget> _pages = [
+    Vaccination(),
+    ProntuarioDialog(),
+    ListDependents(),
+    MySchedule(),
+  ]; //
 
   @override
   void initState() {
@@ -166,10 +174,11 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
 
       //navbar
+      body: _pages[_selectIndex],
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: CustomColors.customSwatchColor,
         type: BottomNavigationBarType.fixed,
-        selectedItemColor: Colors.black,
+        selectedItemColor: Colors.blue,
         unselectedItemColor: Colors.white,
         selectedLabelStyle: TextStyle(
           fontWeight: FontWeight.bold,
@@ -178,9 +187,9 @@ class _HomeScreenState extends State<HomeScreen> {
         currentIndex: _selectIndex,
         onTap: (index) {
           setState(() {
-            PageController().animateToPage(index,
-                duration: Duration(milliseconds: 200), curve: Curves.ease);
-            _selectIndex = index;
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => _pages[index],
+            ));
           });
         },
         items: [

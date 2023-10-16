@@ -43,114 +43,74 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
         backgroundColor: Color.fromRGBO(255, 143, 171, 1),
         foregroundColor: Colors.white,
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              // Combo box para selecionar o tipo de agendamento
-              DropdownButtonFormField<String>(
-                value: tipoSelecionado,
-                onChanged: (newValue) {
-                  setState(() {
-                    tipoSelecionado = newValue;
-                  });
-                },
-                items: tiposDeAgendamento.map((tipo) {
-                  return DropdownMenuItem<String>(
-                    value: tipo,
-                    child: Text(tipo),
-                  );
-                }).toList(),
-                decoration: InputDecoration(
-                  labelText: 'Tipo de Agendamento',
-                  hintText: 'Selecione um tipo de agendamento...',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              Expanded(
-                child: FutureBuilder<List<Schedule>>(
-                  future: schedulesFuture,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
-                    } else if (snapshot.hasError) {
-                      return Center(
-                          child:
-                              Text('Erro ao carregar a lista de agendamentos'));
-                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return Center(
-                          child: Text('Nenhum agendamento encontrado'));
-                    } else {
-                      final schedules = snapshot.data!;
-                      return ListView.builder(
-                        itemCount: schedules.length,
-                        itemBuilder: (context, index) {
-                          final schedule = schedules[index];
-                          return ListTile(
-                            title: Text(schedule.descricao),
-                            leading: IconButton(
-                              icon: Icon(Icons.edit),
-                              onPressed: () {
-                                // Coloque aqui a lógica para editar o dependente
-                              },
-                            ),
-                            trailing: IconButton(
-                              icon: Icon(Icons.delete),
-                              onPressed: () {
-                                // Coloque aqui a lógica para excluir o dependente
-                              },
-                            ),
-                            onTap: () {
-                              // Navigator.of(context).push(MaterialPageRoute(
-                              //   builder: (c) {
-                              //     return ProfileTabDepentende();
-                              //   },
-                              // ));
-                            },
-                          );
-                        },
-                      );
-                    }
+      body: FutureBuilder<List<Schedule>>(
+        future: schedulesFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(
+                child: Text('Erro ao carregar a lista de agendamentos'));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return Center(child: Text('Nenhum agendamento encontrado'));
+          } else {
+            final schedules = snapshot.data!;
+            return ListView.builder(
+              itemCount: schedules.length,
+              itemBuilder: (context, index) {
+                final schedule = schedules[index];
+                return ListTile(
+                  title: Text(schedule.descricao),
+                  leading: IconButton(
+                    icon: Icon(Icons.edit),
+                    onPressed: () {
+                     Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (c) {
+                            return ScheduleScreen(
+                              schedule: schedule,
+                              isEditing: true, // Modo de edição ativado
+                            );
+                          },
+                        ));
+                      },
+                  ),
+                  // Verifique se o agendamento foi realizado e exiba um ícone correspondente.
+                  trailing: schedule.realizado != null
+                      ? Icon(Icons.check_circle,
+                          color: Colors.green) // Agendamento realizado
+                      : Icon(Icons
+                          .radio_button_unchecked), // Agendamento não realizado
+                  onTap: () {
+                    // Ao tocar no agendamento, exiba o AlertDialog de confirmação
+                    _confirmarAgendamento(schedule);
                   },
-                ),
-              ),
-              Spacer(), // Espaço flexível para empurrar o botão para a parte inferior
-              ElevatedButton(
-                onPressed: () async {
-                  // Verifique se um tipo de agendamento foi selecionado
-                  if (tipoSelecionado != null) {
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (c) {
-                          return ScheduleScreen();
-                        },
-                      ),
-                    );
-                  } else {
-                    // Caso contrário, mostre um aviso ao usuário
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                            'Por favor, selecione um tipo de agendamento.'),
-                      ),
-                    );
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromRGBO(255, 143, 171, 1),
-                ),
-                child: Container(
-                  width: double
-                      .infinity, // Largura do botão definida para ocupar a largura máxima
-                  height: 39,
-                  child: Center(child: Text('+ AGENDAR')),
-                ),
-              ),
-            ],
-          ),
+                );
+              },
+            );
+          }
+        },
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(18),
+        ),
+        onPressed: () {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (c) {
+              return ScheduleScreen();
+            },
+          ));
+        },
+        label: Text(
+          'AGENDAR',
+          style: TextStyle(color: Colors.white),
+        ),
+        icon: Icon(
+          Icons.add,
+          color: Colors.white,
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

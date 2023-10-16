@@ -40,4 +40,44 @@ class ToAccompanyListService {
       throw Exception('Exeption no método find Erro no Try/Catch');
     }
   }
+
+  static Future<bool> updateAccompany(Accompany accompany) async {
+    String? token = await storage.read(key: 'token');
+    final url = Uri.parse(
+        UriServidor.url.toString() + '/to-accompany/update');
+
+    try {
+      final response = await http.put(
+        url,
+        body: json.encode({
+          'id': accompany.id,
+          'dataAcompanhamento': accompany.dataAcompanhamento,
+          'tipoAcompanhamento': accompany.tipoAcompanhamento,
+          'statusEvento': accompany.statusEvento,
+          // 'intervaloHora': accompany.intervaloHora,
+          'medicacao': accompany.medicacao,
+          'tipoTemporarioControlado': accompany.tipoTemporarioControlado,
+          'prescricaoMedica': accompany.prescricaoMedica,
+
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+
+        return true;
+      } else {
+        print('Response Status Code: ${response.statusCode}');
+
+        throw Exception('Erro ao atualizar Acompanhamento');
+      }
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('Erro de Try Catch ao atualizar Acompanhamento');
+    }
+  }
+
 }

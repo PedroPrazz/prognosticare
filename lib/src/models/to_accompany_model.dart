@@ -1,12 +1,12 @@
 class Accompany {
   String? id;
-  String? tipoAcompanhamento;
-  String? medicacao;
+  String tipoAcompanhamento;
+  String medicacao;
   String? statusEvento;
-  String? dataAcompanhamento;
+  String dataAcompanhamento;
   int? intervaloHora;
-  String? tipoTemporarioControlado;
-  String? prescricaoMedica;
+  String tipoTemporarioControlado;
+  String prescricaoMedica;
 
   Accompany({
     required this.id,
@@ -22,7 +22,15 @@ class Accompany {
   Accompany.criar({
     required this.tipoAcompanhamento,
     required this.medicacao,
-    this.statusEvento,
+    required this.dataAcompanhamento,
+    required this.tipoTemporarioControlado,
+    required this.prescricaoMedica,
+  });
+
+  Accompany.editar({
+    required this.id,
+    required this.tipoAcompanhamento,
+    required this.medicacao,
     required this.dataAcompanhamento,
     required this.tipoTemporarioControlado,
     required this.prescricaoMedica,

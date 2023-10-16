@@ -40,4 +40,43 @@ class ScheduleListService {
       throw Exception('Exeption no método find Erro no Try/Catch');
     }
   }
+
+  static Future<bool> updateSchedule(Schedule schedule) async {
+    String? token = await storage.read(key: 'token');
+    final url = Uri.parse(
+        UriServidor.url.toString() + '/to-scheduling/update');
+
+    try {
+      final response = await http.put(
+        url,
+        body: json.encode({
+          'id': schedule.id,
+          'dataAgenda': schedule.dataAgenda,
+          'local': schedule.local,
+          'statusEvento': schedule.statusEvento,
+          'descricao': schedule.descricao,
+          'intervaloData': schedule.intervaloData,
+          'observacao': schedule.observacao,
+          'especialista': schedule.especialista,
+          'tipoExame': schedule.tipoAgendamento,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+
+        return true;
+      } else {
+        print('Response Status Code: ${response.statusCode}');
+
+        throw Exception('Erro ao atualizar Agendamento');
+      }
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('Erro de Try Catch ao atualizar Agendamento');
+    }
+  }
 }

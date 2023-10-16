@@ -1,13 +1,13 @@
 class Schedule {
   String? id;
-  String? dataAgenda;
-  String? local;
+  String dataAgenda;
+  String local;
   String? statusEvento;
   String descricao;
   int? intervaloData;
-  String? observacao;
-  String? especialista;
-  String? tipoAgendamento;
+  String observacao;
+  String especialista;
+  String tipoAgendamento;
   bool? realizado = false;
 
   Schedule({
@@ -18,6 +18,26 @@ class Schedule {
     required this.statusEvento,
     required this.descricao,
     required this.intervaloData,
+    required this.observacao,
+    required this.especialista,
+    required this.tipoAgendamento,
+  });
+
+  Schedule.editar({
+    this.realizado,
+    required this.id,
+    required this.dataAgenda,
+    required this.local,
+    required this.descricao,
+    required this.observacao,
+    required this.especialista,
+    required this.tipoAgendamento,
+  });
+
+  Schedule.cadastrar({
+    required this.dataAgenda,
+    required this.local,
+    required this.descricao,
     required this.observacao,
     required this.especialista,
     required this.tipoAgendamento,

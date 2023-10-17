@@ -34,7 +34,7 @@ class ProntuarioDialog extends StatelessWidget {
                         ),
                       ),
                     ),
-            
+
                     SizedBox(
                       height: 45,
                       child: ElevatedButton(
@@ -44,10 +44,10 @@ class ProntuarioDialog extends StatelessWidget {
                           ),
                         ),
                         onPressed: () {
-                         Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ScheduleListScreen()));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ScheduleListScreen()));
                         },
                         child: const Text(
                           'Agendamentos',
@@ -69,10 +69,11 @@ class ProntuarioDialog extends StatelessWidget {
                           ),
                         ),
                         onPressed: () {
-                         Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ToAccompanyListScreen()));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      ToAccompanyListScreen()));
                         },
                         child: const Text(
                           'Acompanhamentos',
@@ -80,7 +81,6 @@ class ProntuarioDialog extends StatelessWidget {
                         ),
                       ),
                     ),
-
                   ],
                 ),
               ),

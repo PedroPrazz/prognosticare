@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:prognosticare/components/dialogs/change_password_dialog.dart';
 import 'package:prognosticare/components/dialogs/forgot_password_dialog.dart';
+import 'package:prognosticare/src/api/service/firebase_messaging_service.dart';
 import 'package:prognosticare/src/api/service/login_service.dart';
 import 'package:prognosticare/components/common_widgets/custom_text_field.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
@@ -15,17 +16,20 @@ class SignInScreen extends StatelessWidget {
   bool emailValido = false;
   bool senhaValida = false;
 
-  // Future<String?> _getFCMToken() async {
-  //   FirebaseMessagingService firebaseMessagingService = FirebaseMessagingService();
-  //   String? fcmToken = await firebaseMessagingService.getFirebaseToken();
-  //   return fcmToken;
-  // }
+  Future<String?> _getFCMToken() async {
+    FirebaseMessagingService firebaseMessagingService =
+        FirebaseMessagingService();
+    String? fcmToken = await firebaseMessagingService.getFirebaseToken();
+    return fcmToken;
+  }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final emailController = TextEditingController();
     final passwordController = TextEditingController();
+
+    
 
     return Scaffold(
       backgroundColor: CustomColors.customSwatchColor,
@@ -54,8 +58,9 @@ class SignInScreen extends StatelessWidget {
                           TextSpan(
                             text: 'Care',
                             style: TextStyle(
-                                color: Colors.blue,
-                                fontWeight: FontWeight.bold),
+                              color: Colors.blue,
+                              fontWeight: FontWeight.bold
+                            ),
                           )
                         ],
                       ),

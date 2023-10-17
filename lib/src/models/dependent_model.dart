@@ -10,7 +10,7 @@ class Dependente {
   String? cartaoNacional;
   String? cartaoPlanoSaude;
 
-  Dependente ({
+  Dependente({
     required this.ativo,
     required this.id,
     required this.nome,
@@ -23,7 +23,7 @@ class Dependente {
     required this.cartaoPlanoSaude,
   });
 
-  Dependente.cadastrar ({
+  Dependente.cadastrar({
     required this.nome,
     required this.cpf,
     required this.dataNascimento,
@@ -34,7 +34,7 @@ class Dependente {
     required this.cartaoPlanoSaude,
   });
 
-  Dependente.editar ({
+  Dependente.editar({
     required this.id,
     required this.ativo,
     required this.nome,
@@ -46,7 +46,6 @@ class Dependente {
     required this.cartaoNacional,
     required this.cartaoPlanoSaude,
   });
-  
 
   factory Dependente.fromJson(Map<String, dynamic> json) {
     return Dependente(
@@ -65,8 +64,8 @@ class Dependente {
 
   Map<String, dynamic> toJson() {
     return {
-      'ativo' : ativo,
-      'pessoa_id' : id,
+      'ativo': ativo,
+      'pessoa_id': id,
       'nome': nome,
       'cpf': cpf,
       'dataNascimento': dataNascimento,

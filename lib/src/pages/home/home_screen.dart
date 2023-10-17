@@ -27,6 +27,16 @@ class _HomeScreenState extends State<HomeScreen> {
   Pessoa? pessoa;
   String? nome;
 
+  int _selectIndex = 0;
+  int contador = 0;
+
+  final List<Widget> _pages = [
+    Vaccination(),
+    ProntuarioDialog(),
+    ListDependents(),
+    MySchedule(),
+  ]; //
+
   @override
   void initState() {
     super.initState();
@@ -110,18 +120,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 );
               },
             ),
-            ListTile(
-              leading: const Icon(Icons.auto_stories),
-              title: const Text('Calendário de Vacinas'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Vaccination(),
-                  ),
-                );
-              },
-            ),
 
             //Alterar Senha
             ListTile(
@@ -173,6 +171,45 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: CustomColors.customSwatchColor,
         foregroundColor: Colors.white,
         centerTitle: true,
+      ),
+
+      //navbar
+      body: _pages[_selectIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: CustomColors.customSwatchColor,
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.white,
+        selectedLabelStyle: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 15,
+        ),
+        currentIndex: _selectIndex,
+        onTap: (index) {
+          setState(() {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => _pages[index],
+            ));
+          });
+        },
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.vaccines),
+            label: 'Vacinas',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.task),
+            label: 'Prontuário',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Dependentes',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.schedule),
+            label: 'Agenda',
+          ),
+        ],
       ),
     );
   }

@@ -30,13 +30,11 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'assets/images/logo.png', // Substitua pelo caminho correto da imagem do logotipo.
-              width: 250, // Ajuste o tamanho conforme necessário.
+              'assets/images/logo.png',
+              width: 250,
               height: 250,
             ),
-            SizedBox(
-                height:
-                    30), // Espaçamento entre a imagem e o indicador de progresso.
+            SizedBox(height: 30),
             CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(Colors.greenAccent),
             ),

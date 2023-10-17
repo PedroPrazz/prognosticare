@@ -62,5 +62,5 @@ class Accompany {
       'tipoTemporarioControlado': tipoTemporarioControlado,
       'tipoAcompanhamento': tipoAcompanhamento,
     };
-}
+  }
 }

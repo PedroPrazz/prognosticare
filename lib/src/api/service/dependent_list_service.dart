@@ -43,8 +43,8 @@ class DependentListService {
 
   static Future<bool> disableDependente(String dependentId) async {
     String? token = await storage.read(key: 'token');
-    final url =
-        Uri.parse(UriServidor.url.toString() + '/register-person/disable/$dependentId');
+    final url = Uri.parse(
+        UriServidor.url.toString() + '/register-person/disable/$dependentId');
 
     try {
       final response = await http.put(
@@ -97,7 +97,6 @@ class DependentListService {
       );
 
       if (response.statusCode == 200) {
-
         return true;
       } else {
         print('Response Status Code: ${response.statusCode}');

@@ -37,6 +37,5 @@ abstract class PagesRoutes {
   static const String splashRoute = '/splash';
   static const String vaccination = '/vaccination';
   static const String homeRoute = '/';
-
   
 }

@@ -31,6 +31,9 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     'Vacinas',
     'Cirurgias'
   ];
+  List<int> intervaloData = [1,2,3,5];
+
+  int selectValue = 2;
 
   // Variável para armazenar o valor selecionado na combo box
   String? tipoSelecionado;
@@ -46,7 +49,6 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   TextEditingController datahController = TextEditingController();
   TextEditingController obsController = TextEditingController();
   TextEditingController tipoAgendamentoController = TextEditingController();
-  bool realizado = false;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -66,7 +68,6 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
       localController.text = widget.schedule!.local;
       datahController.text = widget.schedule!.dataAgenda;
       obsController.text = widget.schedule!.observacao;
-      realizado = widget.schedule!.realizado ?? false;
     }
   }
 
@@ -257,19 +258,57 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 return null;
               },
             ),
-            //Realização do agendamento
-            CheckboxListTile(
-              title: Text('Foi realizado?'),
-              controlAffinity: ListTileControlAffinity.leading,
-              checkColor: CustomColors.customSwatchColor,
-              value: realizado,
-              onChanged: (bool? value) {
-                setState(
-                  () {
-                    realizado = value ?? false;
+             Padding(
+              padding: const EdgeInsets.only(bottom: 15),
+              child: Container(
+                width: 300,
+                child: DropdownButtonFormField<int>(
+                  focusColor: Colors.white,
+                  decoration: InputDecoration(
+                    hoverColor: Colors.blue,
+                    labelText: 'Intervalo de Horas',
+                    labelStyle: TextStyle(color: Colors.black),
+                    isDense: true,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(18),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(18),
+                      borderSide: BorderSide(
+                        color: CustomColors.customSwatchColor,
+                      ),
+                    ),
+                  ),
+                  value: selectValue,
+                  onChanged: (int? newValue) {
+                    setState(() {
+                      selectValue = newValue ?? 2;
+                    });
                   },
-                );
-              },
+                  items: intervaloData.map<DropdownMenuItem<int>>((int value) {
+                    return DropdownMenuItem<int>(
+                      value: value,
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.library_books,
+                            color: CustomColors.customSwatchColor,
+                          ),
+                          SizedBox(width: 10),
+                          Text(
+                            value.toString(),
+                            style: TextStyle(
+                              color: CustomColors.customSwatchColor,
+                              fontSize: 12,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ),
             ),
             // Botão de Agendar
             SizedBox(
@@ -330,8 +369,9 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                       );
                     }
                   } else {
+                    final dataformatada = DateFormat('dd/MM/yyyy hh:mm:ss a').format(DateTime.now());
                     final schedule = Schedule.cadastrar(
-                      dataAgenda: datahController.text.trim(),
+                      dataAgenda: dataformatada.trim(),
                       local: localController.text.trim(),
                       descricao: descricaoController.text.trim(),
                       observacao: obsController.text.trim(),

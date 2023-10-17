@@ -23,6 +23,7 @@ class AccompanyService {
           'prescricaoMedica': accompany.prescricaoMedica,
           'tipoTemporarioControlado': accompany.tipoTemporarioControlado,
           'tipoAcompanhamento': accompany.tipoAcompanhamento,
+          'intervaloHora': accompany.intervaloHora,
         }),
         headers: {
           'Content-Type': 'application/json',

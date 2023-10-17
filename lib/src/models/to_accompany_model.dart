@@ -4,7 +4,7 @@ class Accompany {
   String medicacao;
   String? statusEvento;
   String dataAcompanhamento;
-  int? intervaloHora;
+  int intervaloHora;
   String tipoTemporarioControlado;
   String prescricaoMedica;
 
@@ -25,6 +25,7 @@ class Accompany {
     required this.dataAcompanhamento,
     required this.tipoTemporarioControlado,
     required this.prescricaoMedica,
+    required this.intervaloHora
   });
 
   Accompany.editar({
@@ -33,6 +34,7 @@ class Accompany {
     required this.medicacao,
     required this.dataAcompanhamento,
     required this.tipoTemporarioControlado,
+    required this.intervaloHora,
     required this.prescricaoMedica,
   });
 

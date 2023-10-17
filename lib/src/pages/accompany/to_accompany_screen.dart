@@ -317,6 +317,7 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                       tipoTemporarioControlado:
                           tipoTemporarioControladoController.text.trim(),
                       prescricaoMedica: prescricaoMedicaController.text.trim(),
+                      intervaloHora: selectedValue,
                     );
                     bool update =
                         await ToAccompanyListService.updateAccompany(accompany);
@@ -345,15 +346,14 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                       );
                     }
                   } else {
+                    final dataformatada = DateFormat('dd/MM/yyyy hh:mm:ss a').format(DateTime.now());
                     final accompany = Accompany.criar(
-                      tipoAcompanhamento:
-                          tipoAcompanhamentoController.text.trim(),
+                      tipoAcompanhamento: tipoAcompanhamentoController.text.trim(),
                       medicacao: medicacaoController.text.trim(),
-                      dataAcompanhamento:
-                          dataAcompanhamentoController.text.trim(),
-                      tipoTemporarioControlado:
-                          tipoTemporarioControladoController.text.trim(),
+                      dataAcompanhamento: dataformatada.trim(),
+                      tipoTemporarioControlado: tipoTemporarioControladoController.text.trim(),
                       prescricaoMedica: prescricaoMedicaController.text.trim(),
+                      intervaloHora: selectedValue,
                     );
                     bool register =
                         await AccompanyService.getAccompany(accompany);

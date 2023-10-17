@@ -48,7 +48,6 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
               child: Text('Confirmar'),
               onPressed: () {
                 // Defina o status do agendamento como realizado
-                schedule.realizado = true;
                 // Atualize a exibição da lista (você pode precisar chamar setState)
                 setState(() {
                   schedulesFuture = ScheduleListService.getScheduleList();
@@ -123,11 +122,11 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
                     },
                   ),
                   // Verifique se o agendamento foi realizado e exiba um ícone correspondente.
-                  trailing: schedule.realizado != null
-                      ? Icon(Icons.check_circle,
-                          color: Colors.green) // Agendamento realizado
-                      : Icon(Icons
-                          .radio_button_unchecked), // Agendamento não realizado
+                  // trailing: schedule.realizado != null
+                  //     ? Icon(Icons.check_circle,
+                  //         color: Colors.green) // Agendamento realizado
+                  //     : Icon(Icons
+                  //         .radio_button_unchecked), // Agendamento não realizado
                   onTap: () {
                     // Ao tocar no agendamento, exiba o AlertDialog de confirmação
                     _confirmarAgendamento(schedule);

@@ -8,10 +8,8 @@ class Schedule {
   String observacao;
   String especialista;
   String tipoAgendamento;
-  bool? realizado = false;
 
   Schedule({
-    this.realizado,
     required this.id,
     required this.dataAgenda,
     required this.local,
@@ -24,7 +22,6 @@ class Schedule {
   });
 
   Schedule.editar({
-    this.realizado,
     required this.id,
     required this.dataAgenda,
     required this.local,

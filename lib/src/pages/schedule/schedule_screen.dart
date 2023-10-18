@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, body_might_complete_normally_nullable
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -10,6 +10,7 @@ import 'package:prognosticare/src/models/schedule_model.dart';
 import 'package:prognosticare/components/common_widgets/custom_text_field.dart';
 import 'package:prognosticare/src/pages/home/home_screen.dart';
 import 'package:prognosticare/src/pages/schedule/schedule_list_screen.dart';
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 
 class ScheduleScreen extends StatefulWidget {
   final Schedule? schedule;
@@ -31,7 +32,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     'Vacinas',
     'Cirurgias'
   ];
-  List<int> intervaloData = [1,2,3,5];
+  List<int> intervaloData = [1, 2, 3, 5];
 
   int selectValue = 2;
 
@@ -217,31 +218,91 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 return null;
               },
             ),
-            //Data e Horário
-            CustomTextField(
-              controller: datahController,
-              icon: Icons.date_range,
-              label: 'Data | Horário',
-              inputFormatters: [dataFormatter],
-              validator: (data) {
-                if (data == null || data.trim().isEmpty) {
-                  return 'Informe uma data e horário!';
-                }
-                if (data.toString().trim().length > 0 &&
-                    data.toString().trim().length < 16) {
-                  return 'Informe data e horário no formato: dd/mm/aaaa hh:mm';
-                }
-                // DateTime dataAtual = DateTime.now();
-                // DateTime dataInserida =
-                //     DateFormat('dd/MM/yyyy HH:mm').parse(data.trim());
-                // if (!dataInserida.isBefore(dataAtual) ||
-                //     !dataInserida.isAfter(dataAtual)) {
-                //   return 'Data e/ou Horário inválido(s)!';
-                // }
-                datahValido = true;
-                return null;
-              },
+            Padding(
+              padding: const EdgeInsets.only(bottom: 15),
+              child: DateTimeField(
+                format: DateFormat("dd/MM/yyyy HH:mm a"),
+                controller: datahController,
+                inputFormatters: [dataFormatter],
+                decoration: InputDecoration(
+                  labelText: 'Data | Horário',
+                  prefixIcon: Icon(Icons.date_range),
+                  filled: true,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(18),
+                    borderSide: BorderSide(
+                      color: CustomColors.customSwatchColor,
+                    ),
+                  ),
+                ),
+                onShowPicker: (context, currentValue) {
+                  return showDatePicker(
+                    context: context,
+                    initialDate: currentValue ?? DateTime.now(),
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(2101),
+                  ).then((selectedDate) {
+                    if (selectedDate != null) {
+                      showTimePicker(
+                        context: context,
+                        initialTime: TimeOfDay.fromDateTime(
+                            currentValue ?? DateTime.now()),
+                      ).then((selectedTime) {
+                        if (selectedTime != null) {
+                          final selectedDateTime = DateTime(
+                            selectedDate.year,
+                            selectedDate.month,
+                            selectedDate.day,
+                            selectedTime.hour,
+                            selectedTime.minute,
+                          );
+                          datahController.text =
+                              DateFormat("dd/MM/yyyy hh:mm a")
+                                  .format(selectedDateTime);
+                          return selectedDateTime;
+                        } else {
+                          return currentValue;
+                        }
+                      });
+                    } else {
+                      return currentValue;
+                    }
+                  });
+                },
+                validator: (dateTime) {
+                  if (dateTime == null) {
+                    return 'Informe uma data e horário!';
+                  }
+                  datahValido = true;
+                  return null;
+                },
+              ),
             ),
+            //Data e Horário
+            // CustomTextField(
+            //   controller: datahController,
+            //   icon: Icons.date_range,
+            //   label: 'Data | Horário',
+            //   inputFormatters: [dataFormatter],
+            //   validator: (data) {
+            //     if (data == null || data.trim().isEmpty) {
+            //       return 'Informe uma data e horário!';
+            //     }
+            //     if (data.toString().trim().length > 0 &&
+            //         data.toString().trim().length < 16) {
+            //       return 'Informe data e horário no formato: dd/mm/aaaa hh:mm';
+            //     }
+            //     // DateTime dataAtual = DateTime.now();
+            //     // DateTime dataInserida =
+            //     //     DateFormat('dd/MM/yyyy HH:mm').parse(data.trim());
+            //     // if (!dataInserida.isBefore(dataAtual) ||
+            //     //     !dataInserida.isAfter(dataAtual)) {
+            //     //   return 'Data e/ou Horário inválido(s)!';
+            //     // }
+            //     datahValido = true;
+            //     return null;
+            //   },
+            // ),
             //Observações
             CustomTextField(
               controller: obsController,
@@ -258,7 +319,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 return null;
               },
             ),
-             Padding(
+            Padding(
               padding: const EdgeInsets.only(bottom: 15),
               child: Container(
                 width: 300,
@@ -332,10 +393,13 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                       !obsValido) {
                     return;
                   }
+                  final selectedDateTime = DateFormat("dd/MM/yyyy HH:mm a").parse(datahController.text.trim());
+                  final formattedDateTime = DateFormat("dd/MM/yyyy hh:mm:ss a").format(selectedDateTime);
+
                   if (widget.isEditing == true) {
                     final schedule = Schedule.editar(
                       id: widget.schedule!.id,
-                      dataAgenda: datahController.text.trim(),
+                      dataAgenda: formattedDateTime,
                       local: localController.text.trim(),
                       descricao: descricaoController.text.trim(),
                       observacao: obsController.text.trim(),
@@ -369,9 +433,8 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                       );
                     }
                   } else {
-                    final dataformatada = DateFormat('dd/MM/yyyy hh:mm:ss a').format(DateTime.now());
                     final schedule = Schedule.cadastrar(
-                      dataAgenda: dataformatada.trim(),
+                      dataAgenda: formattedDateTime,
                       local: localController.text.trim(),
                       descricao: descricaoController.text.trim(),
                       observacao: obsController.text.trim(),

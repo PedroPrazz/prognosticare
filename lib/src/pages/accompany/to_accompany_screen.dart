@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -43,6 +44,7 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
   bool dataHorarioValido = false;
   bool controTempValido = false;
   bool prescricaoValido = false;
+  bool datahValido = false;
 
   @override
   void initState() {
@@ -173,31 +175,91 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                 return null;
               },
             ),
-            //Data e Horário
-            CustomTextField(
-              controller: dataAcompanhamentoController,
-              icon: Icons.date_range,
-              label: 'Data | Horário',
-              inputFormatters: [dataFormatter],
-              validator: (data) {
-                if (data == null || data.trim().isEmpty) {
-                  return 'Informe uma data e horário!';
-                }
-                if (data.toString().trim().length > 0 &&
-                    data.toString().trim().length < 16) {
-                  return 'Informe data e horário no formato: dd/mm/aaaa hh:mm';
-                }
-                // DateTime dataAtual = DateTime.now();
-                // DateTime dataInserida =
-                //     DateFormat('dd/MM/yyyy HH:mm').parse(data.trim());
-                // if (!dataInserida.isBefore(dataAtual) ||
-                //     !dataInserida.isAfter(dataAtual)) {
-                //   return 'Data e/ou Horário inválido(s)!';
-                // }
-                dataHorarioValido = true;
-                return null;
-              },
+            Padding(
+              padding: const EdgeInsets.only(bottom: 15),
+              child: DateTimeField(
+                format: DateFormat("dd/MM/yyyy HH:mm a"),
+                controller: dataAcompanhamentoController,
+                inputFormatters: [dataFormatter],
+                decoration: InputDecoration(
+                  labelText: 'Data | Horário',
+                  prefixIcon: Icon(Icons.date_range),
+                  filled: true,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(18),
+                    borderSide: BorderSide(
+                      color: CustomColors.customSwatchColor,
+                    ),
+                  ),
+                ),
+                onShowPicker: (context, currentValue) {
+                  return showDatePicker(
+                    context: context,
+                    initialDate: currentValue ?? DateTime.now(),
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(2101),
+                  ).then((selectedDate) {
+                    if (selectedDate != null) {
+                      showTimePicker(
+                        context: context,
+                        initialTime: TimeOfDay.fromDateTime(
+                            currentValue ?? DateTime.now()),
+                      ).then((selectedTime) {
+                        if (selectedTime != null) {
+                          final selectedDateTime = DateTime(
+                            selectedDate.year,
+                            selectedDate.month,
+                            selectedDate.day,
+                            selectedTime.hour,
+                            selectedTime.minute,
+                          );
+                          dataAcompanhamentoController.text =
+                              DateFormat("dd/MM/yyyy hh:mm a")
+                                  .format(selectedDateTime);
+                          return selectedDateTime;
+                        } else {
+                          return currentValue;
+                        }
+                      });
+                    } else {
+                      return currentValue;
+                    }
+                  });
+                },
+                validator: (dateTime) {
+                  if (dateTime == null) {
+                    return 'Informe uma data e horário!';
+                  }
+                  datahValido = true;
+                  return null;
+                },
+              ),
             ),
+            //Data e Horário
+            // CustomTextField(
+            //   controller: dataAcompanhamentoController,
+            //   icon: Icons.date_range,
+            //   label: 'Data | Horário',
+            //   inputFormatters: [dataFormatter],
+            //   validator: (data) {
+            //     if (data == null || data.trim().isEmpty) {
+            //       return 'Informe uma data e horário!';
+            //     }
+            //     if (data.toString().trim().length > 0 &&
+            //         data.toString().trim().length < 16) {
+            //       return 'Informe data e horário no formato: dd/mm/aaaa hh:mm';
+            //     }
+            //     // DateTime dataAtual = DateTime.now();
+            //     // DateTime dataInserida =
+            //     //     DateFormat('dd/MM/yyyy HH:mm').parse(data.trim());
+            //     // if (!dataInserida.isBefore(dataAtual) ||
+            //     //     !dataInserida.isAfter(dataAtual)) {
+            //     //   return 'Data e/ou Horário inválido(s)!';
+            //     // }
+            //     dataHorarioValido = true;
+            //     return null;
+            //   },
+            // ),
             //Controlado ou Temporario
             CustomTextField(
               controller: tipoTemporarioControladoController,
@@ -295,28 +357,17 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                   ),
                 ),
                 onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
-                    print('Todos os campos estão válidos');
-                  } else {
-                    print('Campos não válidos');
-                  }
-                  if (!medicacaoValido ||
-                      !dataHorarioValido ||
-                      !controTempValido ||
-                      !prescricaoValido) {
-                    return;
-                  }
+                  final selectedDateTime = DateFormat("dd/MM/yyyy HH:mm a").parse(dataAcompanhamentoController.text.trim());
+                  final formattedDateTime = DateFormat("dd/MM/yyyy hh:mm:ss a").format(selectedDateTime);
+
                   if (widget.isEditing == true) {
                     final accompany = Accompany.editar(
                       id: widget.accompany!.id,
-                      tipoAcompanhamento:
-                          tipoAcompanhamentoController.text.trim(),
-                      medicacao: medicacaoController.text.trim(),
-                      dataAcompanhamento:
-                          dataAcompanhamentoController.text.trim(),
-                      tipoTemporarioControlado:
-                          tipoTemporarioControladoController.text.trim(),
-                      prescricaoMedica: prescricaoMedicaController.text.trim(),
+                      tipoAcompanhamento: tipoAcompanhamentoController.text,
+                      medicacao: medicacaoController.text,
+                      dataAcompanhamento: formattedDateTime,
+                      tipoTemporarioControlado: tipoTemporarioControladoController.text,
+                      prescricaoMedica: prescricaoMedicaController.text,
                       intervaloHora: selectedValue,
                     );
                     bool update =
@@ -346,13 +397,12 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                       );
                     }
                   } else {
-                    final dataformatada = DateFormat('dd/MM/yyyy hh:mm:ss a').format(DateTime.now());
                     final accompany = Accompany.criar(
-                      tipoAcompanhamento: tipoAcompanhamentoController.text.trim(),
-                      medicacao: medicacaoController.text.trim(),
-                      dataAcompanhamento: dataformatada.trim(),
-                      tipoTemporarioControlado: tipoTemporarioControladoController.text.trim(),
-                      prescricaoMedica: prescricaoMedicaController.text.trim(),
+                      tipoAcompanhamento: tipoAcompanhamentoController.text,
+                      medicacao: medicacaoController.text,
+                      dataAcompanhamento: formattedDateTime,
+                      tipoTemporarioControlado: tipoTemporarioControladoController.text,
+                      prescricaoMedica: prescricaoMedicaController.text,
                       intervaloHora: selectedValue,
                     );
                     bool register =
@@ -361,7 +411,7 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text(
-                            'Agendamento cadastrado com sucesso!',
+                            'Acompanhamento cadastrado com sucesso!',
                           ),
                           backgroundColor: Colors.green,
                         ),

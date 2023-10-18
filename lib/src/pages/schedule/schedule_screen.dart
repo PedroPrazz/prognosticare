@@ -394,6 +394,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                   }
                   final selectedDateTime = DateFormat("dd/MM/yyyy HH:mm a").parse(datahController.text.trim());
                   final formattedDateTime = DateFormat("dd/MM/yyyy hh:mm:ss a").format(selectedDateTime);
+                  final intervalo = selectValue;
 
                   if (widget.isEditing == true) {
                     final schedule = Schedule.editar(
@@ -404,6 +405,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                       observacao: obsController.text.trim(),
                       especialista: especialistaController.text.trim(),
                       tipoAgendamento: tipoAgendamentoController.text.trim(),
+                      intervaloData: intervalo
                     );
                     bool update =
                         await ScheduleService.updateSchedule(schedule);
@@ -439,6 +441,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                       observacao: obsController.text.trim(),
                       especialista: especialistaController.text.trim(),
                       tipoAgendamento: tipoAgendamentoController.text.trim(),
+                      intervaloData: intervalo
                     );
                     bool register = await ScheduleService.getSchedule(schedule);
                     if (register) {

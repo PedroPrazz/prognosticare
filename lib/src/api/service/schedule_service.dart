@@ -27,6 +27,7 @@ class ScheduleService {
           'observacao': schedule.observacao,
           'especialista': schedule.especialista,
           'tipoExame': schedule.tipoAgendamento,
+          'intervaloData': schedule.intervaloData,
         }),
         headers: {
           'Content-Type': 'application/json',

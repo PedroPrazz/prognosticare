@@ -29,6 +29,7 @@ class Schedule {
     required this.observacao,
     required this.especialista,
     required this.tipoAgendamento,
+    required this.intervaloData
   });
 
   Schedule.cadastrar({
@@ -38,6 +39,7 @@ class Schedule {
     required this.observacao,
     required this.especialista,
     required this.tipoAgendamento,
+    required this.intervaloData,
   });
 
 

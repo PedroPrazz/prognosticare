@@ -25,9 +25,9 @@ class ToAccompanyScreen extends StatefulWidget {
 class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
   // Lista de tipos de agendamentos
   List<String> tipoDeAcompanhamento = ['Medicacao', 'Procedimentos'];
-  List<int> intervaloHora = [2, 3, 4, 6, 8, 12];
+  List<int> intervaloHora = [2, 3, 4, 6, 8, 12, 0];
 
-  int selectedValue = 2;
+  int selectedValue = 0;
 
   // Variável para armazenar o valor selecionado na combo box
   String? tipoSelecionado;
@@ -44,6 +44,7 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
   bool controTempValido = false;
   bool prescricaoValido = false;
   bool datahValido = false;
+  bool notificacaoMarcada = false;
 
   @override
   void initState() {
@@ -234,31 +235,6 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                 },
               ),
             ),
-            //Data e Horário
-            // CustomTextField(
-            //   controller: dataAcompanhamentoController,
-            //   icon: Icons.date_range,
-            //   label: 'Data | Horário',
-            //   inputFormatters: [dataFormatter],
-            //   validator: (data) {
-            //     if (data == null || data.trim().isEmpty) {
-            //       return 'Informe uma data e horário!';
-            //     }
-            //     if (data.toString().trim().length > 0 &&
-            //         data.toString().trim().length < 16) {
-            //       return 'Informe data e horário no formato: dd/mm/aaaa hh:mm';
-            //     }
-            //     // DateTime dataAtual = DateTime.now();
-            //     // DateTime dataInserida =
-            //     //     DateFormat('dd/MM/yyyy HH:mm').parse(data.trim());
-            //     // if (!dataInserida.isBefore(dataAtual) ||
-            //     //     !dataInserida.isAfter(dataAtual)) {
-            //     //   return 'Data e/ou Horário inválido(s)!';
-            //     // }
-            //     dataHorarioValido = true;
-            //     return null;
-            //   },
-            // ),
             //Controlado ou Temporario
             CustomTextField(
               controller: tipoTemporarioControladoController,
@@ -277,59 +253,81 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                 return null;
               },
             ),
-            //Intervalo de horas
-            Padding(
-              padding: const EdgeInsets.only(bottom: 15),
-              child: Container(
-                width: 300,
-                child: DropdownButtonFormField<int>(
-                  focusColor: Colors.white,
-                  decoration: InputDecoration(
-                    hoverColor: Colors.blue,
-                    labelText: 'Intervalo de Horas',
-                    labelStyle: TextStyle(color: Colors.black),
-                    isDense: true,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(18),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(18),
-                      borderSide: BorderSide(
-                        color: CustomColors.customSwatchColor,
-                      ),
-                    ),
-                  ),
-                  value: selectedValue,
-                  onChanged: (int? newValue) {
-                    setState(() {
-                      selectedValue = newValue ?? 2;
-                    });
+            //Notificação
+            CheckboxListTile(
+              title: Text('Ativar notificações?'),
+              controlAffinity: ListTileControlAffinity.leading,
+              checkColor: CustomColors.customSwatchColor,
+              value: notificacaoMarcada,
+              onChanged: (bool? value) {
+                setState(
+                  () {
+                    notificacaoMarcada = value ?? false;
                   },
-                  items: intervaloHora.map<DropdownMenuItem<int>>((int value) {
-                    return DropdownMenuItem<int>(
-                      value: value,
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.library_books,
-                            color: CustomColors.customSwatchColor,
-                          ),
-                          SizedBox(width: 10),
-                          Text(
-                            value.toString(),
-                            style: TextStyle(
-                              color: CustomColors.customSwatchColor,
-                              fontSize: 12,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                        ],
+                );
+              },
+            ),
+            Visibility(
+              visible: notificacaoMarcada,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 15),
+                child: Container(
+                  width: 300,
+                  child: DropdownButtonFormField<int>(
+                    focusColor: Colors.white,
+                    decoration: InputDecoration(
+                      hoverColor: Colors.blue,
+                      labelText: 'Intervalo de Horas',
+                      labelStyle: TextStyle(color: Colors.black),
+                      isDense: true,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(18),
                       ),
-                    );
-                  }).toList(),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(18),
+                        borderSide: BorderSide(
+                          color: CustomColors.customSwatchColor,
+                        ),
+                      ),
+                    ),
+                    value: selectedValue,
+                    onChanged: (int? newValue) {
+                      setState(() {
+                        selectedValue = newValue ?? 0;
+                        if (selectedValue == 0) {
+                          notificacaoMarcada = false;
+                        }
+                      });
+                    },
+                    items:
+                        intervaloHora.map<DropdownMenuItem<int>>((int value) {
+                      return DropdownMenuItem<int>(
+                        value: value,
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.library_books,
+                              color: CustomColors.customSwatchColor,
+                            ),
+                            SizedBox(width: 10),
+                            Text(
+                              value.toString(),
+                              style: TextStyle(
+                                color: CustomColors.customSwatchColor,
+                                fontSize: 12,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                  ),
                 ),
               ),
             ),
+
+            //Intervalo de horas
             //Prescrição
             CustomTextField(
               controller: prescricaoMedicaController,
@@ -356,9 +354,11 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                   ),
                 ),
                 onPressed: () async {
-                  final selectedDateTime = DateFormat("dd/MM/yyyy HH:mm a").parse(dataAcompanhamentoController.text.trim());
-                  final formattedDateTime = DateFormat("dd/MM/yyyy hh:mm:ss a").format(selectedDateTime);
-                  final intervalo = selectedValue;
+                  final selectedDateTime = DateFormat("dd/MM/yyyy HH:mm a")
+                      .parse(dataAcompanhamentoController.text.trim());
+                  final formattedDateTime = DateFormat("dd/MM/yyyy hh:mm:ss a")
+                      .format(selectedDateTime);
+                  final intervalo = notificacaoMarcada ? selectedValue : 0;
 
                   if (widget.isEditing == true) {
                     final accompany = Accompany.editar(
@@ -366,7 +366,8 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                       tipoAcompanhamento: tipoAcompanhamentoController.text,
                       medicacao: medicacaoController.text,
                       dataAcompanhamento: formattedDateTime,
-                      tipoTemporarioControlado: tipoTemporarioControladoController.text,
+                      tipoTemporarioControlado:
+                          tipoTemporarioControladoController.text,
                       prescricaoMedica: prescricaoMedicaController.text,
                       intervaloHora: intervalo,
                     );
@@ -401,7 +402,8 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                       tipoAcompanhamento: tipoAcompanhamentoController.text,
                       medicacao: medicacaoController.text,
                       dataAcompanhamento: formattedDateTime,
-                      tipoTemporarioControlado: tipoTemporarioControladoController.text,
+                      tipoTemporarioControlado:
+                          tipoTemporarioControladoController.text,
                       prescricaoMedica: prescricaoMedicaController.text,
                       intervaloHora: intervalo,
                     );

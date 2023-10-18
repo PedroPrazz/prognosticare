@@ -77,8 +77,11 @@ class AccompanyService {
         }).toList();
 
         return accompany;
-      } else {
-        print('Response Status Code: ${response.statusCode}');
+      }else if (response.statusCode == 404){
+        print('Status Code: ${response.statusCode} Não foi encontrado Acompanhamento');
+        throw Exception('Exeption no método find erro 404');
+      }else {
+        print('Status Code: ${response.statusCode}');
         throw Exception('Exeption no método find');
       }
     } catch (e) {

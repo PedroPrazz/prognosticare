@@ -6,9 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get_utils/src/get_utils/get_utils.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:prognosticare/src/api/service/dependent_list_service.dart';
-// import 'package:prognosticare/src/api/service/dependent_list_service.dart';
-import 'package:prognosticare/src/api/service/dependent_register_service.dart';
+import 'package:prognosticare/src/api/service/dependent_service.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/models/dependent_model.dart';
 import 'package:prognosticare/components/common_widgets/custom_text_field.dart';
@@ -341,7 +339,7 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                         cartaoNacional: cnsController.text,
                         cartaoPlanoSaude: cpsController.text,
                       );
-                      bool update = await DependentListService.updateDependent(
+                      bool update = await DependentService.updateDependent(
                           dependente);
                       if (update) {
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -379,7 +377,7 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                         cartaoPlanoSaude: cpsController.text,
                       );
                       bool register =
-                          await RegisterServiceDepents.getRegisterD(dependente);
+                          await DependentService.getRegisterD(dependente);
                       if (register) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(

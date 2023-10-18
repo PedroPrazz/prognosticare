@@ -1,11 +1,10 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, body_might_complete_normally_nullable
 
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:prognosticare/src/api/service/to_accompany_list_service.dart';
-import 'package:prognosticare/src/api/service/to_accompany_register_service.dart';
+import 'package:prognosticare/src/api/service/accompany_service.dart';
 import 'package:prognosticare/components/common_widgets/custom_text_field.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/models/to_accompany_model.dart';
@@ -371,7 +370,7 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                       intervaloHora: selectedValue,
                     );
                     bool update =
-                        await ToAccompanyListService.updateAccompany(accompany);
+                        await AccompanyService.updateAccompany(accompany);
                     if (update) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(

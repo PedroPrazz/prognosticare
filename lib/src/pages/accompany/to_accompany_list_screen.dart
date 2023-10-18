@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:prognosticare/src/api/service/to_accompany_list_service.dart';
+import 'package:prognosticare/src/api/service/accompany_service.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/models/to_accompany_model.dart';
 import 'package:prognosticare/src/pages/accompany/to_accompany_screen.dart';
@@ -18,7 +18,7 @@ class _ToAccompanyListScreenState extends State<ToAccompanyListScreen> {
   @override
   void initState() {
     super.initState();
-    accompanyFuture = ToAccompanyListService.getAccompanyList();
+    accompanyFuture = AccompanyService.getAccompanyList();
   }
 
   @override

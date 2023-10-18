@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:prognosticare/src/api/service/schedule_list_service.dart';
+import 'package:prognosticare/src/api/service/schedule_service.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/models/schedule_model.dart';
 import 'package:prognosticare/src/pages/home/home_screen.dart';
@@ -18,7 +18,7 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
   @override
   void initState() {
     super.initState();
-    schedulesFuture = ScheduleListService.getScheduleList();
+    schedulesFuture = ScheduleService.getScheduleList();
   }
 
   // Função para exibir o AlertDialog de confirmação
@@ -50,7 +50,7 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
                 // Defina o status do agendamento como realizado
                 // Atualize a exibição da lista (você pode precisar chamar setState)
                 setState(() {
-                  schedulesFuture = ScheduleListService.getScheduleList();
+                  schedulesFuture = ScheduleService.getScheduleList();
                 });
                 Navigator.of(context).pop();
               },

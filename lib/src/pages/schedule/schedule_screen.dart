@@ -3,8 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:prognosticare/src/api/service/schedule_list_service.dart';
-import 'package:prognosticare/src/api/service/schedule_register_service.dart';
+import 'package:prognosticare/src/api/service/schedule_service.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/models/schedule_model.dart';
 import 'package:prognosticare/components/common_widgets/custom_text_field.dart';
@@ -407,7 +406,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                       tipoAgendamento: tipoAgendamentoController.text.trim(),
                     );
                     bool update =
-                        await ScheduleListService.updateSchedule(schedule);
+                        await ScheduleService.updateSchedule(schedule);
                     if (update) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(

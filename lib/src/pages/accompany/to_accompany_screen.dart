@@ -358,6 +358,7 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                 onPressed: () async {
                   final selectedDateTime = DateFormat("dd/MM/yyyy HH:mm a").parse(dataAcompanhamentoController.text.trim());
                   final formattedDateTime = DateFormat("dd/MM/yyyy hh:mm:ss a").format(selectedDateTime);
+                  final intervalo = selectedValue;
 
                   if (widget.isEditing == true) {
                     final accompany = Accompany.editar(
@@ -367,7 +368,7 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                       dataAcompanhamento: formattedDateTime,
                       tipoTemporarioControlado: tipoTemporarioControladoController.text,
                       prescricaoMedica: prescricaoMedicaController.text,
-                      intervaloHora: selectedValue,
+                      intervaloHora: intervalo,
                     );
                     bool update =
                         await AccompanyService.updateAccompany(accompany);
@@ -402,7 +403,7 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                       dataAcompanhamento: formattedDateTime,
                       tipoTemporarioControlado: tipoTemporarioControladoController.text,
                       prescricaoMedica: prescricaoMedicaController.text,
-                      intervaloHora: selectedValue,
+                      intervaloHora: intervalo,
                     );
                     bool register =
                         await AccompanyService.getAccompany(accompany);

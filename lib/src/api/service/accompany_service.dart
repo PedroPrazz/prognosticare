@@ -6,7 +6,53 @@ import 'package:prognosticare/src/models/to_accompany_model.dart';
 
 final storage = FlutterSecureStorage();
 
-class ToAccompanyListService {
+class AccompanyService {
+
+  //Método para criar um acompanhamento
+
+  static Future<bool> getAccompany(Accompany accompany) async {
+    String? idPessoa = await storage.read(key: 'user_id');
+    String? token = await storage.read(key: 'token');
+
+    final url =
+        Uri.parse(UriServidor.url.toString() + '/to-accompany/save/$idPessoa');
+
+    try {
+      final response = await http.post(
+        url,
+        body: json.encode({
+          'medicacao': accompany.medicacao,
+          'dataAcompanhamento': accompany.dataAcompanhamento,
+          'prescricaoMedica': accompany.prescricaoMedica,
+          'tipoTemporarioControlado': accompany.tipoTemporarioControlado,
+          'tipoAcompanhamento': accompany.tipoAcompanhamento,
+          'intervaloHora': accompany.intervaloHora,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final responseBody = response.body;
+        final dados = json.decode(responseBody);
+
+        print(dados);
+
+        return true;
+      } else {
+        print('Response Status Code: ${response.statusCode}');
+        return false;
+      }
+    } catch (e) {
+      print('Error: $e');
+      return false;
+    }
+  }
+
+  //Método get para listar acompanhamentos
+
   static Future<List<Accompany>> getAccompanyList() async {
     String? idPessoa = await storage.read(key: 'user_id');
     String? token = await storage.read(key: 'token');
@@ -31,8 +77,11 @@ class ToAccompanyListService {
         }).toList();
 
         return accompany;
-      } else {
-        print('Response Status Code: ${response.statusCode}');
+      }else if (response.statusCode == 404){
+        print('Status Code: ${response.statusCode} Não foi encontrado Acompanhamento');
+        throw Exception('Exeption no método find erro 404');
+      }else {
+        print('Status Code: ${response.statusCode}');
         throw Exception('Exeption no método find');
       }
     } catch (e) {
@@ -40,6 +89,8 @@ class ToAccompanyListService {
       throw Exception('Exeption no método find Erro no Try/Catch');
     }
   }
+
+  //Método para atualizar acompanhamentos
 
   static Future<bool> updateAccompany(Accompany accompany) async {
     String? token = await storage.read(key: 'token');

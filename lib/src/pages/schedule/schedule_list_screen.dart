@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:prognosticare/src/api/service/schedule_list_service.dart';
+import 'package:prognosticare/src/api/service/schedule_service.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/models/schedule_model.dart';
+import 'package:prognosticare/src/pages/home/home_screen.dart';
 import 'package:prognosticare/src/pages/schedule/schedule_screen.dart';
 
 class ScheduleListScreen extends StatefulWidget {
@@ -17,7 +18,7 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
   @override
   void initState() {
     super.initState();
-    schedulesFuture = ScheduleListService.getScheduleList();
+    schedulesFuture = ScheduleService.getScheduleList();
   }
 
   // Função para exibir o AlertDialog de confirmação
@@ -47,10 +48,9 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
               child: Text('Confirmar'),
               onPressed: () {
                 // Defina o status do agendamento como realizado
-                schedule.realizado = true;
                 // Atualize a exibição da lista (você pode precisar chamar setState)
                 setState(() {
-                  schedulesFuture = ScheduleListService.getScheduleList();
+                  schedulesFuture = ScheduleService.getScheduleList();
                 });
                 Navigator.of(context).pop();
               },
@@ -75,6 +75,20 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
         centerTitle: true,
         backgroundColor: CustomColors.customSwatchColor,
         foregroundColor: Colors.white,
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                  (route) => false);
+            },
+            icon: const Icon(
+              Icons.home,
+              color: Colors.white,
+            ),
+          ),
+        ],
       ),
       body: FutureBuilder<List<Schedule>>(
         future: schedulesFuture,
@@ -108,11 +122,11 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
                     },
                   ),
                   // Verifique se o agendamento foi realizado e exiba um ícone correspondente.
-                  trailing: schedule.realizado != null
-                      ? Icon(Icons.check_circle,
-                          color: Colors.green) // Agendamento realizado
-                      : Icon(Icons
-                          .radio_button_unchecked), // Agendamento não realizado
+                  // trailing: schedule.realizado != null
+                  //     ? Icon(Icons.check_circle,
+                  //         color: Colors.green) // Agendamento realizado
+                  //     : Icon(Icons
+                  //         .radio_button_unchecked), // Agendamento não realizado
                   onTap: () {
                     // Ao tocar no agendamento, exiba o AlertDialog de confirmação
                     _confirmarAgendamento(schedule);

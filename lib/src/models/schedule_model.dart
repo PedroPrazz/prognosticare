@@ -8,10 +8,8 @@ class Schedule {
   String observacao;
   String especialista;
   String tipoAgendamento;
-  bool? realizado = false;
 
   Schedule({
-    this.realizado,
     required this.id,
     required this.dataAgenda,
     required this.local,
@@ -24,7 +22,6 @@ class Schedule {
   });
 
   Schedule.editar({
-    this.realizado,
     required this.id,
     required this.dataAgenda,
     required this.local,
@@ -32,6 +29,7 @@ class Schedule {
     required this.observacao,
     required this.especialista,
     required this.tipoAgendamento,
+    required this.intervaloData
   });
 
   Schedule.cadastrar({
@@ -41,6 +39,7 @@ class Schedule {
     required this.observacao,
     required this.especialista,
     required this.tipoAgendamento,
+    required this.intervaloData,
   });
 
 
@@ -57,30 +56,6 @@ class Schedule {
       tipoAgendamento: json['tipoExame'],
     );
   }
-
-  // Schedule copyWith({
-  //   String? id,
-  //   String? dataAgenda,
-  //   String? local,
-  //   String? statusEvento,
-  //   String? descricao,
-  //   int? intervaloData,
-  //   String? observacao,
-  //   String? especialista,
-  //   String? tipoAgendamento,
-  // }) {
-  //   return Schedule(
-  //   id: id ?? this.id,
-  //   dataAgenda: dataAgenda ?? this.dataAgenda,
-  //   local: local ?? this.local,
-  //   statusEvento: statusEvento ?? this.statusEvento,
-  //   descricao: descricao ?? this.descricao,
-  //   intervaloData: intervaloData ?? this.intervaloData,
-  //   observacao: observacao ?? this.observacao,
-  //   especialista: especialista ?? this.especialista,
-  //   tipoAgendamento: tipoAgendamento ?? this.tipoAgendamento,
-  //   );
-  // }
 
   Map<String, dynamic> toJson() {
     return {

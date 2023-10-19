@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:prognosticare/src/api/service/to_accompany_list_service.dart';
+import 'package:prognosticare/src/api/service/accompany_service.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/models/to_accompany_model.dart';
 import 'package:prognosticare/src/pages/accompany/to_accompany_screen.dart';
+import 'package:prognosticare/src/pages/home/home_screen.dart';
 
 class ToAccompanyListScreen extends StatefulWidget {
   const ToAccompanyListScreen({Key? key}) : super(key: key);
@@ -17,7 +18,7 @@ class _ToAccompanyListScreenState extends State<ToAccompanyListScreen> {
   @override
   void initState() {
     super.initState();
-    accompanyFuture = ToAccompanyListService.getAccompanyList();
+    accompanyFuture = AccompanyService.getAccompanyList();
   }
 
   @override
@@ -34,6 +35,20 @@ class _ToAccompanyListScreenState extends State<ToAccompanyListScreen> {
         centerTitle: true,
         backgroundColor: CustomColors.customSwatchColor,
         foregroundColor: Colors.white,
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                  (route) => false);
+            },
+            icon: const Icon(
+              Icons.home,
+              color: Colors.white,
+            ),
+          ),
+        ],
       ),
       body: FutureBuilder<List<Accompany>>(
         future: accompanyFuture,

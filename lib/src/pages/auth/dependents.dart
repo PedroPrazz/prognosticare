@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:prognosticare/src/api/service/dependent_list_service.dart';
+import 'package:prognosticare/src/api/service/dependent_service.dart';
 import 'package:prognosticare/src/models/dependent_model.dart';
+import 'package:prognosticare/src/pages/home/home_screen.dart';
 import 'package:prognosticare/src/pages/profile/profile_tab_dependente.dart';
 
 class ListDependents extends StatefulWidget {
@@ -16,7 +17,7 @@ class _ListDependentsState extends State<ListDependents> {
   @override
   void initState() {
     super.initState();
-    dependentsFuture = DependentListService.getDependentList();
+    dependentsFuture = DependentService.getDependentList();
   }
 
   Future<void> _showDeleteConfirmationDialog(Dependente dependente) async {
@@ -44,12 +45,12 @@ class _ListDependentsState extends State<ListDependents> {
             TextButton(
               child: Text('Confirmar'),
               onPressed: () async {
-                final deleted = await DependentListService.disableDependente(
+                final deleted = await DependentService.disableDependente(
                     dependente.id!);
                 if (deleted) {
                   setState(() {
                     // Atualize a lista de dependentes chamando dependentsFuture novamente
-                    dependentsFuture = DependentListService.getDependentList();
+                    dependentsFuture = DependentService.getDependentList();
                   });
                 }
                 Navigator.of(context).pop(); // Fecha o diálogo
@@ -67,6 +68,20 @@ class _ListDependentsState extends State<ListDependents> {
       appBar: AppBar(
         title: Text('Lista de Dependentes'),
         foregroundColor: Colors.white,
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                  (route) => false);
+            },
+            icon: const Icon(
+              Icons.home,
+              color: Colors.white,
+            ),
+          ),
+        ],
       ),
       body: FutureBuilder<List<Dependente>>(
         future: dependentsFuture,

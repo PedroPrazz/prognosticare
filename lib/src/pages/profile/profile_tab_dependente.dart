@@ -6,13 +6,12 @@ import 'package:flutter/services.dart';
 import 'package:get/get_utils/src/get_utils/get_utils.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:prognosticare/src/api/service/dependent_list_service.dart';
-// import 'package:prognosticare/src/api/service/dependent_list_service.dart';
-import 'package:prognosticare/src/api/service/dependent_register_service.dart';
+import 'package:prognosticare/src/api/service/dependent_service.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/models/dependent_model.dart';
 import 'package:prognosticare/components/common_widgets/custom_text_field.dart';
 import 'package:prognosticare/src/pages/auth/dependents.dart';
+import 'package:prognosticare/src/pages/home/home_screen.dart';
 
 class ProfileTabDepentende extends StatefulWidget {
   final Dependente? dependente;
@@ -36,10 +35,13 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
     filter: {'#': RegExp(r'[0-9]')},
   );
 
-  bool doadorMarcado = false;
-  bool alergiaMarcada = false;
-
+  bool nomeValido = false;
+  bool cpfValido = false;
   bool dataValida = false;
+  bool cnsValido = false;
+  bool cpsValido = false;
+  bool alergiaMarcada = false;
+  bool tipoAlergiaValido = false;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -87,6 +89,20 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
             },
           ),
           foregroundColor: Colors.white,
+          actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomeScreen()),
+                    (route) => false);
+              },
+              icon: const Icon(
+                Icons.home,
+                color: Colors.white,
+              ),
+            ),
+          ],
         ),
         body: Container(
             child: Form(
@@ -107,6 +123,7 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                   if (nome.trim().length < 3) {
                     return 'Nome deve ter no mínimo 3 caracteres!';
                   }
+                  nomeValido = true;
                   return null;
                 },
               ),
@@ -125,6 +142,7 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                   } else {
                     return 'CPF Inválido';
                   }
+                  cpfValido = true;
                   return null;
                 },
               ),
@@ -138,17 +156,23 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                   if (data == null || data.trim().isEmpty) {
                     return 'Digite a Data de Nascimento!';
                   }
-                  DateTime dataNascimento =
-                      DateFormat('dd/MM/yyyy').parse(data.trim());
+                  DateTime dataNascimento;
+                  try {
+                    dataNascimento =
+                        DateFormat('dd/MM/yyyy').parse(data.trim());
+                  } catch (e) {
+                    return 'Data de Nascimento inválida.';
+                  }
                   DateTime dataAtual = DateTime.now();
-                  // Verifique se a data de nascimento é maior do que a data atual
+                  // Verifique se a data de nascimento é posterior à data atual
                   if (dataNascimento.isAfter(dataAtual)) {
-                    return 'Data de nascimento inválida.';
+                    return 'A Data de Nascimento não pode ser no futuro.';
                   }
                   dataValida = true;
                   return null;
                 },
               ),
+
               //CNS
               CustomTextField(
                 controller: cnsController,
@@ -166,6 +190,7 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                       cnsController.text.trim().length < 18) {
                     return 'Cartão Nacional de Saúde inválido!';
                   }
+                  cnsValido = true;
                   return null;
                 },
               ),
@@ -186,6 +211,7 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                       cpsController.text.trim().length < 18) {
                     return 'Cartão do Plano de Saúde inválido!';
                   }
+                  cpfValido = true;
                   return null;
                 },
               ),
@@ -277,6 +303,7 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                         tipoAlergiaController.text.trim().length < 3) {
                       return 'Tipo de alergia inválido!';
                     }
+                    tipoAlergiaValido = true;
                     return null;
                   },
                 ),
@@ -296,20 +323,9 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                     } else {
                       print('Campos não válidos');
                     }
-
-                    if (nomeController.text.trim().isEmpty ||
-                        nomeController.text.trim().length < 3 ||
-                        cpfController.text.trim().isEmpty ||
-                        !GetUtils.isCpf(cpfController.text.trim()) ||
-                        dataController.text.trim().isEmpty ||
-                        dataValida == false ||
-                        alergiaMarcada == true &&
-                            tipoAlergiaController.text.trim().isEmpty ||
-                        tipoAlergiaController.text.trim().length > 0 &&
-                            tipoAlergiaController.text.trim().length < 3) {
+                    if (alergiaMarcada && !tipoAlergiaValido) {
                       return;
                     }
-
                     if (widget.isEditing == true) {
                       final dependente = Dependente.editar(
                         ativo: widget.dependente!.ativo,
@@ -323,7 +339,7 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                         cartaoNacional: cnsController.text,
                         cartaoPlanoSaude: cpsController.text,
                       );
-                      bool update = await DependentListService.updateDependent(
+                      bool update = await DependentService.updateDependent(
                           dependente);
                       if (update) {
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -361,7 +377,7 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                         cartaoPlanoSaude: cpsController.text,
                       );
                       bool register =
-                          await RegisterServiceDepents.getRegisterD(dependente);
+                          await DependentService.getRegisterD(dependente);
                       if (register) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(

@@ -5,7 +5,6 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:prognosticare/src/api/service/person_update_service.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/models/pessoa_model.dart';
-import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
 import 'package:prognosticare/src/pages/home/home_screen.dart';
 import 'package:prognosticare/components/common_widgets/custom_text_field.dart';
 
@@ -25,8 +24,12 @@ class _ProfileTabState extends State<ProfileTab> {
     filter: {'#': RegExp(r'[0-9]')},
   );
 
+  bool telefoneValido = false;
+  bool cnsValido = false;
+  bool cpsValido = false;
   bool doadorMarcado = false;
   bool alergiaMarcada = false;
+  bool tipoAlergiaValido = false;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -70,11 +73,11 @@ class _ProfileTabState extends State<ProfileTab> {
             onPressed: () {
               Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (context) => SignInScreen()),
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
                   (route) => false);
             },
             icon: const Icon(
-              Icons.logout,
+              Icons.home,
               color: Colors.white,
             ),
           ),
@@ -126,6 +129,7 @@ class _ProfileTabState extends State<ProfileTab> {
                       telefoneController.text.trim().length < 14) {
                     return 'Telefone inválido!';
                   }
+                  telefoneValido = true;
                   return null;
                 },
               ),
@@ -146,6 +150,7 @@ class _ProfileTabState extends State<ProfileTab> {
                       cnsController.text.trim().length < 18) {
                     return 'Cartão Nacional de Saúde inválido!';
                   }
+                  cnsValido = true;
                   return null;
                 },
               ),
@@ -166,6 +171,7 @@ class _ProfileTabState extends State<ProfileTab> {
                       cpsController.text.trim().length < 18) {
                     return 'Cartão do Plano de Saúde inválido!';
                   }
+                  cpsValido = true;
                   return null;
                 },
               ),
@@ -257,6 +263,7 @@ class _ProfileTabState extends State<ProfileTab> {
                         tipoAlergiaController.text.trim().length < 3) {
                       return 'Tipo de alergia inválido!';
                     }
+                    tipoAlergiaValido = true;
                     return null;
                   },
                 ),
@@ -290,27 +297,9 @@ class _ProfileTabState extends State<ProfileTab> {
                     } else {
                       print('Campos não válidos');
                     }
-
-                    if (alergiaMarcada == true &&
-                            tipoAlergiaController.text.trim().isEmpty ||
-                        tipoAlergiaController.text.trim().length > 0 &&
-                            tipoAlergiaController.text.trim().length < 3) {
+                    if (alergiaMarcada && !tipoAlergiaValido) {
                       return;
                     }
-
-                    if (telefoneController.text.trim().isEmpty &&
-                        cnsController.text.trim().isEmpty &&
-                        cpsController.text.trim().isEmpty &&
-                        tipoSanguineoController.text.trim() == 'SELECIONE') {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Você não alterou nenhum dado!'),
-                          backgroundColor: Colors.yellow[800],
-                        ),
-                      );
-                      return;
-                    }
-
                     Pessoa pessoaAtualizada = widget.pessoa.copyWith(
                       pessoaId: widget.pessoa.pessoaId.trim(),
                       nome: widget.pessoa.nome.trim(),

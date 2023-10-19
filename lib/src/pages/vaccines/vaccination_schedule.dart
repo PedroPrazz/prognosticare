@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/models/vaccines.dart';
+import 'package:prognosticare/src/pages/home/home_screen.dart';
 
 class Vaccination extends StatefulWidget {
   @override
@@ -8,7 +9,8 @@ class Vaccination extends StatefulWidget {
 }
 
 class _VaccinationState extends State<Vaccination> {
-  String selectedGroup = "Vacinas para Crianças"; // Inicialmente selecionado como "Vacina para Crianças"
+  String selectedGroup =
+      "Vacinas para Crianças"; // Inicialmente selecionado como "Vacina para Crianças"
 
   void _updateSelectedGroup(String? group) {
     if (group != null) {
@@ -41,6 +43,21 @@ class _VaccinationState extends State<Vaccination> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Calendário de Vacinas'),
+        foregroundColor: Colors.white,
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                  (route) => false);
+            },
+            icon: const Icon(
+              Icons.home,
+              color: Colors.white,
+            ),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Center(

@@ -9,6 +9,7 @@ class ForgotPasswordDialog extends StatelessWidget {
 
   Future<bool?> forgotPassword(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
+    bool emailValido = false;
     TextEditingController emailController = TextEditingController();
     return showDialog(
       context: context,
@@ -50,6 +51,7 @@ class ForgotPasswordDialog extends StatelessWidget {
                           if (!email.trim().isEmail) {
                             return 'Digite um email válido!';
                           }
+                          emailValido = true;
                           return null;
                         },
                       ),
@@ -67,8 +69,7 @@ class ForgotPasswordDialog extends StatelessWidget {
                             } else {
                               print('Campos não válidos');
                             }
-                            if (emailController.text.trim().isEmpty ||
-                                !emailController.text.trim().isEmail) {
+                            if (!emailValido) {
                               return;
                             }
                             bool forgotPassowrd =
@@ -78,7 +79,7 @@ class ForgotPasswordDialog extends StatelessWidget {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text(
-                                      'Email de recuperação de senha enviado!'),
+                                      'Email de recuperação de senha enviado!\nVerifique sua caixa de entrada ou spam!'),
                                   backgroundColor: Colors.green,
                                 ),
                               );

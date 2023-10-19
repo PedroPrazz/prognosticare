@@ -40,9 +40,9 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     'Não Possui',
     'Demartologia'
   ];
-  List<int> intervaloData = [1, 2, 3, 5, 0];
+  List<int> intervaloData = [1, 2, 3, 5];
 
-  int selectedValue = 0;
+  int selectedValue = 2;
 
   // Variável para armazenar o valor selecionado na combo box
   String? tipoSelecionado;
@@ -384,13 +384,11 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                     value: selectedValue,
                     onChanged: (int? newValue) {
                       setState(() {
-                        selectedValue = newValue ?? 0;
-                        if (selectedValue == 0) {
-                          notificacaoMarcada = false;
-                        }
+                        selectedValue = newValue ?? 2;
                       });
                     },
-                    items: intervaloData.map<DropdownMenuItem<int>>((int value) {
+                    items:
+                        intervaloData.map<DropdownMenuItem<int>>((int value) {
                       return DropdownMenuItem<int>(
                         value: value,
                         child: Row(
@@ -441,7 +439,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                       .parse(datahController.text.trim());
                   final formattedDateTime = DateFormat("dd/MM/yyyy hh:mm:ss a")
                       .format(selectedDateTime);
-                  final intervalo = notificacaoMarcada ? selectedValue : 0;
+                  final intervalo = selectedValue;
 
                   if (widget.isEditing == true) {
                     final schedule = Schedule.editar(

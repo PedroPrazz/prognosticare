@@ -26,9 +26,9 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
   // Lista de tipos de agendamentos
   List<String> tipoDeAcompanhamento = ['Medicacao', 'Procedimentos'];
   List<String> tipoDeMedicacao = ['Controlada', 'Temporaria'];
-  List<int> intervaloHora = [2, 3, 4, 6, 8, 12, 0];
+  List<int> intervaloHora = [2, 3, 4, 6, 8, 12];
 
-  int selectedValue = 0;
+  int selectedValue = 2;
 
   // Variável para armazenar o valor selecionado na combo box
   String? tipoSelecionado;
@@ -336,10 +336,7 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                     value: selectedValue,
                     onChanged: (int? newValue) {
                       setState(() {
-                        selectedValue = newValue ?? 0;
-                        if (selectedValue == 0) {
-                          notificacaoMarcada = false;
-                        }
+                        selectedValue = newValue ?? 2;
                       });
                     },
                     items:
@@ -400,7 +397,7 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                       .parse(dataAcompanhamentoController.text.trim());
                   final formattedDateTime = DateFormat("dd/MM/yyyy hh:mm:ss a")
                       .format(selectedDateTime);
-                  final intervalo = notificacaoMarcada ? selectedValue : 0;
+                  final intervalo = selectedValue;
 
                   if (widget.isEditing == true) {
                     final accompany = Accompany.editar(

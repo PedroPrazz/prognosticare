@@ -31,9 +31,18 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     'Vacinas',
     'Cirurgias'
   ];
-  List<int> intervaloData = [1, 2, 3, 5];
 
-  int selectValue = 2;
+  List<String> tiposDeEspecialista = [
+    'Ortopedia',
+    'Clinico Geral',
+    'Cardiologia',
+    'Ginecologia',
+    'Não Possui',
+    'Demartologia'
+  ];
+  List<int> intervaloData = [1, 2, 3, 5, 0];
+
+  int selectedValue = 0;
 
   // Variável para armazenar o valor selecionado na combo box
   String? tipoSelecionado;
@@ -57,6 +66,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   bool localValido = false;
   bool datahValido = false;
   bool obsValido = false;
+  bool notificacaoMarcada = false;
 
   @override
   void initState() {
@@ -165,25 +175,64 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
               ),
             ),
             //Especialista
-            CustomTextField(
-              controller: especialistaController,
-              icon: Icons.person,
-              label: 'Especialista',
-              validator: (especialista) {
-                if (especialista == null || especialista.trim().isEmpty) {
-                  return 'Informe um especialista entre: ORTOPEDIA, CLINICO_GERAL, CARDIOLOGIA, \nGINECOLOGIA, DERMATOLOGIA ou NAO_POSSUI!';
-                }
-                // if (!especialista.trim().contains('ORTOPEDIA') ||
-                //     !especialista.trim().contains('CLINICO_GERAL') ||
-                //     !especialista.trim().contains('CARDIOLOGIA') ||
-                //     !especialista.trim().contains('GINECOLOGIA') ||
-                //     !especialista.trim().contains('NAO_POSSUI') ||
-                //     !especialista.trim().contains('DERMATOLOGIA')) {
-                //   return 'Informe um especialista entre: ORTOPEDIA, CLINICO_GERAL, CARDIOLOGIA, \nGINECOLOGIA, DERMATOLOGIA ou NAO_POSSUI!';
-                // }
-                especialistaValido = true;
-                return null;
-              },
+            Padding(
+              padding: const EdgeInsets.only(bottom: 15),
+              child: Container(
+                width: 300,
+                child: DropdownButtonFormField<String>(
+                  focusColor: Colors.white,
+                  decoration: InputDecoration(
+                    hoverColor: Colors.blue,
+                    labelText: 'Especialidade',
+                    labelStyle: TextStyle(color: Colors.black),
+                    isDense: true,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(18),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(18),
+                      borderSide: BorderSide(
+                        color: CustomColors.customSwatchColor,
+                      ),
+                    ),
+                  ),
+                  value: especialistaController.text.isEmpty
+                      ? null
+                      : especialistaController.text,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      especialistaController.text = newValue!;
+                    });
+                  },
+                  items: <String>[
+                    'ORTOPEDIA',
+                    'CLINICO_GERAL',
+                    'CARDIOLOGIA',
+                    'GINECOLOGIA',
+                    'NAO_POSSUI',
+                    'DERMATOLOGIA'
+                  ].map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Row(
+                        children: [
+                          Icon(Icons.person,
+                              color: CustomColors.customSwatchColor),
+                          SizedBox(width: 10),
+                          Text(
+                            value,
+                            style: TextStyle(
+                              color: CustomColors.customSwatchColor,
+                              fontSize: 12,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ),
             ),
             //Descrição
             CustomTextField(
@@ -277,31 +326,6 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 },
               ),
             ),
-            //Data e Horário
-            // CustomTextField(
-            //   controller: datahController,
-            //   icon: Icons.date_range,
-            //   label: 'Data | Horário',
-            //   inputFormatters: [dataFormatter],
-            //   validator: (data) {
-            //     if (data == null || data.trim().isEmpty) {
-            //       return 'Informe uma data e horário!';
-            //     }
-            //     if (data.toString().trim().length > 0 &&
-            //         data.toString().trim().length < 16) {
-            //       return 'Informe data e horário no formato: dd/mm/aaaa hh:mm';
-            //     }
-            //     // DateTime dataAtual = DateTime.now();
-            //     // DateTime dataInserida =
-            //     //     DateFormat('dd/MM/yyyy HH:mm').parse(data.trim());
-            //     // if (!dataInserida.isBefore(dataAtual) ||
-            //     //     !dataInserida.isAfter(dataAtual)) {
-            //     //   return 'Data e/ou Horário inválido(s)!';
-            //     // }
-            //     datahValido = true;
-            //     return null;
-            //   },
-            // ),
             //Observações
             CustomTextField(
               controller: obsController,
@@ -318,55 +342,77 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 return null;
               },
             ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 15),
-              child: Container(
-                width: 300,
-                child: DropdownButtonFormField<int>(
-                  focusColor: Colors.white,
-                  decoration: InputDecoration(
-                    hoverColor: Colors.blue,
-                    labelText: 'Intervalo de Horas',
-                    labelStyle: TextStyle(color: Colors.black),
-                    isDense: true,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(18),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(18),
-                      borderSide: BorderSide(
-                        color: CustomColors.customSwatchColor,
-                      ),
-                    ),
-                  ),
-                  value: selectValue,
-                  onChanged: (int? newValue) {
-                    setState(() {
-                      selectValue = newValue ?? 2;
-                    });
+            //Notificação
+            CheckboxListTile(
+              title: Text('Ativar notificações?'),
+              controlAffinity: ListTileControlAffinity.leading,
+              checkColor: CustomColors.customSwatchColor,
+              value: notificacaoMarcada,
+              onChanged: (bool? value) {
+                setState(
+                  () {
+                    notificacaoMarcada = value ?? false;
                   },
-                  items: intervaloData.map<DropdownMenuItem<int>>((int value) {
-                    return DropdownMenuItem<int>(
-                      value: value,
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.library_books,
-                            color: CustomColors.customSwatchColor,
-                          ),
-                          SizedBox(width: 10),
-                          Text(
-                            value.toString(),
-                            style: TextStyle(
-                              color: CustomColors.customSwatchColor,
-                              fontSize: 12,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                        ],
+                );
+              },
+            ),
+
+            //Intervalo de Horas
+            Visibility(
+              visible: notificacaoMarcada,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 15),
+                child: Container(
+                  width: 300,
+                  child: DropdownButtonFormField<int>(
+                    focusColor: Colors.white,
+                    decoration: InputDecoration(
+                      hoverColor: Colors.blue,
+                      labelText: 'Intervalo de Horas',
+                      labelStyle: TextStyle(color: Colors.black),
+                      isDense: true,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(18),
                       ),
-                    );
-                  }).toList(),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(18),
+                        borderSide: BorderSide(
+                          color: CustomColors.customSwatchColor,
+                        ),
+                      ),
+                    ),
+                    value: selectedValue,
+                    onChanged: (int? newValue) {
+                      setState(() {
+                        selectedValue = newValue ?? 0;
+                        if (selectedValue == 0) {
+                          notificacaoMarcada = false;
+                        }
+                      });
+                    },
+                    items: intervaloData.map<DropdownMenuItem<int>>((int value) {
+                      return DropdownMenuItem<int>(
+                        value: value,
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.library_books,
+                              color: CustomColors.customSwatchColor,
+                            ),
+                            SizedBox(width: 10),
+                            Text(
+                              value.toString(),
+                              style: TextStyle(
+                                color: CustomColors.customSwatchColor,
+                                fontSize: 12,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                  ),
                 ),
               ),
             ),
@@ -385,28 +431,28 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                   } else {
                     print('Campos não válidos');
                   }
-                  if (!especialistaValido ||
-                      !descricaoValido ||
+                  if (!descricaoValido ||
                       !localValido ||
                       !datahValido ||
                       !obsValido) {
                     return;
                   }
-                  final selectedDateTime = DateFormat("dd/MM/yyyy HH:mm a").parse(datahController.text.trim());
-                  final formattedDateTime = DateFormat("dd/MM/yyyy hh:mm:ss a").format(selectedDateTime);
-                  final intervalo = selectValue;
+                  final selectedDateTime = DateFormat("dd/MM/yyyy HH:mm a")
+                      .parse(datahController.text.trim());
+                  final formattedDateTime = DateFormat("dd/MM/yyyy hh:mm:ss a")
+                      .format(selectedDateTime);
+                  final intervalo = notificacaoMarcada ? selectedValue : 0;
 
                   if (widget.isEditing == true) {
                     final schedule = Schedule.editar(
-                      id: widget.schedule!.id,
-                      dataAgenda: formattedDateTime,
-                      local: localController.text.trim(),
-                      descricao: descricaoController.text.trim(),
-                      observacao: obsController.text.trim(),
-                      especialista: especialistaController.text.trim(),
-                      tipoAgendamento: tipoAgendamentoController.text.trim(),
-                      intervaloData: intervalo
-                    );
+                        id: widget.schedule!.id,
+                        dataAgenda: formattedDateTime,
+                        local: localController.text.trim(),
+                        descricao: descricaoController.text.trim(),
+                        observacao: obsController.text.trim(),
+                        especialista: especialistaController.text.trim(),
+                        tipoAgendamento: tipoAgendamentoController.text.trim(),
+                        intervaloData: intervalo);
                     bool update =
                         await ScheduleService.updateSchedule(schedule);
                     if (update) {
@@ -435,14 +481,13 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                     }
                   } else {
                     final schedule = Schedule.cadastrar(
-                      dataAgenda: formattedDateTime,
-                      local: localController.text.trim(),
-                      descricao: descricaoController.text.trim(),
-                      observacao: obsController.text.trim(),
-                      especialista: especialistaController.text.trim(),
-                      tipoAgendamento: tipoAgendamentoController.text.trim(),
-                      intervaloData: intervalo
-                    );
+                        dataAgenda: formattedDateTime,
+                        local: localController.text.trim(),
+                        descricao: descricaoController.text.trim(),
+                        observacao: obsController.text.trim(),
+                        especialista: especialistaController.text.trim(),
+                        tipoAgendamento: tipoAgendamentoController.text.trim(),
+                        intervaloData: intervalo);
                     bool register = await ScheduleService.getSchedule(schedule);
                     if (register) {
                       ScaffoldMessenger.of(context).showSnackBar(

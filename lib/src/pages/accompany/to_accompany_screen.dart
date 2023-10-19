@@ -25,6 +25,7 @@ class ToAccompanyScreen extends StatefulWidget {
 class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
   // Lista de tipos de agendamentos
   List<String> tipoDeAcompanhamento = ['Medicacao', 'Procedimentos'];
+  List<String> tipoDeMedicacao = ['Controlada', 'Temporaria'];
   List<int> intervaloHora = [2, 3, 4, 6, 8, 12, 0];
 
   int selectedValue = 0;
@@ -104,6 +105,7 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
           physics: const BouncingScrollPhysics(),
           padding: const EdgeInsets.fromLTRB(16, 32, 16, 16),
           children: [
+            // Tipo de Acompanhamento
             Padding(
               padding: const EdgeInsets.only(bottom: 15),
               child: Container(
@@ -175,6 +177,7 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                 return null;
               },
             ),
+            //Data de Acompanhamento
             Padding(
               padding: const EdgeInsets.only(bottom: 15),
               child: DateTimeField(
@@ -235,23 +238,61 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                 },
               ),
             ),
-            //Controlado ou Temporario
-            CustomTextField(
-              controller: tipoTemporarioControladoController,
-              icon: Icons.content_paste_search_outlined,
-              label: 'Controlada ou Temporária',
-              validator: (temporarioControlado) {
-                if (temporarioControlado == null ||
-                    temporarioControlado.trim().isEmpty) {
-                  return 'Informe: CONTROLADO ou TEMPORARIO';
-                }
-                // if (!temporarioControlado.trim().contains('TEMPORARIO') ||
-                //     !temporarioControlado.trim().contains('CONTROLADO')) {
-                //   return 'Informe: CONTROLADO ou TEMPORARIO';
-                // }
-                controTempValido = true;
-                return null;
-              },
+            // Tipo de Medicação
+            Padding(
+              padding: const EdgeInsets.only(bottom: 15),
+              child: Container(
+                width: 300,
+                child: DropdownButtonFormField<String>(
+                  focusColor: Colors.white,
+                  decoration: InputDecoration(
+                    hoverColor: Colors.blue,
+                    labelText: 'Tipo de Medicação',
+                    labelStyle: TextStyle(color: Colors.black),
+                    isDense: true,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(18),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(18),
+                      borderSide: BorderSide(
+                        color: CustomColors.customSwatchColor,
+                      ),
+                    ),
+                  ),
+                  value: tipoTemporarioControladoController.text.isEmpty
+                      ? null
+                      : tipoTemporarioControladoController.text,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      tipoTemporarioControladoController.text = newValue!;
+                    });
+                  },
+                  items: <String>[
+                    'CONTROLADO',
+                    'TEMPORARIO',
+                  ].map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Row(
+                        children: [
+                          Icon(Icons.content_paste_search_outlined,
+                              color: CustomColors.customSwatchColor),
+                          SizedBox(width: 10),
+                          Text(
+                            value,
+                            style: TextStyle(
+                              color: CustomColors.customSwatchColor,
+                              fontSize: 12,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ),
             ),
             //Notificação
             CheckboxListTile(
@@ -267,6 +308,8 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                 );
               },
             ),
+
+            //Intervalo de Horas
             Visibility(
               visible: notificacaoMarcada,
               child: Padding(
@@ -327,7 +370,6 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
               ),
             ),
 
-            //Intervalo de horas
             //Prescrição
             CustomTextField(
               controller: prescricaoMedicaController,

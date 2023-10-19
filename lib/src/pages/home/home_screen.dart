@@ -29,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
   String? nome;
 
   //navbar
-  int _selectIndex = 0;
+  int _selectIndex = 1;
   final List<Widget> _pages = [
     Vaccination(),
     Home(),

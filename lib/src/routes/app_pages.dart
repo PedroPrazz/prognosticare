@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
 import 'package:prognosticare/src/pages/auth/sign_up_screen.dart';
+import 'package:prognosticare/src/pages/home/home.dart';
 import 'package:prognosticare/src/pages/home/home_screen.dart';
 import 'package:prognosticare/src/pages/splash/splash_screen.dart';
 import 'package:prognosticare/src/pages/vaccines/vaccination_schedule.dart';
@@ -27,7 +28,10 @@ abstract class AppPages {
       page: () => Vaccination(),
       name: PagesRoutes.vaccination,
     ),
-    
+    GetPage(
+      page: () => Home(),
+      name: PagesRoutes.home,
+    ),
   ];
 }
 
@@ -36,6 +40,6 @@ abstract class PagesRoutes {
   static const String signUpRoute = '/signup';
   static const String splashRoute = '/splash';
   static const String vaccination = '/vaccination';
+  static const String home = '/home';
   static const String homeRoute = '/';
-  
 }

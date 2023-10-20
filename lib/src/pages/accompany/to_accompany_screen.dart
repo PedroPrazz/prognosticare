@@ -55,8 +55,7 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
       tipoAcompanhamentoController.text = widget.accompany!.tipoAcompanhamento;
       medicacaoController.text = widget.accompany!.medicacao;
       dataAcompanhamentoController.text = widget.accompany!.dataAcompanhamento;
-      tipoTemporarioControladoController.text =
-          widget.accompany!.tipoTemporarioControlado;
+      tipoTemporarioControladoController.text = widget.accompany!.tipoTemporarioControlado;
       prescricaoMedicaController.text = widget.accompany!.prescricaoMedica;
     }
   }
@@ -238,8 +237,8 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                   return null;
                 },
               ),
-            ),
             // Tipo de Medicação
+            ),
             CustomRadioButton(
               unSelectedColor: Colors.white,
               buttonLables: [

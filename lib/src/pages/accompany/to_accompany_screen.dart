@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable, body_might_complete_normally_nullable
 
+import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -239,61 +240,24 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
               ),
             ),
             // Tipo de Medicação
-            Padding(
-              padding: const EdgeInsets.only(bottom: 15),
-              child: Container(
-                width: 300,
-                child: DropdownButtonFormField<String>(
-                  focusColor: Colors.white,
-                  decoration: InputDecoration(
-                    hoverColor: Colors.blue,
-                    labelText: 'Tipo de Medicação',
-                    labelStyle: TextStyle(color: Colors.black),
-                    isDense: true,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(18),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(18),
-                      borderSide: BorderSide(
-                        color: CustomColors.customSwatchColor,
-                      ),
-                    ),
-                  ),
-                  value: tipoTemporarioControladoController.text.isEmpty
-                      ? null
-                      : tipoTemporarioControladoController.text,
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      tipoTemporarioControladoController.text = newValue!;
-                    });
-                  },
-                  items: <String>[
-                    'CONTROLADO',
-                    'TEMPORARIO',
-                  ].map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Row(
-                        children: [
-                          Icon(Icons.content_paste_search_outlined,
-                              color: CustomColors.customSwatchColor),
-                          SizedBox(width: 10),
-                          Text(
-                            value,
-                            style: TextStyle(
-                              color: CustomColors.customSwatchColor,
-                              fontSize: 12,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  }).toList(),
-                ),
-              ),
+            CustomRadioButton(
+              unSelectedColor: Colors.white,
+              buttonLables: [
+                "CONTROLADO",
+                "TEMPORARIO",
+              ],
+              buttonValues: [
+                "CONTROLADO",
+                "TEMPORARIO",
+              ],
+              radioButtonValue: (value) {
+                setState(() {
+                  tipoTemporarioControladoController.text = value;
+                });
+              },
+              selectedColor: CustomColors.customSwatchColor,
             ),
+
             //Notificação
             CheckboxListTile(
               title: Text('Ativar notificações?'),

@@ -48,6 +48,7 @@ dependencies:
     table_calendar: ^3.0.9
     expandable: ^5.0.1
     datetime_picker_formfield: 2.0.1
+    custom_radio_grouped_button: any
 
 dev_dependencies:
     flutter_test:

@@ -414,6 +414,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 ),
               ),
             ),
+            
             // Botão de Agendar
             SizedBox(
               height: 50,

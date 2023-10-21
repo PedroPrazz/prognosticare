@@ -48,7 +48,7 @@ class _ToAccompanyListScreenState extends State<ToAccompanyListScreen> {
               child: Text('Confirmar'),
               onPressed: () {
                 setState(() {
-                  isAcompanhamentoConfirmado = false;
+                  isAcompanhamentoConfirmado = true;
                   accompany.statusEvento = "FINALIZADO";
                   AccompanyService.updateStatus(accompany);
                 });
@@ -58,6 +58,9 @@ class _ToAccompanyListScreenState extends State<ToAccompanyListScreen> {
           ],
         );
       },
+    ).then((value) => setState(() {
+        isAcompanhamentoConfirmado = true;
+      },)
     );
   }
 
@@ -109,7 +112,7 @@ class _ToAccompanyListScreenState extends State<ToAccompanyListScreen> {
                 Color statusColor = toaccompany.statusEvento == "ABERTO" ? Colors.green : Colors.red; // Define a cor com base no status
                 return ListTile(
                   title: Text(toaccompany.medicacao! + " " + toaccompany.prescricaoMedica!),
-                  subtitle: Text(toaccompany.statusEvento, style:  TextStyle(color: statusColor),),
+                  subtitle: Text(toaccompany.statusEvento!, style:  TextStyle(color: statusColor),),
                   leading: IconButton(
                     icon: Icon(Icons.edit),
                     onPressed: () {

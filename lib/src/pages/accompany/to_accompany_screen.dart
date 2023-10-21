@@ -1,5 +1,3 @@
-// ignore_for_file: must_be_immutable, body_might_complete_normally_nullable
-
 import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
@@ -14,32 +12,35 @@ import 'package:prognosticare/src/pages/home/home_screen.dart';
 
 class ToAccompanyScreen extends StatefulWidget {
   final Accompany? accompany;
-  bool isEditing;
+  final bool isEditing;
 
-  ToAccompanyScreen({Key? key, this.accompany, this.isEditing = false})
-      : super(key: key);
+  ToAccompanyScreen({Key? key, this.accompany, this.isEditing = false}) : super(key: key);
 
   @override
   State<ToAccompanyScreen> createState() => _ToAccompanyScreenState();
 }
 
 class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
-  // Lista de tipos de agendamentos
-  List<String> tipoDeAcompanhamento = ['Medicacao', 'Procedimentos'];
-  List<String> tipoDeMedicacao = ['Controlada', 'Temporaria'];
-  List<int> intervaloHora = [2, 3, 4, 6, 8, 12];
+  List<String> tipoDeAcompanhamento = ['MEDICACAO', 'PROCEDIMENTO'];
+  List<String> tipoDeMedicacao = ['CONTROLADO', 'TEMPORARIO'];
+  List<int> intervaloHora = [0, 4, 6, 12, 24];
 
-  int selectedValue = 2;
-
-  // Variável para armazenar o valor selecionado na combo box
+  int selectedValue = 0;
   String? tipoSelecionado;
 
   final dataFormatter = MaskTextInputFormatter(
-    mask: '##/##/#### ##:##', // Define a máscara como 'dd/MM/yyyy HH:mm'
-    filter: {"#": RegExp(r'[0-9]')}, // Define os caracteres permitidos
+    mask: '##/##/#### ##:##',
+    filter: {"#": RegExp(r'[0-9]')},
   );
 
   final _formKey = GlobalKey<FormState>();
+
+  TextEditingController tipoAcompanhamentoController = TextEditingController();
+  TextEditingController medicacaoController = TextEditingController();
+  TextEditingController dataAcompanhamentoController = TextEditingController();
+  TextEditingController tipoTemporarioControladoController = TextEditingController();
+  TextEditingController prescricaoMedicaController = TextEditingController();
+
 
   bool medicacaoValido = false;
   bool dataHorarioValido = false;
@@ -47,6 +48,8 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
   bool prescricaoValido = false;
   bool datahValido = false;
   bool notificacaoMarcada = false;
+  String? valorInicial;
+
 
   @override
   void initState() {
@@ -55,26 +58,21 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
       tipoAcompanhamentoController.text = widget.accompany!.tipoAcompanhamento;
       medicacaoController.text = widget.accompany!.medicacao;
       dataAcompanhamentoController.text = widget.accompany!.dataAcompanhamento;
+      notificacaoMarcada = widget.accompany!.notificacao ?? false;
       tipoTemporarioControladoController.text = widget.accompany!.tipoTemporarioControlado;
       prescricaoMedicaController.text = widget.accompany!.prescricaoMedica;
     }
+    valorInicial = tipoDeAcompanhamento.contains(tipoAcompanhamentoController.text)
+      ? tipoAcompanhamentoController.text
+      : null;
   }
-
-  TextEditingController tipoAcompanhamentoController = TextEditingController();
-  TextEditingController medicacaoController = TextEditingController();
-  TextEditingController dataAcompanhamentoController = TextEditingController();
-  TextEditingController tipoTemporarioControladoController =
-      TextEditingController();
-  TextEditingController prescricaoMedicaController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.isEditing
-              ? 'Editar Acompanhamento'
-              : 'Adicionar Acompanhamento',
+          widget.isEditing ? 'Editar Acompanhamento' : 'Adicionar Acompanhamento',
         ),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
@@ -127,24 +125,18 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                       ),
                     ),
                   ),
-                  value: tipoAcompanhamentoController.text.isEmpty
-                      ? null
-                      : tipoAcompanhamentoController.text,
+                  value: tipoAcompanhamentoController.text.isEmpty ? null : tipoAcompanhamentoController.text,
                   onChanged: (String? newValue) {
                     setState(() {
                       tipoAcompanhamentoController.text = newValue!;
                     });
                   },
-                  items: <String>[
-                    'MEDICACAO',
-                    'PROCEDIMENTO',
-                  ].map<DropdownMenuItem<String>>((String value) {
+                  items: tipoDeAcompanhamento.map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Row(
                         children: [
-                          Icon(Icons.library_books,
-                              color: CustomColors.customSwatchColor),
+                          Icon(Icons.library_books, color: CustomColors.customSwatchColor),
                           SizedBox(width: 10),
                           Text(
                             value,
@@ -205,8 +197,7 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                     if (selectedDate != null) {
                       showTimePicker(
                         context: context,
-                        initialTime: TimeOfDay.fromDateTime(
-                            currentValue ?? DateTime.now()),
+                        initialTime: TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
                       ).then((selectedTime) {
                         if (selectedTime != null) {
                           final selectedDateTime = DateTime(
@@ -216,9 +207,7 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                             selectedTime.hour,
                             selectedTime.minute,
                           );
-                          dataAcompanhamentoController.text =
-                              DateFormat("dd/MM/yyyy hh:mm a")
-                                  .format(selectedDateTime);
+                          dataAcompanhamentoController.text = DateFormat("dd/MM/yyyy hh:mm a").format(selectedDateTime);
                           return selectedDateTime;
                         } else {
                           return currentValue;
@@ -237,10 +226,11 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                   return null;
                 },
               ),
-            // Tipo de Medicação
             ),
+            // Tipo de Medicação
             CustomRadioButton(
               unSelectedColor: Colors.white,
+              autoWidth: true,
               buttonLables: [
                 "CONTROLADO",
                 "TEMPORARIO",
@@ -256,7 +246,6 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
               },
               selectedColor: CustomColors.customSwatchColor,
             ),
-
             //Notificação
             CheckboxListTile(
               title: Text('Ativar notificações?'),
@@ -264,14 +253,12 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
               checkColor: CustomColors.customSwatchColor,
               value: notificacaoMarcada,
               onChanged: (bool? value) {
-                setState(
-                  () {
-                    notificacaoMarcada = value ?? false;
-                  },
+                setState(() {
+                  notificacaoMarcada = value ?? false;
+                },
                 );
               },
             ),
-
             //Intervalo de Horas
             Visibility(
               visible: notificacaoMarcada,
@@ -302,8 +289,7 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                         selectedValue = newValue ?? 2;
                       });
                     },
-                    items:
-                        intervaloHora.map<DropdownMenuItem<int>>((int value) {
+                    items: intervaloHora.map<DropdownMenuItem<int>>((int value) {
                       return DropdownMenuItem<int>(
                         value: value,
                         child: Row(
@@ -329,7 +315,6 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                 ),
               ),
             ),
-
             //Prescrição
             CustomTextField(
               controller: prescricaoMedicaController,
@@ -356,10 +341,8 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                   ),
                 ),
                 onPressed: () async {
-                  final selectedDateTime = DateFormat("dd/MM/yyyy HH:mm a")
-                      .parse(dataAcompanhamentoController.text.trim());
-                  final formattedDateTime = DateFormat("dd/MM/yyyy hh:mm:ss a")
-                      .format(selectedDateTime);
+                  final selectedDateTime = DateFormat("dd/MM/yyyy HH:mm a").parse(dataAcompanhamentoController.text.trim());
+                  final formattedDateTime = DateFormat("dd/MM/yyyy hh:mm:ss a").format(selectedDateTime);
                   final intervalo = selectedValue;
 
                   if (widget.isEditing == true) {
@@ -369,11 +352,11 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                       medicacao: medicacaoController.text,
                       dataAcompanhamento: formattedDateTime,
                       tipoTemporarioControlado: tipoTemporarioControladoController.text,
+                      notificacao: notificacaoMarcada,
                       prescricaoMedica: prescricaoMedicaController.text,
-                      intervaloHora: intervalo,
+                      intervaloHora: intervalo
                     );
-                    bool update =
-                        await AccompanyService.updateAccompany(accompany);
+                    bool update = await AccompanyService.updateAccompany(accompany);
                     if (update) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
@@ -404,11 +387,12 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                       medicacao: medicacaoController.text,
                       dataAcompanhamento: formattedDateTime,
                       tipoTemporarioControlado: tipoTemporarioControladoController.text,
+                      notificacao: notificacaoMarcada,
                       prescricaoMedica: prescricaoMedicaController.text,
-                      intervaloHora: intervalo,
+                      intervaloHora: intervalo
+
                     );
-                    bool register =
-                        await AccompanyService.getAccompany(accompany);
+                    bool register = await AccompanyService.getAccompany(accompany);
                     if (register) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(

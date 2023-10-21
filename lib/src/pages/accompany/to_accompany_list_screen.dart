@@ -48,7 +48,7 @@ class _ToAccompanyListScreenState extends State<ToAccompanyListScreen> {
               child: Text('Confirmar'),
               onPressed: () {
                 setState(() {
-                  isAcompanhamentoConfirmado = false;
+                  isAcompanhamentoConfirmado = true;
                   accompany.statusEvento = "FINALIZADO";
                   AccompanyService.updateStatus(accompany);
                 });
@@ -58,6 +58,9 @@ class _ToAccompanyListScreenState extends State<ToAccompanyListScreen> {
           ],
         );
       },
+    ).then((value) => setState(() {
+        isAcompanhamentoConfirmado = true;
+      },)
     );
   }
 

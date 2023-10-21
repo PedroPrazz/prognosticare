@@ -14,11 +14,51 @@ class ToAccompanyListScreen extends StatefulWidget {
 
 class _ToAccompanyListScreenState extends State<ToAccompanyListScreen> {
   late Future<List<Accompany>> accompanyFuture;
+  bool isAcompanhamentoConfirmado = false; 
 
   @override
   void initState() {
     super.initState();
     accompanyFuture = AccompanyService.getAccompanyList();
+  }
+
+  Future<void> _confirmarAcompanhamento(Accompany accompany) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirmar Agendamento'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Você deseja confirmar o agendamento:'),
+                Text(accompany.medicacao),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancelar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Confirmar'),
+              onPressed: () {
+                setState(() {
+                  isAcompanhamentoConfirmado = false;
+                  accompany.statusEvento = "FINALIZADO";
+                  AccompanyService.updateStatus(accompany);
+                });
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -66,9 +106,10 @@ class _ToAccompanyListScreenState extends State<ToAccompanyListScreen> {
               itemCount: accompany.length,
               itemBuilder: (context, index) {
                 final toaccompany = accompany[index];
+                Color statusColor = toaccompany.statusEvento == "ABERTO" ? Colors.green : Colors.red; // Define a cor com base no status
                 return ListTile(
-                  title: Text(toaccompany.medicacao!),
-                  subtitle: Text(toaccompany.prescricaoMedica!),
+                  title: Text(toaccompany.medicacao! + " " + toaccompany.prescricaoMedica!),
+                  subtitle: Text(toaccompany.statusEvento, style:  TextStyle(color: statusColor),),
                   leading: IconButton(
                     icon: Icon(Icons.edit),
                     onPressed: () {
@@ -82,12 +123,12 @@ class _ToAccompanyListScreenState extends State<ToAccompanyListScreen> {
                       ));
                     },
                   ),
-                  trailing: IconButton(
-                    icon: Icon(Icons.delete),
-                    color: Colors.red,
-                    onPressed: () {},
-                  ),
-                  onTap: () {},
+                  trailing: isAcompanhamentoConfirmado
+                    ? Icon(Icons.check_circle, color: Colors.green) // Agendamento realizado
+                    : Icon(Icons.radio_button_unchecked),  // Agendamento não realizado
+                  onTap: () {
+                    _confirmarAcompanhamento(toaccompany);
+                  },
                 );
               },
             );

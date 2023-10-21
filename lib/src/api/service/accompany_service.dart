@@ -132,4 +132,35 @@ class AccompanyService {
     }
   }
 
+  static Future<bool> updateStatus(Accompany accompany) async {
+    String? token = await storage.read(key: 'token');
+
+    final url = Uri.parse(UriServidor.url.toString() + '/to-accompany/update-status/' + (accompany.id ?? ''));
+
+    try {
+      final response = await http.put(
+        url,
+        body: json.encode({
+          'statusEvento': accompany.statusEvento,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+
+        return true;
+      } else {
+        print('Response Status Code: ${response.statusCode}');
+
+        throw Exception('Erro ao atualizar Acompanhamento');
+      }
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('Erro de Try Catch ao atualizar Acompanhamento');
+    }
+  }
+
 }

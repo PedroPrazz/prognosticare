@@ -2,11 +2,12 @@ class Accompany {
   String? id;
   String tipoAcompanhamento;
   String medicacao;
-  String? statusEvento;
+  String statusEvento;
   String dataAcompanhamento;
   int intervaloHora;
   String tipoTemporarioControlado;
   String prescricaoMedica;
+  
 
   Accompany({
     required this.id,
@@ -25,7 +26,8 @@ class Accompany {
     required this.dataAcompanhamento,
     required this.tipoTemporarioControlado,
     required this.prescricaoMedica,
-    required this.intervaloHora
+    required this.intervaloHora,
+    required this.statusEvento
   });
 
   Accompany.editar({
@@ -36,6 +38,7 @@ class Accompany {
     required this.tipoTemporarioControlado,
     required this.intervaloHora,
     required this.prescricaoMedica,
+    required this.statusEvento
   });
 
   factory Accompany.fromJson(Map<String, dynamic> json) {

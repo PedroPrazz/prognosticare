@@ -372,6 +372,7 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                           tipoTemporarioControladoController.text,
                       prescricaoMedica: prescricaoMedicaController.text,
                       intervaloHora: intervalo,
+                      statusEvento: widget.accompany!.statusEvento,
                     );
                     bool update =
                         await AccompanyService.updateAccompany(accompany);
@@ -407,6 +408,7 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                       tipoTemporarioControlado: widget.accompany!.tipoTemporarioControlado,
                       prescricaoMedica: prescricaoMedicaController.text,
                       intervaloHora: intervalo,
+                      statusEvento: widget.accompany!.statusEvento,
                     );
                     bool register =
                         await AccompanyService.getAccompany(accompany);

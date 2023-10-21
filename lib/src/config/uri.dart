@@ -3,7 +3,7 @@ class UriLocal{
 }
 
 class UriServidor{
-  static final url = 'http://localhost:8080';
+  static final url = 'http://20.25.55.231';
 }
 
 class UriTest{

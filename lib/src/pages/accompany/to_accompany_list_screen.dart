@@ -58,10 +58,53 @@ class _ToAccompanyListScreenState extends State<ToAccompanyListScreen> {
           ],
         );
       },
+    ).then((value) => setState(
+          () {
+            isAcompanhamentoConfirmado = true;
+          },
+        ));
+  }
+
+  Future<void> _confirmarExclusao(
+      Accompany toaccompany, AsyncSnapshot<List<Accompany>> snapshot) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirmar Exclusão'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Você deseja excluir o agendamento:'),
+                Text(toaccompany.medicacao),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancelar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Confirmar'),
+              onPressed: () {
+                toaccompany.statusEvento = "CANCELADO";
+                AccompanyService.updateStatus(toaccompany);
+                setState(() {
+                  snapshot.data!.remove(toaccompany);
+                });
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     ).then((value) => setState(() {
-        isAcompanhamentoConfirmado = true;
-      },)
-    );
+          isAcompanhamentoConfirmado = true;
+        }));
   }
 
   @override
@@ -105,37 +148,78 @@ class _ToAccompanyListScreenState extends State<ToAccompanyListScreen> {
             return Center(child: Text('Nenhum acompanhamento encontrado'));
           } else {
             final accompany = snapshot.data!;
-            return
-              
-             ListView.builder(
+            return ListView.builder(
               itemCount: accompany.length,
               itemBuilder: (context, index) {
+                accompany.sort((a, b) {
+                  // A ordem desejada é "ABERTO" > "FINALIZADO" > "CANCELADO"
+                  if (a.statusEvento == "ABERTO" &&
+                      (b.statusEvento == "FINALIZADO" ||
+                          b.statusEvento == "CANCELADO")) {
+                    return -1; // "ABERTO" vem antes de "FINALIZADO" ou "CANCELADO"
+                  } else if (a.statusEvento == "FINALIZADO" &&
+                      b.statusEvento == "CANCELADO") {
+                    return -1; // "FINALIZADO" vem antes de "CANCELADO"
+                  } else if (a.statusEvento == b.statusEvento) {
+                    return 0; // Mesmo status, sem mudança na ordem
+                  } else {
+                    return 1; // Qualquer outra combinação
+                  }
+                });
+
                 final toaccompany = accompany[index];
-                Color statusColor = toaccompany.statusEvento == "ABERTO" ? Colors.green : Colors.red; // Define a cor com base no status
-                isAcompanhamentoConfirmado = toaccompany.statusEvento == "FINALIZADO";
+                Color statusColor = toaccompany.statusEvento == "ABERTO"
+                    ? Colors.green
+                    : Colors.red; // Define a cor com base no status
+                isAcompanhamentoConfirmado =
+                    toaccompany.statusEvento == "FINALIZADO";
                 return ListTile(
-                  title: Text(toaccompany.medicacao + " " + toaccompany.prescricaoMedica),
-                  subtitle: Text(toaccompany.statusEvento!, style:  TextStyle(color: statusColor),),
-                  leading: toaccompany.statusEvento == "ABERTO" ? IconButton(
-                    icon: Icon(Icons.edit),
-                    onPressed: () {
-                      
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (c) {
-                          return ToAccompanyScreen(
-                            accompany: toaccompany,
-                            isEditing: true, // Modo de edição ativado
-                          );
+                  title: Text(toaccompany.medicacao +
+                      " " +
+                      toaccompany.prescricaoMedica),
+                  subtitle: Text(
+                    toaccompany.statusEvento!,
+                    style: TextStyle(color: statusColor),
+                  ),
+                  leading: toaccompany.statusEvento == "ABERTO"
+                      ? IconButton(
+                          icon: Icon(Icons.edit),
+                          onPressed: () {
+                            Navigator.of(context)
+                                .pushReplacement(MaterialPageRoute(
+                              builder: (c) {
+                                return ToAccompanyScreen(
+                                  accompany: toaccompany,
+                                  isEditing: true, // Modo de edição ativado
+                                );
+                              },
+                            ));
+                          },
+                        )
+                      : Icon(Icons.health_and_safety),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: isAcompanhamentoConfirmado
+                            ? Icon(Icons.check_circle,
+                                color: Colors.green) // Agendamento realizado
+                            : Icon(Icons.radio_button_unchecked),
+                        onPressed: () {
+                          _confirmarAcompanhamento(toaccompany);
                         },
-                      ));
-                    },
-                  ): Icon(Icons.health_and_safety),
-                  trailing: isAcompanhamentoConfirmado
-                    ? Icon(Icons.check_circle, color: Colors.green) // Agendamento realizado
-                    : Icon(Icons.radio_button_unchecked),  // Agendamento não realizado
-                  onTap: () {
-                    _confirmarAcompanhamento(toaccompany);
-                  },
+                      ), // Agendamento não realizado
+                      IconButton(
+                        icon: Icon(Icons.delete),
+                        color: Colors.red,
+                        onPressed: () {
+                          _confirmarExclusao(toaccompany,
+                              snapshot); // Abre o diálogo de confirmação
+                        },
+                      ),
+                    ],
+                  ),
+                  onTap: () {},
                 );
               },
             );

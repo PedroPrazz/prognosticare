@@ -105,7 +105,9 @@ class _ToAccompanyListScreenState extends State<ToAccompanyListScreen> {
             return Center(child: Text('Nenhum acompanhamento encontrado'));
           } else {
             final accompany = snapshot.data!;
-            return ListView.builder(
+            return
+              
+             ListView.builder(
               itemCount: accompany.length,
               itemBuilder: (context, index) {
                 final toaccompany = accompany[index];
@@ -114,9 +116,10 @@ class _ToAccompanyListScreenState extends State<ToAccompanyListScreen> {
                 return ListTile(
                   title: Text(toaccompany.medicacao + " " + toaccompany.prescricaoMedica),
                   subtitle: Text(toaccompany.statusEvento!, style:  TextStyle(color: statusColor),),
-                  leading: IconButton(
+                  leading: toaccompany.statusEvento == "ABERTO" ? IconButton(
                     icon: Icon(Icons.edit),
                     onPressed: () {
+                      
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
                         builder: (c) {
                           return ToAccompanyScreen(
@@ -126,7 +129,7 @@ class _ToAccompanyListScreenState extends State<ToAccompanyListScreen> {
                         },
                       ));
                     },
-                  ),
+                  ): Icon(Icons.health_and_safety),
                   trailing: isAcompanhamentoConfirmado
                     ? Icon(Icons.check_circle, color: Colors.green) // Agendamento realizado
                     : Icon(Icons.radio_button_unchecked),  // Agendamento não realizado

@@ -94,6 +94,7 @@ class AccompanyService {
 
   static Future<bool> updateAccompany(Accompany accompany) async {
     String? token = await storage.read(key: 'token');
+
     final url = Uri.parse(
         UriServidor.url.toString() + '/to-accompany/update');
 
@@ -105,7 +106,7 @@ class AccompanyService {
           'dataAcompanhamento': accompany.dataAcompanhamento,
           'tipoAcompanhamento': accompany.tipoAcompanhamento,
           'statusEvento': accompany.statusEvento,
-          // 'intervaloHora': accompany.intervaloHora,
+          'intervaloHora': accompany.intervaloHora,
           'medicacao': accompany.medicacao,
           'tipoTemporarioControlado': accompany.tipoTemporarioControlado,
           'prescricaoMedica': accompany.prescricaoMedica,

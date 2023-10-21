@@ -404,8 +404,7 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                       tipoAcompanhamento: tipoAcompanhamentoController.text,
                       medicacao: medicacaoController.text,
                       dataAcompanhamento: formattedDateTime,
-                      tipoTemporarioControlado:
-                          tipoTemporarioControladoController.text,
+                      tipoTemporarioControlado: widget.accompany!.tipoTemporarioControlado,
                       prescricaoMedica: prescricaoMedicaController.text,
                       intervaloHora: intervalo,
                     );

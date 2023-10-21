@@ -27,6 +27,7 @@ class AccompanyService {
           'tipoTemporarioControlado': accompany.tipoTemporarioControlado,
           'tipoAcompanhamento': accompany.tipoAcompanhamento,
           'intervaloHora': accompany.intervaloHora,
+          'statusEvento': accompany.statusEvento,
         }),
         headers: {
           'Content-Type': 'application/json',

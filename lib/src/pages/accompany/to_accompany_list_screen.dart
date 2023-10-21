@@ -6,7 +6,7 @@ import 'package:prognosticare/src/pages/accompany/to_accompany_screen.dart';
 import 'package:prognosticare/src/pages/home/home_screen.dart';
 
 class ToAccompanyListScreen extends StatefulWidget {
-  const ToAccompanyListScreen({Key? key}) : super(key: key);
+  ToAccompanyListScreen({Key? key}) : super(key: key);
 
   @override
   State<ToAccompanyListScreen> createState() => _ToAccompanyListScreenState();
@@ -14,7 +14,7 @@ class ToAccompanyListScreen extends StatefulWidget {
 
 class _ToAccompanyListScreenState extends State<ToAccompanyListScreen> {
   late Future<List<Accompany>> accompanyFuture;
-  bool isAcompanhamentoConfirmado = false; 
+  bool isAcompanhamentoConfirmado = false;
 
   @override
   void initState() {
@@ -107,9 +107,10 @@ class _ToAccompanyListScreenState extends State<ToAccompanyListScreen> {
               itemBuilder: (context, index) {
                 final toaccompany = accompany[index];
                 Color statusColor = toaccompany.statusEvento == "ABERTO" ? Colors.green : Colors.red; // Define a cor com base no status
+                isAcompanhamentoConfirmado = toaccompany.statusEvento == "FINALIZADO";
                 return ListTile(
-                  title: Text(toaccompany.medicacao! + " " + toaccompany.prescricaoMedica!),
-                  subtitle: Text(toaccompany.statusEvento, style:  TextStyle(color: statusColor),),
+                  title: Text(toaccompany.medicacao + " " + toaccompany.prescricaoMedica),
+                  subtitle: Text(toaccompany.statusEvento!, style:  TextStyle(color: statusColor),),
                   leading: IconButton(
                     icon: Icon(Icons.edit),
                     onPressed: () {

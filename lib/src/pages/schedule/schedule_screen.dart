@@ -451,6 +451,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                         observacao: obsController.text.trim(),
                         especialista: especialistaController.text.trim(),
                         tipoAgendamento: tipoAgendamentoController.text.trim(),
+                        notificacao: notificacaoMarcada,
                         intervaloData: intervalo);
                     bool update =
                         await ScheduleService.updateSchedule(schedule);
@@ -486,6 +487,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                         observacao: obsController.text.trim(),
                         especialista: especialistaController.text.trim(),
                         tipoAgendamento: tipoAgendamentoController.text.trim(),
+                        notificacao: notificacaoMarcada,
                         intervaloData: intervalo);
                     bool register = await ScheduleService.getSchedule(schedule);
                     if (register) {

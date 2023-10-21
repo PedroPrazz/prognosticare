@@ -28,11 +28,11 @@ class _ToAccompanyListScreenState extends State<ToAccompanyListScreen> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Confirmar Agendamento'),
+          title: Text('Confirmar Acompanhamento'),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('Você deseja confirmar o agendamento:'),
+                Text('Você deseja confirmar o Acompanhamento:'),
                 Text(accompany.medicacao),
               ],
             ),
@@ -76,7 +76,7 @@ class _ToAccompanyListScreenState extends State<ToAccompanyListScreen> {
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('Você deseja excluir o agendamento:'),
+                Text('Você deseja excluir o Acompanhamento:'),
                 Text(toaccompany.medicacao),
               ],
             ),
@@ -203,14 +203,14 @@ class _ToAccompanyListScreenState extends State<ToAccompanyListScreen> {
                       IconButton(
                         icon: isAcompanhamentoConfirmado
                             ? Icon(Icons.check_circle,
-                                color: Colors.green) // Agendamento realizado
+                                color: Colors.green)
                             : Icon(Icons.radio_button_unchecked),
                         onPressed: () {
                           if(toaccompany.statusEvento == "ABERTO"){
                             _confirmarAcompanhamento(toaccompany);
                           }
                         },
-                      ), // Agendamento não realizado
+                      ), 
                       IconButton(
                         icon: Icon(Icons.delete),
                         color: Colors.red,

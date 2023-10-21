@@ -206,7 +206,9 @@ class _ToAccompanyListScreenState extends State<ToAccompanyListScreen> {
                                 color: Colors.green) // Agendamento realizado
                             : Icon(Icons.radio_button_unchecked),
                         onPressed: () {
-                          _confirmarAcompanhamento(toaccompany);
+                          if(toaccompany.statusEvento == "ABERTO"){
+                            _confirmarAcompanhamento(toaccompany);
+                          }
                         },
                       ), // Agendamento não realizado
                       IconButton(

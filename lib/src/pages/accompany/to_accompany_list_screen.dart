@@ -28,11 +28,11 @@ class _ToAccompanyListScreenState extends State<ToAccompanyListScreen> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Confirmar Agendamento'),
+          title: Text('Confirmar Exclusão'),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('Você deseja confirmar o agendamento:'),
+                Text('Você deseja excluir o agendamento:'),
                 Text(accompany.medicacao),
               ],
             ),
@@ -48,8 +48,7 @@ class _ToAccompanyListScreenState extends State<ToAccompanyListScreen> {
               child: Text('Confirmar'),
               onPressed: () {
                 setState(() {
-                  isAcompanhamentoConfirmado = true;
-                  accompany.statusEvento = "FINALIZADO";
+                  accompany.statusEvento = "CANCELADO";
                   AccompanyService.updateStatus(accompany);
                 });
                 Navigator.of(context).pop();
@@ -61,6 +60,51 @@ class _ToAccompanyListScreenState extends State<ToAccompanyListScreen> {
     ).then((value) => setState(() {
         isAcompanhamentoConfirmado = true;
       },)
+    );
+  }
+
+  Future<void> _confirmarExclusao(Accompany toaccompany, AsyncSnapshot<List<Accompany>> snapshot) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirmar Exclusão'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Você deseja excluir o agendamento:'),
+                Text(toaccompany.medicacao),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancelar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Confirmar'),
+              onPressed: () {
+                // Marque o agendamento como CANCELADO
+                toaccompany.statusEvento = "CANCELADO";
+                // Atualize o status no serviço
+                AccompanyService.updateStatus(toaccompany);
+                // Remova o agendamento da lista
+                setState(() {
+                  snapshot.data!.remove(toaccompany);
+                });
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    ).then((value) => setState(() {
+          isAcompanhamentoConfirmado = true;
+        })
     );
   }
 
@@ -127,9 +171,21 @@ class _ToAccompanyListScreenState extends State<ToAccompanyListScreen> {
                       ));
                     },
                   ),
-                  trailing: isAcompanhamentoConfirmado
-                    ? Icon(Icons.check_circle, color: Colors.green) // Agendamento realizado
-                    : Icon(Icons.radio_button_unchecked),  // Agendamento não realizado
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      isAcompanhamentoConfirmado
+                        ? Icon(Icons.check_circle, color: Colors.green) // Agendamento realizado
+                        : Icon(Icons.radio_button_unchecked),  // Agendamento não realizado
+                      IconButton(
+                        icon: Icon(Icons.delete),
+                        color: Colors.red,
+                        onPressed: () {
+                          _confirmarExclusao(toaccompany, snapshot);
+                        },
+                      ),
+                    ],
+                  ),
                   onTap: () {
                     _confirmarAcompanhamento(toaccompany);
                   },

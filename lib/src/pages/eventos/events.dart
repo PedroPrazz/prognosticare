@@ -10,8 +10,8 @@ import 'package:http/http.dart' as http;
 TextEditingController email = TextEditingController();
 TextEditingController _password = TextEditingController();
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+class EventoPage extends StatelessWidget {
+  const EventoPage({super.key});
 
 
   @override

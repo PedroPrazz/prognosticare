@@ -6,12 +6,14 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:http/http.dart' as http;
+import 'package:prognosticare/src/navBar/CustomBottomNavigationBar.dart';
+import 'package:prognosticare/src/pages/eventos/ScheduleEvento.dart';
 
 TextEditingController email = TextEditingController();
 TextEditingController _password = TextEditingController();
 
-class EventoPage extends StatelessWidget {
-  const EventoPage({super.key});
+class ScheduleEventoPage extends StatelessWidget {
+  const ScheduleEventoPage({super.key});
 
 
   @override
@@ -19,7 +21,6 @@ class EventoPage extends StatelessWidget {
     return DefaultTabController(
       length: 3, // Número de guias
       child: Scaffold(
-        drawer: Drawer(),
         appBar: AppBar(
           title: Text('Eventos'),
           backgroundColor: CustomColors.customSwatchColor,
@@ -33,12 +34,14 @@ class EventoPage extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            //HomePage(),
-           // ProfilePage(),
-           // SettingsPage(),
+            ScheduleEvento(filtro: 'maior'),
+            ScheduleEvento(filtro: 'igual'),
+            ScheduleEvento(filtro: 'menor'),
           ],
         ),
+        bottomNavigationBar: CustomBottomNavigationBar(),
       ),
+    
     );
   }
 }

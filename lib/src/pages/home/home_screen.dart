@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:prognosticare/components/dialogs/change_password_dialog.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
+import 'package:prognosticare/src/navBar/CustomBottomNavigationBar.dart';
 import 'package:prognosticare/src/pages/auth/dependents.dart';
 import 'package:prognosticare/components/dialogs/prontuario_dialog.dart';
 import 'package:prognosticare/src/api/service/findby_id_service.dart';
 import 'package:prognosticare/src/pages/auth/info.dart';
 import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
 import 'package:prognosticare/src/models/pessoa_model.dart';
+import 'package:prognosticare/src/pages/eventos/ScheduleEvento.dart';
+import 'package:prognosticare/src/pages/eventos/scheduleEventoPage.dart';
 import 'package:prognosticare/src/pages/profile/profile_tab.dart';
 import 'package:prognosticare/src/pages/profile/profile_tab_dependente.dart';
 import 'package:prognosticare/src/pages/schedule/my_schedule_screen.dart';
@@ -166,63 +169,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
 
       //navbar
-
-      bottomNavigationBar: BottomAppBar(
-        height: 50,
-        color: CustomColors.customSwatchColor,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            IconButton(
-              onPressed: () {
-               Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()),
-                  (route) => false);
-              },
-              tooltip: 'Home',
-              icon: const Icon(Icons.home),
-              iconSize: 30,
-              color: Colors.white,
-            ),
-            IconButton(
-              onPressed: () {
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => Vaccination()),
-                  (route) => false);
-              },
-              tooltip: 'Vacinas',
-              icon: const Icon(Icons.vaccines),
-              iconSize: 30,
-              color: Colors.white,
-            ),
-            IconButton(
-              onPressed: () {
-               ProntuarioDialog().prontuarioDialog(context);
-              },
-              tooltip: 'Prontuário',
-              icon: const Icon(Icons.task),
-              iconSize: 30,
-              color: Colors.white,
-            ),
-            IconButton(
-              onPressed: () {
-               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ListDependents(),
-                  ),
-                );
-              },
-              tooltip: 'Dependentes',
-              icon: const Icon(Icons.person),
-              iconSize: 30,
-              color: Colors.white,
-            ),
-          ],
-        ),
-      ),
+      bottomNavigationBar: CustomBottomNavigationBar(),
     );
   }
 }

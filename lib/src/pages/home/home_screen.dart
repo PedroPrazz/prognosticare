@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:prognosticare/components/dialogs/change_password_dialog.dart';
@@ -8,8 +10,8 @@ import 'package:prognosticare/src/api/service/findby_id_service.dart';
 import 'package:prognosticare/src/pages/auth/info.dart';
 import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
 import 'package:prognosticare/src/models/pessoa_model.dart';
+import 'package:prognosticare/src/pages/eventos/listview_events.dart';
 import 'package:prognosticare/src/pages/profile/profile_tab.dart';
-import 'package:prognosticare/src/pages/profile/profile_tab_dependente.dart';
 import 'package:prognosticare/src/pages/schedule/my_schedule_screen.dart';
 import 'package:prognosticare/src/pages/vaccines/vaccination_schedule.dart';
 
@@ -28,8 +30,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Pessoa? pessoa;
   String? nome;
 
-  int _selectIndex = 0;
-  int contador = 0;
+  int currentIndex = 0;
+
+  final PageController _pageController = PageController(initialPage: 1);
 
   @override
   void initState() {
@@ -162,8 +165,22 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: true,
       ),
 
-      //navbar
+      //topbar
+      body: Column(
+        children: [
+          Expanded(
+              child: PageView(
+            controller: _pageController,
+            children: [
+              buildEventList("Eventos de Ontem"),
+              buildEventList("Eventos de Hoje"),
+              buildEventList("Eventos de Amanhã"),
+            ],
+          )),
+        ],
+      ),
 
+      //navbar
       bottomNavigationBar: BottomAppBar(
         height: 50,
         color: CustomColors.customSwatchColor,

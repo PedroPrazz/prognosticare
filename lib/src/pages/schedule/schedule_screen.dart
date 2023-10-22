@@ -53,7 +53,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   TextEditingController especialistaController = TextEditingController();
   TextEditingController descricaoController = TextEditingController();
   TextEditingController localController = TextEditingController();
-  TextEditingController datahController = TextEditingController();
+  TextEditingController dataController = TextEditingController();
   TextEditingController obsController = TextEditingController();
   TextEditingController tipoAgendamentoController = TextEditingController();
 
@@ -74,7 +74,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
       especialistaController.text = widget.schedule!.especialista;
       descricaoController.text = widget.schedule!.descricao;
       localController.text = widget.schedule!.local;
-      datahController.text = widget.schedule!.dataAgenda;
+      dataController.text = widget.schedule!.dataAgenda;
       notificacaoMarcada = widget.schedule!.notificacao ?? false;
       if (widget.schedule!.intervaloData != null) {
         selectedValue = widget.schedule!.intervaloData;
@@ -272,7 +272,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
               padding: const EdgeInsets.only(bottom: 15),
               child: DateTimeField(
                 format: DateFormat("dd/MM/yyyy HH:mm:ss a"),
-                controller: datahController,
+                controller: dataController,
                 inputFormatters: [dataFormatter],
                 decoration: InputDecoration(
                   labelText: 'Data | Horário',
@@ -307,7 +307,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                             selectedTime.minute,
                           );
 
-                          datahController.text =
+                          dataController.text =
                               DateFormat("dd/MM/yyyy hh:mm:ss a")
                                   .format(selectedDateTime);
 
@@ -440,75 +440,85 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                       !obsValido) {
                     return;
                   }
-                  final selectedDateTime = DateFormat("dd/MM/yyyy hh:mm:ss a")
-                      .parse(datahController.text.trim());
-                  final formattedDateTime = DateFormat("dd/MM/yyyy hh:mm:ss a")
-                      .format(selectedDateTime);
-                  final intervalo = selectedValue;
+                  final inputDate = dataController.text.trim();
+                  final dateFormat = DateFormat("dd/MM/yyyy HH:mm:ss a");
 
-                  if (widget.isEditing == true) {
-                    final schedule = Schedule.editar(
-                        id: widget.schedule!.id,
-                        dataAgenda: formattedDateTime,
-                        local: localController.text.trim(),
-                        descricao: descricaoController.text.trim(),
-                        observacao: obsController.text.trim(),
-                        especialista: especialistaController.text.trim(),
-                        tipoAgendamento: tipoAgendamentoController.text.trim(),
-                        notificacao: notificacaoMarcada,
-                        intervaloData: intervalo);
-                    bool update =
-                        await ScheduleService.updateSchedule(schedule);
-                    if (update) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text(
-                            'Agendamento atualizado com sucesso!',
+                  try {
+                    final selectedDateTime = dateFormat.parse(inputDate);
+                    final formattedDateTime =
+                        DateFormat("dd/MM/yyyy hh:mm:ss a")
+                            .format(selectedDateTime);
+                    final intervalo = selectedValue;
+
+                    if (widget.isEditing == true) {
+                      final schedule = Schedule.editar(
+                          id: widget.schedule!.id,
+                          dataAgenda: formattedDateTime,
+                          local: localController.text.trim(),
+                          descricao: descricaoController.text.trim(),
+                          observacao: obsController.text.trim(),
+                          especialista: especialistaController.text.trim(),
+                          tipoAgendamento:
+                              tipoAgendamentoController.text.trim(),
+                          notificacao: notificacaoMarcada,
+                          intervaloData: intervalo);
+                      bool update =
+                          await ScheduleService.updateSchedule(schedule);
+                      if (update) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              'Agendamento atualizado com sucesso!',
+                            ),
+                            backgroundColor: Colors.green,
                           ),
-                          backgroundColor: Colors.green,
-                        ),
-                      );
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (c) {
-                          return ScheduleListScreen();
-                        },
-                      ));
+                        );
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (c) {
+                            return ScheduleListScreen();
+                          },
+                        ));
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              'Erro no servidor abraço, tente depois',
+                            ),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      }
                     } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text(
-                            'Erro no servidor abraço, tente depois',
+                      final schedule = Schedule.cadastrar(
+                          dataAgenda: formattedDateTime,
+                          local: localController.text.trim(),
+                          descricao: descricaoController.text.trim(),
+                          observacao: obsController.text.trim(),
+                          especialista: especialistaController.text.trim(),
+                          tipoAgendamento:
+                              tipoAgendamentoController.text.trim(),
+                          notificacao: notificacaoMarcada,
+                          intervaloData: intervalo);
+                      bool register =
+                          await ScheduleService.getSchedule(schedule);
+                      if (register) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              'Agendamento cadastrado com sucesso!',
+                            ),
+                            backgroundColor: Colors.green,
                           ),
-                          backgroundColor: Colors.red,
-                        ),
-                      );
+                        );
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (c) {
+                            return ScheduleListScreen();
+                          },
+                        ));
+                      }
                     }
-                  } else {
-                    final schedule = Schedule.cadastrar(
-                        dataAgenda: formattedDateTime,
-                        local: localController.text.trim(),
-                        descricao: descricaoController.text.trim(),
-                        observacao: obsController.text.trim(),
-                        especialista: especialistaController.text.trim(),
-                        tipoAgendamento: tipoAgendamentoController.text.trim(),
-                        notificacao: notificacaoMarcada,
-                        intervaloData: intervalo);
-                    bool register = await ScheduleService.getSchedule(schedule);
-                    if (register) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text(
-                            'Agendamento cadastrado com sucesso!',
-                          ),
-                          backgroundColor: Colors.green,
-                        ),
-                      );
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (c) {
-                          return ScheduleListScreen();
-                        },
-                      ));
-                    }
+                  } catch (e) {
+                    print("Erro ao analisar a data e hora: $e");
                   }
                 },
                 child: const Text(

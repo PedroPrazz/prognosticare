@@ -7,7 +7,6 @@ import 'package:prognosticare/src/models/to_accompany_model.dart';
 final storage = FlutterSecureStorage();
 
 class AccompanyService {
-
   //Método para criar um acompanhamento
 
   static Future<bool> getAccompany(Accompany accompany) async {
@@ -21,12 +20,14 @@ class AccompanyService {
       final response = await http.post(
         url,
         body: json.encode({
-          'medicacao': accompany.medicacao,
-          'dataAcompanhamento': accompany.dataAcompanhamento,
-          'prescricaoMedica': accompany.prescricaoMedica,
-          'tipoTemporarioControlado': accompany.tipoTemporarioControlado,
-          'tipoAcompanhamento': accompany.tipoAcompanhamento,
-          'intervaloHora': accompany.intervaloHora,
+            'tipoAcompanhamento': accompany.tipoAcompanhamento,
+            'medicacao': accompany.medicacao,
+            'dataAcompanhamento': accompany.dataAcompanhamento,
+            'notificacao': accompany.notificacao,
+            'intervaloHora': accompany.intervaloHora,
+            'tipoTemporarioControlado': accompany.tipoTemporarioControlado,
+            'prescricaoMedica': accompany.prescricaoMedica
+          
         }),
         headers: {
           'Content-Type': 'application/json',
@@ -77,10 +78,11 @@ class AccompanyService {
         }).toList();
 
         return accompany;
-      }else if (response.statusCode == 404){
-        print('Status Code: ${response.statusCode} Não foi encontrado Acompanhamento');
+      } else if (response.statusCode == 404) {
+        print(
+            'Status Code: ${response.statusCode} Não foi encontrado Acompanhamento');
         throw Exception('Exeption no método find erro 404');
-      }else {
+      } else {
         print('Status Code: ${response.statusCode}');
         throw Exception('Exeption no método find');
       }
@@ -94,8 +96,8 @@ class AccompanyService {
 
   static Future<bool> updateAccompany(Accompany accompany) async {
     String? token = await storage.read(key: 'token');
-    final url = Uri.parse(
-        UriServidor.url.toString() + '/to-accompany/update');
+
+    final url = Uri.parse(UriServidor.url.toString() + '/to-accompany/update');
 
     try {
       final response = await http.put(
@@ -105,11 +107,11 @@ class AccompanyService {
           'dataAcompanhamento': accompany.dataAcompanhamento,
           'tipoAcompanhamento': accompany.tipoAcompanhamento,
           'statusEvento': accompany.statusEvento,
-          // 'intervaloHora': accompany.intervaloHora,
+          'intervaloHora': accompany.intervaloHora,
+          'notificacao': accompany.notificacao,
           'medicacao': accompany.medicacao,
           'tipoTemporarioControlado': accompany.tipoTemporarioControlado,
           'prescricaoMedica': accompany.prescricaoMedica,
-
         }),
         headers: {
           'Content-Type': 'application/json',
@@ -118,7 +120,6 @@ class AccompanyService {
       );
 
       if (response.statusCode == 200) {
-
         return true;
       } else {
         print('Response Status Code: ${response.statusCode}');
@@ -131,4 +132,35 @@ class AccompanyService {
     }
   }
 
+  static Future<bool> updateStatus(Accompany accompany) async {
+    String? token = await storage.read(key: 'token');
+
+    final url = Uri.parse(UriServidor.url.toString() +
+        '/to-accompany/update-status/' +
+        (accompany.id ?? ''));
+
+    try {
+      final response = await http.put(
+        url,
+        body: json.encode({
+          'statusEvento': accompany.statusEvento,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        print('Response Status Code: ${response.statusCode}');
+
+        throw Exception('Erro ao atualizar Acompanhamento');
+      }
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('Erro de Try Catch ao atualizar Acompanhamento');
+    }
+  }
 }

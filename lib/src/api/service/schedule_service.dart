@@ -27,6 +27,7 @@ class ScheduleService {
           'observacao': schedule.observacao,
           'especialista': schedule.especialista,
           'tipoExame': schedule.tipoAgendamento,
+          'notificacao':schedule.notificacao,
           'intervaloData': schedule.intervaloData,
         }),
         headers: {
@@ -105,6 +106,7 @@ class ScheduleService {
           'statusEvento': schedule.statusEvento,
           'descricao': schedule.descricao,
           'intervaloData': schedule.intervaloData,
+          'notificacao': schedule.notificacao,
           'observacao': schedule.observacao,
           'especialista': schedule.especialista,
           'tipoExame': schedule.tipoAgendamento,
@@ -128,4 +130,37 @@ class ScheduleService {
       throw Exception('Erro de Try Catch ao atualizar Agendamento');
     }
   }
+
+  static Future<bool> updateStatus(Schedule schedule) async {
+    String? token = await storage.read(key: 'token');
+
+    final url = Uri.parse(UriServidor.url.toString() +
+        '/to-scheduling/update-status/' +
+        (schedule.id ?? ''));
+
+    try {
+      final response = await http.put(
+        url,
+        body: json.encode({
+          'statusEvento': schedule.statusEvento,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        print('Response Status Code: ${response.statusCode}');
+
+        throw Exception('Erro ao atualizar Agendamento');
+      }
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('Erro de Try Catch ao atualizar Agendamento');
+    }
+  }
+
 }

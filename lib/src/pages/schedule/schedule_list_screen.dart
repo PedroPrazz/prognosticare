@@ -14,6 +14,7 @@ class ScheduleListScreen extends StatefulWidget {
 
 class _ScheduleListScreenState extends State<ScheduleListScreen> {
   late Future<List<Schedule>> schedulesFuture;
+  bool isAgendamentoConfirmado = false;
 
   @override
   void initState() {
@@ -32,8 +33,8 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('Você deseja confirmar o agendamento:'),
-                Text(schedule.descricao),
+                Text('Você deseja confirmar o Agendamento:'),
+                Text(schedule.tipoAgendamento),
               ],
             ),
           ),
@@ -47,10 +48,10 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
             TextButton(
               child: Text('Confirmar'),
               onPressed: () {
-                // Defina o status do agendamento como realizado
-                // Atualize a exibição da lista (você pode precisar chamar setState)
                 setState(() {
-                  schedulesFuture = ScheduleService.getScheduleList();
+                  isAgendamentoConfirmado = true;
+                  schedule.statusEvento = "FINALIZADO";
+                  ScheduleService.updateStatus(schedule);
                 });
                 Navigator.of(context).pop();
               },
@@ -58,7 +59,53 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
           ],
         );
       },
-    );
+    ).then((value) => setState(
+          () {
+            isAgendamentoConfirmado = true;
+          },
+        ));
+  }
+
+  Future<void> _confirmarExclusao(
+      Schedule schedule, AsyncSnapshot<List<Schedule>> snapshot) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirmar Exclusão'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Você deseja excluir o Agendamento:'),
+                Text(schedule.tipoAgendamento),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancelar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Confirmar'),
+              onPressed: () {
+                schedule.statusEvento = "CANCELADO";
+                ScheduleService.updateStatus(schedule);
+                setState(() {
+                  snapshot.data!.remove(schedule);
+                });
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    ).then((value) => setState(() {
+          isAgendamentoConfirmado = true;
+        }));
   }
 
   @override
@@ -105,32 +152,76 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
             return ListView.builder(
               itemCount: schedules.length,
               itemBuilder: (context, index) {
+                schedules.sort((a, b) {
+                  // A ordem desejada é "ABERTO" > "FINALIZADO" > "CANCELADO"
+                  if (a.statusEvento == "ABERTO" &&
+                      (b.statusEvento == "FINALIZADO" ||
+                          b.statusEvento == "CANCELADO")) {
+                    return -1; // "ABERTO" vem antes de "FINALIZADO" ou "CANCELADO"
+                  } else if (a.statusEvento == "FINALIZADO" &&
+                      b.statusEvento == "CANCELADO") {
+                    return -1; // "FINALIZADO" vem antes de "CANCELADO"
+                  } else if (a.statusEvento == b.statusEvento) {
+                    return 0; // Mesmo status, sem mudança na ordem
+                  } else {
+                    return 1; // Qualquer outra combinação
+                  }
+                });
                 final schedule = schedules[index];
+                Color statusColor = schedule.statusEvento == "ABERTO"
+                    ? Colors.green
+                    : Colors.red; // Define a cor com base no status
+                isAgendamentoConfirmado =
+                    schedule.statusEvento == "FINALIZADO";
                 return ListTile(
-                  title: Text(schedule.descricao),
-                  leading: IconButton(
-                    icon: Icon(Icons.edit),
-                    onPressed: () {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (c) {
-                          return ScheduleScreen(
-                            schedule: schedule,
-                            isEditing: true, // Modo de edição ativado
-                          );
-                        },
-                      ));
-                    },
+                  title: Text(schedule.tipoAgendamento +
+                      " " +
+                      schedule.especialista),
+                  subtitle: Text(
+                    schedule.statusEvento!,
+                    style: TextStyle(color: statusColor),
                   ),
-                  // Verifique se o agendamento foi realizado e exiba um ícone correspondente.
-                  // trailing: schedule.realizado != null
-                  //     ? Icon(Icons.check_circle,
-                  //         color: Colors.green) // Agendamento realizado
-                  //     : Icon(Icons
-                  //         .radio_button_unchecked), // Agendamento não realizado
-                  onTap: () {
-                    // Ao tocar no agendamento, exiba o AlertDialog de confirmação
-                    _confirmarAgendamento(schedule);
-                  },
+                  leading: schedule.statusEvento == "ABERTO"
+                      ? IconButton(
+                          icon: Icon(Icons.edit),
+                          onPressed: () {
+                            Navigator.of(context)
+                                .pushReplacement(MaterialPageRoute(
+                              builder: (c) {
+                                return ScheduleScreen(
+                                  schedule: schedule,
+                                  isEditing: true, // Modo de edição ativado
+                                );
+                              },
+                            ));
+                          },
+                        )
+                      : Icon(Icons.health_and_safety),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: isAgendamentoConfirmado
+                            ? Icon(Icons.check_circle,
+                                color: Colors.green)
+                            : Icon(Icons.radio_button_unchecked),
+                        onPressed: () {
+                          if(schedule.statusEvento == "ABERTO"){
+                            _confirmarAgendamento(schedule);
+                          }
+                        },
+                      ), 
+                      IconButton(
+                        icon: Icon(Icons.delete),
+                        color: Colors.red,
+                        onPressed: () {
+                          _confirmarExclusao(schedule,
+                              snapshot); // Abre o diálogo de confirmação
+                        },
+                      ),
+                    ],
+                  ),
+                  onTap: () {},
                 );
               },
             );

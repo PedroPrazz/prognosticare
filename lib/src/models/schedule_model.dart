@@ -4,7 +4,8 @@ class Schedule {
   String local;
   String? statusEvento;
   String descricao;
-  int? intervaloData;
+  int intervaloData;
+  bool? notificacao;
   String observacao;
   String especialista;
   String tipoAgendamento;
@@ -17,6 +18,7 @@ class Schedule {
     required this.descricao,
     required this.intervaloData,
     required this.observacao,
+    required this.notificacao,
     required this.especialista,
     required this.tipoAgendamento,
   });
@@ -27,19 +29,23 @@ class Schedule {
     required this.local,
     required this.descricao,
     required this.observacao,
+    required this.notificacao,
     required this.especialista,
     required this.tipoAgendamento,
-    required this.intervaloData
+    required this.intervaloData,
+    this.statusEvento
   });
 
   Schedule.cadastrar({
     required this.dataAgenda,
     required this.local,
     required this.descricao,
+    required this.notificacao,
     required this.observacao,
     required this.especialista,
     required this.tipoAgendamento,
     required this.intervaloData,
+    this.statusEvento,
   });
 
 
@@ -54,6 +60,7 @@ class Schedule {
       observacao: json['observacao'],
       especialista: json['especialista'],
       tipoAgendamento: json['tipoExame'],
+      notificacao: json['notificacao'],
     );
   }
 

@@ -8,7 +8,6 @@ import 'package:prognosticare/src/api/service/findby_id_service.dart';
 import 'package:prognosticare/src/pages/auth/info.dart';
 import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
 import 'package:prognosticare/src/models/pessoa_model.dart';
-import 'package:prognosticare/src/pages/home/home.dart';
 import 'package:prognosticare/src/pages/profile/profile_tab.dart';
 import 'package:prognosticare/src/pages/profile/profile_tab_dependente.dart';
 import 'package:prognosticare/src/pages/schedule/my_schedule_screen.dart';
@@ -32,7 +31,6 @@ class _HomeScreenState extends State<HomeScreen> {
   int _selectIndex = 0;
   int contador = 0;
 
- 
   @override
   void initState() {
     super.initState();
@@ -157,9 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
       // AppBar
       appBar: AppBar(
-        actions: [
-          
-        ],
+        actions: [],
         title: const Text('PrognostiCare'),
         backgroundColor: CustomColors.customSwatchColor,
         foregroundColor: Colors.white,
@@ -167,42 +163,62 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
 
       //navbar
-      body: _pages[_selectIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: CustomColors.customSwatchColor,
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: Colors.blue,
-        unselectedItemColor: Colors.white,
-        selectedLabelStyle: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 15,
+
+      bottomNavigationBar: BottomAppBar(
+        height: 50,
+        color: CustomColors.customSwatchColor,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            IconButton(
+              onPressed: () {
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomeScreen()),
+                    (route) => false);
+              },
+              tooltip: 'Home',
+              icon: const Icon(Icons.home),
+              iconSize: 30,
+              color: Colors.white,
+            ),
+            IconButton(
+              onPressed: () {
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => Vaccination()),
+                    (route) => false);
+              },
+              tooltip: 'Vacinas',
+              icon: const Icon(Icons.vaccines),
+              iconSize: 30,
+              color: Colors.white,
+            ),
+            IconButton(
+              onPressed: () {
+                ProntuarioDialog().prontuarioDialog(context);
+              },
+              tooltip: 'Prontuário',
+              icon: const Icon(Icons.task),
+              iconSize: 30,
+              color: Colors.white,
+            ),
+            IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ListDependents(),
+                  ),
+                );
+              },
+              tooltip: 'Dependentes',
+              icon: const Icon(Icons.person),
+              iconSize: 30,
+              color: Colors.white,
+            ),
+          ],
         ),
-        currentIndex: _selectIndex,
-        onTap: (index) {
-          setState(() {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => _pages[index],
-            ));
-          });
-        },
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.vaccines),
-            label: 'Vacinas',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.task),
-            label: 'Prontuário',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Dependentes',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.schedule),
-            label: 'Agenda',
-          ),
-        ],
       ),
     );
   }

@@ -66,7 +66,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '1085630707865',
     projectId: 'api-prognosticare',
     storageBucket: 'api-prognosticare.appspot.com',
-    iosClientId: '1085630707865-c8l1aj4vvo4k6t0ihgq257q4alfqcbib.apps.googleusercontent.com',
+    iosClientId:
+        '1085630707865-c8l1aj4vvo4k6t0ihgq257q4alfqcbib.apps.googleusercontent.com',
     iosBundleId: 'com.example.prognosticare',
   );
 
@@ -76,7 +77,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '1085630707865',
     projectId: 'api-prognosticare',
     storageBucket: 'api-prognosticare.appspot.com',
-    iosClientId: '1085630707865-e2vv7qsi2nnkdgah7hijvu6jhf84pjtj.apps.googleusercontent.com',
+    iosClientId:
+        '1085630707865-e2vv7qsi2nnkdgah7hijvu6jhf84pjtj.apps.googleusercontent.com',
     iosBundleId: 'com.example.prognosticare.RunnerTests',
   );
 }

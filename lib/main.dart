@@ -5,7 +5,6 @@ import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/routes/app_pages.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-import 'package:prognosticare/src/pages/home/home.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {

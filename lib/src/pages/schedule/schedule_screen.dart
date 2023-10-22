@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -41,7 +40,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   ];
   List<int> intervaloData = [1, 2, 3, 5];
 
-  int selectedValue = 2;
+  int selectedValue = 1;
 
   // Variável para armazenar o valor selecionado na combo box
   String? tipoSelecionado;
@@ -66,7 +65,6 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   bool datahValido = false;
   bool obsValido = false;
   bool notificacaoMarcada = false;
-  DateTime? selectedDateTime;
 
   @override
   void initState() {
@@ -77,6 +75,10 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
       descricaoController.text = widget.schedule!.descricao;
       localController.text = widget.schedule!.local;
       datahController.text = widget.schedule!.dataAgenda;
+      notificacaoMarcada = widget.schedule!.notificacao ?? false;
+      if (widget.schedule!.intervaloData != null) {
+        selectedValue = widget.schedule!.intervaloData;
+      }
       obsController.text = widget.schedule!.observacao;
     }
   }
@@ -266,7 +268,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 return null;
               },
             ),
-           Padding(
+            Padding(
               padding: const EdgeInsets.only(bottom: 15),
               child: DateTimeField(
                 format: DateFormat("dd/MM/yyyy HH:mm:ss a"),

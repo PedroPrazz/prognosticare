@@ -24,7 +24,7 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
   List<String> tipoDeMedicacao = ['CONTROLADO', 'TEMPORARIO'];
   List<int> intervaloHora = [0, 4, 6, 12, 24];
   int selectedValue = 0;
-  String? tipoSelecionado;
+
 
   final dataFormatter = MaskTextInputFormatter(
     mask: '##/##/#### ##:##',
@@ -59,6 +59,9 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
           ? widget.accompany!.tipoTemporarioControlado
           : tipoDeMedicacao[0];
       prescricaoMedicaController.text = widget.accompany!.prescricaoMedica;
+      if (widget.accompany!.intervaloHora != null) {
+        selectedValue = widget.accompany!.intervaloHora;
+      }
     }
     valorInicial =
         tipoDeAcompanhamento.contains(tipoAcompanhamentoController.text)

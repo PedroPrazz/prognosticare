@@ -27,6 +27,7 @@ class ScheduleService {
           'observacao': schedule.observacao,
           'especialista': schedule.especialista,
           'tipoExame': schedule.tipoAgendamento,
+          'notificacao':schedule.notificacao,
           'intervaloData': schedule.intervaloData,
         }),
         headers: {
@@ -105,6 +106,7 @@ class ScheduleService {
           'statusEvento': schedule.statusEvento,
           'descricao': schedule.descricao,
           'intervaloData': schedule.intervaloData,
+          'notificacao': schedule.notificacao,
           'observacao': schedule.observacao,
           'especialista': schedule.especialista,
           'tipoExame': schedule.tipoAgendamento,

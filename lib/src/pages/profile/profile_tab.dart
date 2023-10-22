@@ -29,6 +29,7 @@ class _ProfileTabState extends State<ProfileTab> {
   bool cpsValido = false;
   bool doadorMarcado = false;
   bool alergiaMarcada = false;
+  bool tipoSanguineoValido = false;
   bool tipoAlergiaValido = false;
 
   final _formKey = GlobalKey<FormState>();
@@ -125,6 +126,9 @@ class _ProfileTabState extends State<ProfileTab> {
                 label: 'Telefone',
                 inputFormatters: [phoneFormatter],
                 validator: (telefone) {
+                  // if (telefone == null || telefone.isEmpty) {
+                  //   return 'Informe seu telefone!';
+                  // }
                   if (telefoneController.text.trim().length > 0 &&
                       telefoneController.text.trim().length < 14) {
                     return 'Telefone inválido!';
@@ -144,7 +148,7 @@ class _ProfileTabState extends State<ProfileTab> {
                 ],
                 validator: (cns) {
                   // if (cns == null || cns.isEmpty) {
-                  //   return 'Digite seu Cartão Nacional de Saúde!';
+                  //   return 'Informe seu Cartão Nacional de Saúde!';
                   // }
                   if (cnsController.text.trim().length > 0 &&
                       cnsController.text.trim().length < 18) {
@@ -165,7 +169,7 @@ class _ProfileTabState extends State<ProfileTab> {
                 ],
                 validator: (cps) {
                   // if (cps == null || cps.isEmpty) {
-                  //   return 'Digite seu Cartão Nacional de Saúde!';
+                  //   return 'Informe seu Cartão Nacional de Saúde!';
                   // }
                   if (cpsController.text.trim().length > 0 &&
                       cpsController.text.trim().length < 18) {
@@ -233,6 +237,13 @@ class _ProfileTabState extends State<ProfileTab> {
                       ),
                     );
                   }).toList(),
+                  validator: (tipoSanguineo) {
+                    if (tipoSanguineo == null || tipoSanguineo.trim().isEmpty) {
+                      return 'Informe um Tipo Sanguineo!';
+                    }
+                    tipoSanguineoValido = true;
+                    return null;
+                  },
                 ),
               ),
               //Alergia a Medicamentos
@@ -257,7 +268,7 @@ class _ProfileTabState extends State<ProfileTab> {
                   label: 'Tipo de Alergia',
                   validator: (tipoAlergia) {
                     if (tipoAlergiaController.text.trim().isEmpty) {
-                      return 'Digite o tipo de alergia ou desmarque o campo de alergia!';
+                      return 'Informe o tipo de alergia ou desmarque o campo de alergia!';
                     }
                     if (tipoAlergiaController.text.trim().length > 0 &&
                         tipoAlergiaController.text.trim().length < 3) {
@@ -297,7 +308,11 @@ class _ProfileTabState extends State<ProfileTab> {
                     } else {
                       print('Campos não válidos');
                     }
-                    if (alergiaMarcada && !tipoAlergiaValido) {
+                    if (!telefoneValido ||
+                        !cnsValido ||
+                        !cpsValido ||
+                        !tipoSanguineoValido ||
+                        (alergiaMarcada && !tipoAlergiaValido)) {
                       return;
                     }
                     Pessoa pessoaAtualizada = widget.pessoa.copyWith(

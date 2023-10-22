@@ -40,6 +40,7 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
   bool dataValida = false;
   bool cnsValido = false;
   bool cpsValido = false;
+  bool tipoSanguineoValido = false;
   bool alergiaMarcada = false;
   bool tipoAlergiaValido = false;
 
@@ -273,6 +274,13 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                       ),
                     );
                   }).toList(),
+                  validator: (tipoSanguineo) {
+                    if (tipoSanguineo == null || tipoSanguineo.trim().isEmpty) {
+                      return 'Informe um Tipo Sanguineo!';
+                    }
+                    tipoSanguineoValido = true;
+                    return null;
+                  },
                 ),
               ),
               //Alergia a Medicamentos
@@ -323,7 +331,13 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                     } else {
                       print('Campos não válidos');
                     }
-                    if (alergiaMarcada && !tipoAlergiaValido) {
+                    if (!nomeValido ||
+                        !cpfValido ||
+                        !dataValida ||
+                        !cnsValido ||
+                        !cpsValido ||
+                        !tipoSanguineoValido ||
+                        (alergiaMarcada && !tipoAlergiaValido)) {
                       return;
                     }
                     if (widget.isEditing == true) {
@@ -339,8 +353,8 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                         cartaoNacional: cnsController.text,
                         cartaoPlanoSaude: cpsController.text,
                       );
-                      bool update = await DependentService.updateDependent(
-                          dependente);
+                      bool update =
+                          await DependentService.updateDependent(dependente);
                       if (update) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(

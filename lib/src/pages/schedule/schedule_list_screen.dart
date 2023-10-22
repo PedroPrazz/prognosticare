@@ -143,8 +143,7 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(
-                child: Text('Erro ao carregar a lista de agendamentos'));
+            return Center(child: Text('Sem agendamentos na lista'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return Center(child: Text('Nenhum agendamento encontrado'));
           } else {
@@ -171,12 +170,10 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
                 Color statusColor = schedule.statusEvento == "ABERTO"
                     ? Colors.green
                     : Colors.red; // Define a cor com base no status
-                isAgendamentoConfirmado =
-                    schedule.statusEvento == "FINALIZADO";
+                isAgendamentoConfirmado = schedule.statusEvento == "FINALIZADO";
                 return ListTile(
-                  title: Text(schedule.tipoAgendamento +
-                      " " +
-                      schedule.especialista),
+                  title: Text(
+                      schedule.tipoAgendamento + " " + schedule.especialista),
                   subtitle: Text(
                     schedule.statusEvento!,
                     style: TextStyle(color: statusColor),
@@ -202,15 +199,14 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
                     children: [
                       IconButton(
                         icon: isAgendamentoConfirmado
-                            ? Icon(Icons.check_circle,
-                                color: Colors.green)
+                            ? Icon(Icons.check_circle, color: Colors.green)
                             : Icon(Icons.radio_button_unchecked),
                         onPressed: () {
-                          if(schedule.statusEvento == "ABERTO"){
+                          if (schedule.statusEvento == "ABERTO") {
                             _confirmarAgendamento(schedule);
                           }
                         },
-                      ), 
+                      ),
                       IconButton(
                         icon: Icon(Icons.delete),
                         color: Colors.red,

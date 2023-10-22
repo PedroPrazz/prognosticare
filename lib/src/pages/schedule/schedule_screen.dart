@@ -266,11 +266,12 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 return null;
               },
             ),
-            Padding(
+           Padding(
               padding: const EdgeInsets.only(bottom: 15),
               child: DateTimeField(
                 format: DateFormat("dd/MM/yyyy HH:mm:ss a"),
-                initialValue: selectedDateTime ?? (widget.isEditing ? DateFormat("dd/MM/yyyy hh:mm:ss a").parse(widget.schedule!.dataAgenda) : DateTime.now()),
+                controller: datahController,
+                inputFormatters: [dataFormatter],
                 decoration: InputDecoration(
                   labelText: 'Data | Horário',
                   prefixIcon: Icon(Icons.date_range),
@@ -293,8 +294,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                       showTimePicker(
                         context: context,
                         initialTime: TimeOfDay.fromDateTime(
-                          currentValue ?? DateTime.now(),
-                        ),
+                            currentValue ?? DateTime.now()),
                       ).then((selectedTime) {
                         if (selectedTime != null) {
                           final selectedDateTime = DateTime(
@@ -305,9 +305,9 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                             selectedTime.minute,
                           );
 
-                          setState(() {
-                            this.selectedDateTime = selectedDateTime;
-                          });
+                          datahController.text =
+                              DateFormat("dd/MM/yyyy hh:mm:ss a")
+                                  .format(selectedDateTime);
 
                           return selectedDateTime;
                         } else {
@@ -370,7 +370,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                     focusColor: Colors.white,
                     decoration: InputDecoration(
                       hoverColor: Colors.blue,
-                      labelText: 'Intervalo de Horas',
+                      labelText: 'Receba notificação com dias de antecedência',
                       labelStyle: TextStyle(color: Colors.black),
                       isDense: true,
                       border: OutlineInputBorder(

@@ -1,4 +1,3 @@
-// ignore_for_file: must_be_immutable, body_might_complete_normally_nullable
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -67,6 +66,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   bool datahValido = false;
   bool obsValido = false;
   bool notificacaoMarcada = false;
+  DateTime? selectedDateTime;
 
   @override
   void initState() {
@@ -269,9 +269,8 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
             Padding(
               padding: const EdgeInsets.only(bottom: 15),
               child: DateTimeField(
-                format: DateFormat("dd/MM/yyyy HH:mm a"),
-                controller: datahController,
-                inputFormatters: [dataFormatter],
+                format: DateFormat("dd/MM/yyyy HH:mm:ss a"),
+                initialValue: selectedDateTime ?? (widget.isEditing ? DateFormat("dd/MM/yyyy hh:mm:ss a").parse(widget.schedule!.dataAgenda) : DateTime.now()),
                 decoration: InputDecoration(
                   labelText: 'Data | Horário',
                   prefixIcon: Icon(Icons.date_range),
@@ -294,7 +293,8 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                       showTimePicker(
                         context: context,
                         initialTime: TimeOfDay.fromDateTime(
-                            currentValue ?? DateTime.now()),
+                          currentValue ?? DateTime.now(),
+                        ),
                       ).then((selectedTime) {
                         if (selectedTime != null) {
                           final selectedDateTime = DateTime(
@@ -304,9 +304,11 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                             selectedTime.hour,
                             selectedTime.minute,
                           );
-                          datahController.text =
-                              DateFormat("dd/MM/yyyy hh:mm a")
-                                  .format(selectedDateTime);
+
+                          setState(() {
+                            this.selectedDateTime = selectedDateTime;
+                          });
+
                           return selectedDateTime;
                         } else {
                           return currentValue;
@@ -414,7 +416,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 ),
               ),
             ),
-            
+
             // Botão de Agendar
             SizedBox(
               height: 50,
@@ -436,7 +438,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                       !obsValido) {
                     return;
                   }
-                  final selectedDateTime = DateFormat("dd/MM/yyyy HH:mm a")
+                  final selectedDateTime = DateFormat("dd/MM/yyyy hh:mm:ss a")
                       .parse(datahController.text.trim());
                   final formattedDateTime = DateFormat("dd/MM/yyyy hh:mm:ss a")
                       .format(selectedDateTime);

@@ -9,13 +9,12 @@ import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/models/to_accompany_model.dart';
 import 'package:prognosticare/src/pages/accompany/to_accompany_list_screen.dart';
 import 'package:prognosticare/src/pages/home/home_screen.dart';
-
 class ToAccompanyScreen extends StatefulWidget {
   final Accompany? accompany;
   final bool isEditing;
 
-  ToAccompanyScreen({Key? key, this.accompany, this.isEditing = false}) : super(key: key);
-
+  ToAccompanyScreen({Key? key, this.accompany, this.isEditing = false})
+      : super(key: key);
   @override
   State<ToAccompanyScreen> createState() => _ToAccompanyScreenState();
 }
@@ -24,7 +23,6 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
   List<String> tipoDeAcompanhamento = ['MEDICACAO', 'PROCEDIMENTO'];
   List<String> tipoDeMedicacao = ['CONTROLADO', 'TEMPORARIO'];
   List<int> intervaloHora = [0, 4, 6, 12, 24];
-
   int selectedValue = 0;
   String? tipoSelecionado;
 
@@ -41,7 +39,6 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
   TextEditingController tipoTemporarioControladoController = TextEditingController();
   TextEditingController prescricaoMedicaController = TextEditingController();
 
-
   bool medicacaoValido = false;
   bool dataHorarioValido = false;
   bool controTempValido = false;
@@ -49,7 +46,6 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
   bool datahValido = false;
   bool notificacaoMarcada = false;
   String? valorInicial;
-
 
   @override
   void initState() {
@@ -59,12 +55,15 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
       medicacaoController.text = widget.accompany!.medicacao;
       dataAcompanhamentoController.text = widget.accompany!.dataAcompanhamento;
       notificacaoMarcada = widget.accompany!.notificacao ?? false;
-      tipoTemporarioControladoController.text = widget.accompany!.tipoTemporarioControlado;
+      tipoTemporarioControladoController.text = widget.isEditing
+          ? widget.accompany!.tipoTemporarioControlado
+          : tipoDeMedicacao[0];
       prescricaoMedicaController.text = widget.accompany!.prescricaoMedica;
     }
-    valorInicial = tipoDeAcompanhamento.contains(tipoAcompanhamentoController.text)
-      ? tipoAcompanhamentoController.text
-      : null;
+    valorInicial =
+        tipoDeAcompanhamento.contains(tipoAcompanhamentoController.text)
+            ? tipoAcompanhamentoController.text
+            : null;
   }
 
   @override
@@ -72,7 +71,9 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.isEditing ? 'Editar Acompanhamento' : 'Adicionar Acompanhamento',
+          widget.isEditing
+              ? 'Editar Acompanhamento'
+              : 'Adicionar Acompanhamento',
         ),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
@@ -125,18 +126,22 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                       ),
                     ),
                   ),
-                  value: tipoAcompanhamentoController.text.isEmpty ? null : tipoAcompanhamentoController.text,
+                  value: tipoAcompanhamentoController.text.isEmpty
+                      ? null
+                      : tipoAcompanhamentoController.text,
                   onChanged: (String? newValue) {
                     setState(() {
                       tipoAcompanhamentoController.text = newValue!;
                     });
                   },
-                  items: tipoDeAcompanhamento.map<DropdownMenuItem<String>>((String value) {
+                  items: tipoDeAcompanhamento
+                      .map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Row(
                         children: [
-                          Icon(Icons.library_books, color: CustomColors.customSwatchColor),
+                          Icon(Icons.library_books,
+                              color: CustomColors.customSwatchColor),
                           SizedBox(width: 10),
                           Text(
                             value,
@@ -173,7 +178,7 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
             Padding(
               padding: const EdgeInsets.only(bottom: 15),
               child: DateTimeField(
-                format: DateFormat("dd/MM/yyyy HH:mm a"),
+                format: DateFormat("dd/MM/yyyy HH:mm:ss a"),
                 controller: dataAcompanhamentoController,
                 inputFormatters: [dataFormatter],
                 decoration: InputDecoration(
@@ -197,7 +202,8 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                     if (selectedDate != null) {
                       showTimePicker(
                         context: context,
-                        initialTime: TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
+                        initialTime: TimeOfDay.fromDateTime(
+                            currentValue ?? DateTime.now()),
                       ).then((selectedTime) {
                         if (selectedTime != null) {
                           final selectedDateTime = DateTime(
@@ -207,7 +213,11 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                             selectedTime.hour,
                             selectedTime.minute,
                           );
-                          dataAcompanhamentoController.text = DateFormat("dd/MM/yyyy hh:mm a").format(selectedDateTime);
+
+                          dataAcompanhamentoController.text =
+                              DateFormat("dd/MM/yyyy hh:mm:ss a")
+                                  .format(selectedDateTime);
+
                           return selectedDateTime;
                         } else {
                           return currentValue;
@@ -253,9 +263,10 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
               checkColor: CustomColors.customSwatchColor,
               value: notificacaoMarcada,
               onChanged: (bool? value) {
-                setState(() {
-                  notificacaoMarcada = value ?? false;
-                },
+                setState(
+                  () {
+                    notificacaoMarcada = value ?? false;
+                  },
                 );
               },
             ),
@@ -289,7 +300,8 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                         selectedValue = newValue ?? 2;
                       });
                     },
-                    items: intervaloHora.map<DropdownMenuItem<int>>((int value) {
+                    items:
+                        intervaloHora.map<DropdownMenuItem<int>>((int value) {
                       return DropdownMenuItem<int>(
                         value: value,
                         child: Row(
@@ -341,75 +353,83 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                   ),
                 ),
                 onPressed: () async {
-                  final selectedDateTime = DateFormat("dd/MM/yyyy HH:mm a").parse(dataAcompanhamentoController.text.trim());
-                  final formattedDateTime = DateFormat("dd/MM/yyyy hh:mm:ss a").format(selectedDateTime);
-                  final intervalo = selectedValue;
-
-                  if (widget.isEditing == true) {
-                    final accompany = Accompany.editar(
-                      id: widget.accompany!.id,
-                      tipoAcompanhamento: tipoAcompanhamentoController.text,
-                      medicacao: medicacaoController.text,
-                      dataAcompanhamento: formattedDateTime,
-                      tipoTemporarioControlado: tipoTemporarioControladoController.text,
-                      notificacao: notificacaoMarcada,
-                      prescricaoMedica: prescricaoMedicaController.text,
-                      intervaloHora: intervalo
-                    );
-                    bool update = await AccompanyService.updateAccompany(accompany);
-                    if (update) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text(
-                            'Acompanhamento atualizado com sucesso!',
+                  final inputDate = dataAcompanhamentoController.text.trim();
+                  final dateFormat = DateFormat("dd/MM/yyyy HH:mm:ss a");
+                  try {
+                    final selectedDateTime = dateFormat.parse(inputDate);
+                    final formattedDateTime =
+                        DateFormat("dd/MM/yyyy hh:mm:ss a")
+                            .format(selectedDateTime);
+                    final intervalo = selectedValue;
+                    if (widget.isEditing == true) {
+                      final accompany = Accompany.editar(
+                          id: widget.accompany!.id,
+                          tipoAcompanhamento: tipoAcompanhamentoController.text,
+                          medicacao: medicacaoController.text,
+                          dataAcompanhamento: formattedDateTime,
+                          tipoTemporarioControlado:
+                              tipoTemporarioControladoController.text,
+                          notificacao: notificacaoMarcada,
+                          prescricaoMedica: prescricaoMedicaController.text,
+                          intervaloHora: intervalo);
+                      bool update =
+                          await AccompanyService.updateAccompany(accompany);
+                      if (update) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              'Acompanhamento atualizado com sucesso!',
+                            ),
+                            backgroundColor: Colors.green,
                           ),
-                          backgroundColor: Colors.green,
-                        ),
-                      );
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (c) {
-                          return ToAccompanyListScreen();
-                        },
-                      ));
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text(
-                            'Erro no servidor abraço, tente depois',
-                          ),
-                          backgroundColor: Colors.red,
-                        ),
-                      );
-                    }
-                  } else {
-                    final accompany = Accompany.criar(
-                      tipoAcompanhamento: tipoAcompanhamentoController.text,
-                      medicacao: medicacaoController.text,
-                      dataAcompanhamento: formattedDateTime,
-                      tipoTemporarioControlado: tipoTemporarioControladoController.text,
-                      notificacao: notificacaoMarcada,
-                      prescricaoMedica: prescricaoMedicaController.text,
-                      intervaloHora: intervalo
-
-                    );
-                    bool register = await AccompanyService.getAccompany(accompany);
-                    if (register) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text(
-                            'Acompanhamento cadastrado com sucesso!',
-                          ),
-                          backgroundColor: Colors.green,
-                        ),
-                      );
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
+                        );
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
                           builder: (c) {
                             return ToAccompanyListScreen();
                           },
-                        ),
-                      );
+                        ));
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              'Erro no servidor abraço, tente depois',
+                            ),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      }
+                    } else {
+                      final accompany = Accompany.criar(
+                          tipoAcompanhamento: tipoAcompanhamentoController.text,
+                          medicacao: medicacaoController.text,
+                          dataAcompanhamento: formattedDateTime,
+                          tipoTemporarioControlado:
+                              tipoTemporarioControladoController.text,
+                          notificacao: notificacaoMarcada,
+                          prescricaoMedica: prescricaoMedicaController.text,
+                          intervaloHora: intervalo);
+                      bool register =
+                          await AccompanyService.getAccompany(accompany);
+                      if (register) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              'Acompanhamento cadastrado com sucesso!',
+                            ),
+                            backgroundColor: Colors.green,
+                          ),
+                        );
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (c) {
+                              return ToAccompanyListScreen();
+                            },
+                          ),
+                        );
+                      }
                     }
+                  } catch (e) {
+                    print("Erro ao analisar a data e hora: $e");
                   }
                 },
                 child: const Text(

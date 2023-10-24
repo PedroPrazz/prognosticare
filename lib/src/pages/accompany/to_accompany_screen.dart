@@ -240,13 +240,13 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                     }
                   });
                 },
-                // validator: (dateTime) {
-                //   if (dateTime == null) {
-                //     return 'Informe uma data e horário!';
-                //   }
-                //   datahValido = true;
-                //   return null;
-                // },
+                validator: (dateTime) {
+                  if (dateTime == null) {
+                    return 'Informe uma data e horário!';
+                  }
+                  datahValido = true;
+                  return null;
+                },
               ),
             ),
             // Tipo de Medicação

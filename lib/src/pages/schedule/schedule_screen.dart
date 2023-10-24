@@ -341,13 +341,6 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                     }
                   });
                 },
-                // validator: (dateTime) {
-                //   if (dateTime == null) {
-                //     return 'Informe uma data e horário!';
-                //   }
-                //   datahValido = true;
-                //   return null;
-                // },
               ),
             ),
             //Observações

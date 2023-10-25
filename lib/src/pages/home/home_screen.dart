@@ -34,7 +34,6 @@ class _HomeScreenState extends State<HomeScreen> {
   int _selectIndex = 0;
   int contador = 0;
 
- 
   @override
   void initState() {
     super.initState();
@@ -159,14 +158,76 @@ class _HomeScreenState extends State<HomeScreen> {
 
       // AppBar
       appBar: AppBar(
-        actions: [
-          
-        ],
-        title: const Text('PrognostiCare'),
-        backgroundColor: CustomColors.customSwatchColor,
-        foregroundColor: Colors.white,
+        titleTextStyle: TextStyle(
+          color: Colors.white,
+          fontSize: 20,
+        ),
         centerTitle: true,
+        title: Text("Olá, $nome"),
+        actions: [
+          IconButton(
+            alignment: Alignment.centerRight,
+            icon: Icon(Icons.notifications, color: Colors.white),
+            onPressed: () {},
+          ),
+          SizedBox(width: 20),
+          CircleAvatar(
+              // Adicione sua imagem de avatar aqui.
+              ),
+          SizedBox(width: 20),
+        ],
       ),
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TextField(
+              decoration: InputDecoration(
+                hintText: 'Pesquisar',
+                prefixIcon: Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  children: [
+                    Icon(Icons.warning, color: Colors.red),
+                    SizedBox(width: 20),
+                    Expanded(
+                      child: Text("Você tem sintomas de Covid-19?"),
+                    ),
+                    TextButton(
+                      onPressed: () {},
+                      child: Text("Contate um Médico"),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
+            Text("Categorias",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+
+            // Adicione suas categorias aqui
+            SizedBox(height: 20),
+            Text("Médicos em Destaque",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            // Adicione sua lista de médicos em destaque aqui
+          ],
+        ),
+      ),
+
+      // actions: [],
+      // title: const Text('PrognostiCare'),
+      // backgroundColor: CustomColors.customSwatchColor,
+      // foregroundColor: Colors.white,
+      // centerTitle: true,
 
       //navbar
       bottomNavigationBar: CustomBottomNavigationBar(),

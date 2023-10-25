@@ -59,6 +59,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
 
   final _formKey = GlobalKey<FormState>();
 
+  bool tipoAgendamentoValido = false;
   bool especialistaValido = false;
   bool descricaoValido = false;
   bool localValido = false;
@@ -153,26 +154,36 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                     'INTERNAÇÃO',
                     'VACINA',
                     'CIRURGIA',
-                  ].map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Row(
-                        children: [
-                          Icon(Icons.library_books,
-                              color: CustomColors.customSwatchColor),
-                          SizedBox(width: 10),
-                          Text(
-                            value,
-                            style: TextStyle(
-                              color: CustomColors.customSwatchColor,
-                              fontSize: 12,
-                              fontWeight: FontWeight.normal,
+                  ].map<DropdownMenuItem<String>>(
+                    (String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Row(
+                          children: [
+                            Icon(Icons.library_books,
+                                color: CustomColors.customSwatchColor),
+                            SizedBox(width: 10),
+                            Text(
+                              value,
+                              style: TextStyle(
+                                color: CustomColors.customSwatchColor,
+                                fontSize: 12,
+                                fontWeight: FontWeight.normal,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    );
-                  }).toList(),
+                          ],
+                        ),
+                      );
+                    },
+                  ).toList(),
+                  validator: (tipoAgendamento) {
+                    if (tipoAgendamento == null ||
+                        tipoAgendamento.trim().isEmpty) {
+                      return 'Informe um Tipo de Agendamento!';
+                    }
+                    tipoAgendamentoValido = true;
+                    return null;
+                  },
                 ),
               ),
             ),
@@ -213,26 +224,35 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                     'GINECOLOGIA',
                     'NAO_POSSUI',
                     'DERMATOLOGIA'
-                  ].map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Row(
-                        children: [
-                          Icon(Icons.person,
-                              color: CustomColors.customSwatchColor),
-                          SizedBox(width: 10),
-                          Text(
-                            value,
-                            style: TextStyle(
-                              color: CustomColors.customSwatchColor,
-                              fontSize: 12,
-                              fontWeight: FontWeight.normal,
+                  ].map<DropdownMenuItem<String>>(
+                    (String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Row(
+                          children: [
+                            Icon(Icons.person,
+                                color: CustomColors.customSwatchColor),
+                            SizedBox(width: 10),
+                            Text(
+                              value,
+                              style: TextStyle(
+                                color: CustomColors.customSwatchColor,
+                                fontSize: 12,
+                                fontWeight: FontWeight.normal,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    );
-                  }).toList(),
+                          ],
+                        ),
+                      );
+                    },
+                  ).toList(),
+                  validator: (especialista) {
+                    if (especialista == null || especialista.trim().isEmpty) {
+                      return 'Informe um especialista!';
+                    }
+                    especialistaValido = true;
+                    return null;
+                  },
                 ),
               ),
             ),
@@ -297,36 +317,29 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                         context: context,
                         initialTime: TimeOfDay.fromDateTime(
                             currentValue ?? DateTime.now()),
-                      ).then((selectedTime) {
-                        if (selectedTime != null) {
-                          final selectedDateTime = DateTime(
-                            selectedDate.year,
-                            selectedDate.month,
-                            selectedDate.day,
-                            selectedTime.hour,
-                            selectedTime.minute,
-                          );
-
-                          dataController.text =
-                              DateFormat("dd/MM/yyyy hh:mm:ss a")
-                                  .format(selectedDateTime);
-
-                          return selectedDateTime;
-                        } else {
-                          return currentValue;
-                        }
-                      });
+                      ).then(
+                        (selectedTime) {
+                          if (selectedTime != null) {
+                            final selectedDateTime = DateTime(
+                              selectedDate.year,
+                              selectedDate.month,
+                              selectedDate.day,
+                              selectedTime.hour,
+                              selectedTime.minute,
+                            );
+                            dataController.text =
+                                DateFormat("dd/MM/yyyy hh:mm:ss a")
+                                    .format(selectedDateTime);
+                            return selectedDateTime;
+                          } else {
+                            return currentValue;
+                          }
+                        },
+                      );
                     } else {
                       return currentValue;
                     }
                   });
-                },
-                validator: (dateTime) {
-                  if (dateTime == null) {
-                    return 'Informe uma data e horário!';
-                  }
-                  datahValido = true;
-                  return null;
                 },
               ),
             ),
@@ -434,7 +447,21 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                   } else {
                     print('Campos não válidos');
                   }
-                  if (!descricaoValido ||
+                  if (dataController.text.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Informe uma data e horário!',
+                        ),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  } else {
+                    datahValido = true;
+                  }
+                  if (!tipoAgendamentoValido ||
+                      !especialistaValido ||
+                      !descricaoValido ||
                       !localValido ||
                       !datahValido ||
                       !obsValido) {
@@ -442,14 +469,12 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                   }
                   final inputDate = dataController.text.trim();
                   final dateFormat = DateFormat("dd/MM/yyyy HH:mm:ss a");
-
                   try {
                     final selectedDateTime = dateFormat.parse(inputDate);
                     final formattedDateTime =
                         DateFormat("dd/MM/yyyy hh:mm:ss a")
                             .format(selectedDateTime);
                     final intervalo = selectedValue;
-
                     if (widget.isEditing == true) {
                       final schedule = Schedule.editar(
                           id: widget.schedule!.id,
@@ -482,7 +507,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text(
-                              'Erro no servidor abraço, tente depois',
+                              'Erro no servidor, tente depois',
                             ),
                             backgroundColor: Colors.red,
                           ),

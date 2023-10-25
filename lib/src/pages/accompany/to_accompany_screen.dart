@@ -9,6 +9,7 @@ import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/models/to_accompany_model.dart';
 import 'package:prognosticare/src/pages/accompany/to_accompany_list_screen.dart';
 import 'package:prognosticare/src/pages/home/home_screen.dart';
+
 class ToAccompanyScreen extends StatefulWidget {
   final Accompany? accompany;
   final bool isEditing;
@@ -25,7 +26,6 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
   List<int> intervaloHora = [0, 4, 6, 12, 24];
   int selectedValue = 0;
 
-
   final dataFormatter = MaskTextInputFormatter(
     mask: '##/##/#### ##:##',
     filter: {"#": RegExp(r'[0-9]')},
@@ -36,14 +36,15 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
   TextEditingController tipoAcompanhamentoController = TextEditingController();
   TextEditingController medicacaoController = TextEditingController();
   TextEditingController dataAcompanhamentoController = TextEditingController();
-  TextEditingController tipoTemporarioControladoController = TextEditingController();
+  TextEditingController tipoTemporarioControladoController =
+      TextEditingController();
   TextEditingController prescricaoMedicaController = TextEditingController();
 
+  bool tipoAcompanhamentoValido = false;
   bool medicacaoValido = false;
-  bool dataHorarioValido = false;
+  bool datahValido = false;
   bool controTempValido = false;
   bool prescricaoValido = false;
-  bool datahValido = false;
   bool notificacaoMarcada = false;
   String? valorInicial;
 
@@ -129,9 +130,9 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                       ),
                     ),
                   ),
-                  value: tipoAcompanhamentoController.text.isEmpty
+                  value: tipoAcompanhamentoController.text.trim().isEmpty
                       ? null
-                      : tipoAcompanhamentoController.text,
+                      : tipoAcompanhamentoController.text.trim(),
                   onChanged: (String? newValue) {
                     setState(() {
                       tipoAcompanhamentoController.text = newValue!;
@@ -158,6 +159,14 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                       ),
                     );
                   }).toList(),
+                  validator: (tipoAcompanhamento) {
+                    if (tipoAcompanhamento == null ||
+                        tipoAcompanhamento.trim().isEmpty) {
+                      return 'Informe um Tipo de Acompanhamento!';
+                    }
+                    tipoAcompanhamentoValido = true;
+                    return null;
+                  },
                 ),
               ),
             ),
@@ -356,6 +365,41 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                   ),
                 ),
                 onPressed: () async {
+                  if (_formKey.currentState!.validate()) {
+                    print('Todos os campos estão válidos');
+                  } else {
+                    print('Campos não válidos');
+                  }
+                  if (dataAcompanhamentoController.text.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Informe uma data e horário!',
+                        ),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  } else {
+                    datahValido = true;
+                  }
+                  if (tipoTemporarioControladoController.text.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Informe Controlado ou Temporário!'),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                    return;
+                  } else {
+                    controTempValido = true;
+                  }
+                  if (!tipoAcompanhamentoValido ||
+                      !medicacaoValido ||
+                      !datahValido ||
+                      !controTempValido ||
+                      !prescricaoValido) {
+                    return;
+                  }
                   final inputDate = dataAcompanhamentoController.text.trim();
                   final dateFormat = DateFormat("dd/MM/yyyy HH:mm:ss a");
                   try {
@@ -367,13 +411,15 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                     if (widget.isEditing == true) {
                       final accompany = Accompany.editar(
                           id: widget.accompany!.id,
-                          tipoAcompanhamento: tipoAcompanhamentoController.text,
-                          medicacao: medicacaoController.text,
-                          dataAcompanhamento: formattedDateTime,
+                          tipoAcompanhamento:
+                              tipoAcompanhamentoController.text.trim(),
+                          medicacao: medicacaoController.text.trim(),
+                          dataAcompanhamento: formattedDateTime.trim(),
                           tipoTemporarioControlado:
-                              tipoTemporarioControladoController.text,
+                              tipoTemporarioControladoController.text.trim(),
                           notificacao: notificacaoMarcada,
-                          prescricaoMedica: prescricaoMedicaController.text,
+                          prescricaoMedica:
+                              prescricaoMedicaController.text.trim(),
                           intervaloHora: intervalo);
                       bool update =
                           await AccompanyService.updateAccompany(accompany);
@@ -395,7 +441,7 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text(
-                              'Erro no servidor abraço, tente depois',
+                              'Erro no servidor, tente depois',
                             ),
                             backgroundColor: Colors.red,
                           ),
@@ -403,13 +449,15 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                       }
                     } else {
                       final accompany = Accompany.criar(
-                          tipoAcompanhamento: tipoAcompanhamentoController.text,
-                          medicacao: medicacaoController.text,
-                          dataAcompanhamento: formattedDateTime,
+                          tipoAcompanhamento:
+                              tipoAcompanhamentoController.text.trim(),
+                          medicacao: medicacaoController.text.trim(),
+                          dataAcompanhamento: formattedDateTime.trim(),
                           tipoTemporarioControlado:
-                              tipoTemporarioControladoController.text,
+                              tipoTemporarioControladoController.text.trim(),
                           notificacao: notificacaoMarcada,
-                          prescricaoMedica: prescricaoMedicaController.text,
+                          prescricaoMedica:
+                              prescricaoMedicaController.text.trim(),
                           intervaloHora: intervalo);
                       bool register =
                           await AccompanyService.getAccompany(accompany);

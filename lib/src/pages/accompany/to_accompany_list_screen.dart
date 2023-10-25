@@ -143,7 +143,7 @@ class _ToAccompanyListScreenState extends State<ToAccompanyListScreen> {
             return Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(
-                child: Text('Erro ao carregar a lista de acompanhamentos'));
+                child: Text('Sem acompanhamentos na lista'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return Center(child: Text('Nenhum acompanhamento encontrado'));
           } else {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:prognosticare/components/dialogs/change_password_dialog.dart';
-import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/navBar/CustomBottomNavigationBar.dart';
 import 'package:prognosticare/src/pages/auth/dependents.dart';
 import 'package:prognosticare/components/dialogs/prontuario_dialog.dart';
@@ -9,12 +8,8 @@ import 'package:prognosticare/src/api/service/findby_id_service.dart';
 import 'package:prognosticare/src/pages/auth/info.dart';
 import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
 import 'package:prognosticare/src/models/pessoa_model.dart';
-import 'package:prognosticare/src/pages/eventos/ScheduleEvento.dart';
-import 'package:prognosticare/src/pages/eventos/scheduleEventoPage.dart';
 import 'package:prognosticare/src/pages/profile/profile_tab.dart';
-import 'package:prognosticare/src/pages/profile/profile_tab_dependente.dart';
 import 'package:prognosticare/src/pages/schedule/my_schedule_screen.dart';
-import 'package:prognosticare/src/pages/vaccines/vaccination_schedule.dart';
 
 final storage = FlutterSecureStorage();
 
@@ -30,9 +25,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final confirmPasswordController = TextEditingController();
   Pessoa? pessoa;
   String? nome;
-
-  int _selectIndex = 0;
-  int contador = 0;
 
   @override
   void initState() {
@@ -163,62 +155,83 @@ class _HomeScreenState extends State<HomeScreen> {
           fontSize: 20,
         ),
         centerTitle: true,
-        title: Text("Olá, $nome"),
+        title: Text("Olá, ${nome?.split(' ')[0]}"),
         actions: [
           IconButton(
             alignment: Alignment.centerRight,
             icon: Icon(Icons.notifications, color: Colors.white),
             onPressed: () {},
           ),
-          SizedBox(width: 20),
-          CircleAvatar(
-              // Adicione sua imagem de avatar aqui.
-              ),
-          SizedBox(width: 20),
+          SizedBox(width: 5),
         ],
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: ListView(
           children: [
-            TextField(
-              decoration: InputDecoration(
-                hintText: 'Pesquisar',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
+            // 1. Imagem Tema Saúde
+            Container(
+              height: 200.0,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(
+                      'assets/images/medical_prescription.png'), // Coloque o caminho da sua imagem aqui
+                  fit: BoxFit.cover,
                 ),
+                borderRadius: BorderRadius.circular(15),
               ),
             ),
             SizedBox(height: 20),
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  children: [
-                    Icon(Icons.warning, color: Colors.red),
-                    SizedBox(width: 20),
-                    Expanded(
-                      child: Text("Você tem sintomas de Covid-19?"),
-                    ),
-                    TextButton(
-                      onPressed: () {},
-                      child: Text("Contate um Médico"),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: 20),
-            Text("Categorias",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
 
-            // Adicione suas categorias aqui
+            // 2. Três botões
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ElevatedButton(onPressed: () {}, child: Text('Botão 1')),
+                ElevatedButton(onPressed: () {}, child: Text('Botão 2')),
+                ElevatedButton(onPressed: () {}, child: Text('Botão 3')),
+              ],
+            ),
             SizedBox(height: 20),
-            Text("Médicos em Destaque",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            // Adicione sua lista de médicos em destaque aqui
+
+            // 3. Carrossel 1
+            Container(
+              height: 150.0,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount:
+                    5, // Aqui você pode definir o número de itens que quer exibir no carrossel
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: EdgeInsets.only(right: 5),
+                    child: Image.asset(
+                        'path_da_imagem_$index.jpg'), // Aqui você pode definir os itens do carrossel
+                  );
+                },
+              ),
+            ),
+            SizedBox(height: 20),
+
+            // 4. Carrossel 2
+            Container(
+              height: 150.0,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount:
+                    5, // Aqui você pode definir o número de itens que quer exibir no carrossel
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: EdgeInsets.only(right: 5),
+                    child: GestureDetector(
+                      onTap: () {
+                        // Aqui você pode definir o que acontece ao tocar em uma imagem do carrossel, como ir para a tela de vacinas filtrado com base na imagem
+                      },
+                      child: Image.asset('path_da_imagem_vacina_$index.png'),
+                    ),
+                  );
+                },
+              ),
+            ),
           ],
         ),
       ),

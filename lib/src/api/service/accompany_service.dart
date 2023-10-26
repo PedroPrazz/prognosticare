@@ -7,8 +7,8 @@ import 'package:prognosticare/src/models/to_accompany_model.dart';
 final storage = FlutterSecureStorage();
 
 class AccompanyService {
+  
   //Método para criar um acompanhamento
-
   static Future<bool> getAccompany(Accompany accompany) async {
     String? idPessoa = await storage.read(key: 'user_id');
     String? token = await storage.read(key: 'token');
@@ -53,7 +53,6 @@ class AccompanyService {
   }
 
   //Método get para listar acompanhamentos
-
   static Future<List<Accompany>> getAccompanyList() async {
     String? idPessoa = await storage.read(key: 'user_id');
     String? token = await storage.read(key: 'token');
@@ -93,7 +92,6 @@ class AccompanyService {
   }
 
   //Método para atualizar acompanhamentos
-
   static Future<bool> updateAccompany(Accompany accompany) async {
     String? token = await storage.read(key: 'token');
 
@@ -132,6 +130,8 @@ class AccompanyService {
     }
   }
 
+
+  //Método para atualizar status acompanhamentos
   static Future<bool> updateStatus(Accompany accompany) async {
     String? token = await storage.read(key: 'token');
 
@@ -163,4 +163,43 @@ class AccompanyService {
       throw Exception('Erro de Try Catch ao atualizar Acompanhamento');
     }
   }
+
+  static Future<List<Accompany>> getAccompanyListDay() async {
+    String? idPessoa = await storage.read(key: 'user_id');
+    String? token = await storage.read(key: 'token');
+
+    final url =
+        Uri.parse(UriServidor.url.toString() + '/to-accompany/list-day/$idPessoa');
+
+    try {
+      final response = await http.get(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        List<dynamic> jsonDataList = json.decode(response.body);
+
+        List<Accompany> accompany = jsonDataList.map((jsonData) {
+          return Accompany.fromJson(jsonData);
+        }).toList();
+
+        return accompany;
+      } else if (response.statusCode == 404) {
+        print(
+            'Status Code: ${response.statusCode} Não foi encontrado Acompanhamento');
+        throw Exception('Exeption no método find erro 404');
+      } else {
+        print('Status Code: ${response.statusCode}');
+        throw Exception('Exeption no método find');
+      }
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('Exeption no método find Erro no Try/Catch');
+    }
+  }
+
 }

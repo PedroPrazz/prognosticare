@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:prognosticare/components/dialogs/change_password_dialog.dart';
@@ -25,6 +26,14 @@ class _HomeScreenState extends State<HomeScreen> {
   final confirmPasswordController = TextEditingController();
   Pessoa? pessoa;
   String? nome;
+
+  final List<String> imageNames = [
+    'img-adolescente.png',
+    'img-adulto.png',
+    'img-crianca.png',
+    'img-gestante.png',
+    'img-idoso.png',
+  ];
 
   @override
   void initState() {
@@ -187,13 +196,33 @@ class _HomeScreenState extends State<HomeScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                ElevatedButton(onPressed: () {}, child: Text('Botão 1')),
-                ElevatedButton(onPressed: () {}, child: Text('Botão 2')),
-                ElevatedButton(onPressed: () {}, child: Text('Botão 3')),
+                ElevatedButton(
+                  onPressed: () {},
+                  child: Icon(
+                    CupertinoIcons.heart_solid,
+                    color: Colors.white,
+                    size: 30,
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () {},
+                  child: Icon(
+                    Icons.medical_information,
+                    color: Colors.white,
+                    size: 30,
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () {},
+                  child: Icon(
+                    Icons.medication,
+                    color: Colors.white,
+                    size: 30,
+                  ),
+                )
               ],
             ),
             SizedBox(height: 20),
-
             // 3. Carrossel 1
             Container(
               height: 150.0,
@@ -205,7 +234,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   return Padding(
                     padding: EdgeInsets.only(right: 5),
                     child: Image.asset(
-                        'path_da_imagem_$index.jpg'), // Aqui você pode definir os itens do carrossel
+                        'assets/images/covid$index.png'), // Aqui você pode definir os itens do carrossel
                   );
                 },
               ),
@@ -218,15 +247,16 @@ class _HomeScreenState extends State<HomeScreen> {
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount:
-                    5, // Aqui você pode definir o número de itens que quer exibir no carrossel
+                    imageNames.length, // Usa a quantidade de nomes na lista
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: EdgeInsets.only(right: 5),
                     child: GestureDetector(
                       onTap: () {
-                        // Aqui você pode definir o que acontece ao tocar em uma imagem do carrossel, como ir para a tela de vacinas filtrado com base na imagem
+                        // Aqui você pode definir o que acontece ao tocar em uma imagem do carrossel
                       },
-                      child: Image.asset('path_da_imagem_vacina_$index.png'),
+                      child: Image.asset(
+                          'assets/images/${imageNames[index]}'), // Usa os nomes da lista
                     ),
                   );
                 },

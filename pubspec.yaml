@@ -50,6 +50,7 @@ dependencies:
     datetime_picker_formfield: 2.0.1
     custom_radio_grouped_button: any
     get_storage: ^2.0.3
+    flutter_svg:
 
 dev_dependencies:
     flutter_test:

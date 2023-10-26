@@ -266,12 +266,6 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
 
-      // actions: [],
-      // title: const Text('PrognostiCare'),
-      // backgroundColor: CustomColors.customSwatchColor,
-      // foregroundColor: Colors.white,
-      // centerTitle: true,
-
       //navbar
       bottomNavigationBar: CustomBottomNavigationBar(),
     );

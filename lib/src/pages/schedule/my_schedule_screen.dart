@@ -80,7 +80,7 @@ class CalendarScreen extends GetView<CalendarController> {
     return GetBuilder<CalendarController>(
       id: 'agenda',
       builder: (context) {
-        return controller.agenda.isEmpty
+        return controller.eventos.isEmpty
             ? Container(
                 margin: EdgeInsets.only(top: 20),
                 child: Column(
@@ -112,12 +112,12 @@ class CalendarScreen extends GetView<CalendarController> {
                     Flexible(
                       flex: 2,
                       child: ListView.builder(
-                        itemCount: controller.agenda.length,
+                        itemCount: controller.eventos.length,
                         itemBuilder: (BuildContext context, int index) {
                           return Card(
                             child: ListTile(
                               title: Text(
-                                controller.agenda[index],
+                                controller.eventos[index] as String,
                                 style: TextStyle(
                                     fontSize: 18, fontWeight: FontWeight.bold),
                               ),

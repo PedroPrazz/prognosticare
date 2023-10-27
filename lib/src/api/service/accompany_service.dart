@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:prognosticare/src/config/uri.dart';
@@ -166,13 +165,16 @@ class AccompanyService {
     }
   }
 
-  //Método get para listar acompanhamentos do dia
-  static Future<List<Accompany>> getAccompanyListByFiltro() async {
+  //Método get para listar acompanhamentos entre dias
+  static Future<List<Accompany>> getAccompanyListBetween(DateTime dataInicial, DateTime dataFinal) async {
     String? idPessoa = await storage.read(key: 'user_id');
     String? token = await storage.read(key: 'token');
 
-    final url =
-        Uri.parse(UriServidor.url.toString() + '/to-accompany/list-day/$idPessoa');
+    String formattedDataInicial = DateFormat("yyyy-MM-dd").format(dataInicial);
+    String formattedDataFinal = DateFormat("yyyy-MM-dd").format(dataFinal);
+
+    final url = Uri.parse(
+        UriServidor.url.toString() + '/to-accompany/list-between/$idPessoa?dataInicial=$formattedDataInicial&dataFinal=$formattedDataFinal');
     try {
       final response = await http.get(
         url,
@@ -192,12 +194,11 @@ class AccompanyService {
         return accompany;
       } else {
         print('Response Status Code: ${response.statusCode}');
-        throw Exception('Exeption no método getAccompanyListByFiltro');
+        throw Exception('Exeption no método getAccompanyListBetween');
       }
     } catch (e) {
       print('Error: $e');
       throw Exception('Exeption no método find Erro no Try/Catch');
     }
   }
-
 }

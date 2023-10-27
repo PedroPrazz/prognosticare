@@ -200,4 +200,41 @@ class ScheduleService {
     }
   }
 
+  //Método get para listar agendamentos entre dias
+  static Future<List<Schedule>> getScheduleListBetween(DateTime dataInicial, DateTime dataFinal) async {
+    String? idPessoa = await storage.read(key: 'user_id');
+    String? token = await storage.read(key: 'token');
+
+    String formattedDataInicial = DateFormat("yyyy-MM-dd").format(dataInicial);
+    String formattedDataFinal = DateFormat("yyyy-MM-dd").format(dataFinal);
+
+    final url = Uri.parse(
+        UriServidor.url.toString() + '/to-scheduling/between-days/$idPessoa?dataInicial=$formattedDataInicial&dataFinal=$formattedDataFinal');
+    try {
+      final response = await http.get(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        List<dynamic> jsonDataList = json.decode(response.body);
+
+        List<Schedule> schedules = jsonDataList.map((jsonData) {
+          return Schedule.fromJson(jsonData);
+        }).toList();
+
+        return schedules;
+      } else {
+        print('Response Status Code: ${response.statusCode}');
+        throw Exception('Exeption no método getScheduleListBetween');
+      }
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('Exeption no método find Erro no Try/Catch');
+    }
+  }
+
 }

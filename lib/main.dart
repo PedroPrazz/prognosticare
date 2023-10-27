@@ -1,6 +1,9 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:prognosticare/src/config/calendar_controller.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/routes/app_pages.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -13,6 +16,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 main() async {
+  await initializeDateFormatting('pt_BR');
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -34,6 +38,9 @@ class MyApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       initialRoute: PagesRoutes.splashRoute,
+      initialBinding: BindingsBuilder(() { 
+        Get.put(CalendarController());
+      }),
       getPages: AppPages.pages,
     );
   }

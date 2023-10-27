@@ -1,11 +1,5 @@
-import 'dart:convert';
-import 'dart:html';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
-import 'package:http/http.dart' as http;
 
 TextEditingController email = TextEditingController();
 TextEditingController _password = TextEditingController();

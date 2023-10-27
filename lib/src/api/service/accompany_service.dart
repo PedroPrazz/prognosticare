@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:prognosticare/src/config/uri.dart';
 import 'package:prognosticare/src/models/to_accompany_model.dart';
 
@@ -164,13 +166,13 @@ class AccompanyService {
     }
   }
 
-  static Future<List<Accompany>> getAccompanyListDay() async {
+  //Método get para listar acompanhamentos do dia
+  static Future<List<Accompany>> getAccompanyListByFiltro() async {
     String? idPessoa = await storage.read(key: 'user_id');
     String? token = await storage.read(key: 'token');
 
     final url =
         Uri.parse(UriServidor.url.toString() + '/to-accompany/list-day/$idPessoa');
-
     try {
       final response = await http.get(
         url,
@@ -188,13 +190,9 @@ class AccompanyService {
         }).toList();
 
         return accompany;
-      } else if (response.statusCode == 404) {
-        print(
-            'Status Code: ${response.statusCode} Não foi encontrado Acompanhamento');
-        throw Exception('Exeption no método find erro 404');
       } else {
-        print('Status Code: ${response.statusCode}');
-        throw Exception('Exeption no método find');
+        print('Response Status Code: ${response.statusCode}');
+        throw Exception('Exeption no método getAccompanyListByFiltro');
       }
     } catch (e) {
       print('Error: $e');

@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:prognosticare/src/api/service/schedule_service.dart';
 import 'package:prognosticare/src/models/schedule_model.dart';
-import 'package:prognosticare/src/navBar/CustomBottomNavigationBar.dart';
-import 'package:prognosticare/src/pages/schedule/schedule_screen.dart';
 
 class ScheduleEvento extends StatefulWidget {
   String filtro;

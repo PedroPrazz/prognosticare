@@ -94,7 +94,7 @@ class _ToAccompanyListScreenState extends State<ToAccompanyListScreen> {
                 toaccompany.statusEvento = "CANCELADO";
                 AccompanyService.updateStatus(toaccompany);
                 setState(() {
-                  snapshot.data!.remove(toaccompany);
+                 // snapshot.data!.remove(toaccompany);
                 });
                 Navigator.of(context).pop();
               },
@@ -200,7 +200,9 @@ class _ToAccompanyListScreenState extends State<ToAccompanyListScreen> {
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      IconButton(
+                      Visibility(
+                        visible: toaccompany.statusEvento == "ABERTO" || toaccompany.statusEvento == "FINALIZADO",
+                        child: IconButton(
                         icon: isAcompanhamentoConfirmado
                             ? Icon(Icons.check_circle,
                                 color: Colors.green)
@@ -211,14 +213,19 @@ class _ToAccompanyListScreenState extends State<ToAccompanyListScreen> {
                           }
                         },
                       ), 
-                      IconButton(
+                      ),
+                      
+                      Visibility(
+                        visible: toaccompany.statusEvento == "ABERTO" || toaccompany.statusEvento == "FINALIZADO",
+                        child: IconButton(
                         icon: Icon(Icons.delete),
                         color: Colors.red,
                         onPressed: () {
                           _confirmarExclusao(toaccompany,
                               snapshot); // Abre o diálogo de confirmação
                         },
-                      ),
+                      ),),
+                      
                     ],
                   ),
                   onTap: () {},

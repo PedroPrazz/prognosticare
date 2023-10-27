@@ -131,7 +131,7 @@ class DependentService {
       final response = await http.put(
         url,
         body: json.encode({
-          'pessoa_id': dependente.id,
+          'pessoaId': dependente.id,
           'nome': dependente.nome,
           'cpf': dependente.cpf,
           'dataNascimento': dependente.dataNascimento,

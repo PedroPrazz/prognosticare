@@ -197,7 +197,9 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      IconButton(
+                      Visibility(
+                        visible: schedule.statusEvento == "ABERTO" || schedule.statusEvento == "FINALIZADO",
+                        child: IconButton(
                         icon: isAgendamentoConfirmado
                             ? Icon(Icons.check_circle, color: Colors.green)
                             : Icon(Icons.radio_button_unchecked),
@@ -206,14 +208,18 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
                             _confirmarAgendamento(schedule);
                           }
                         },
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.delete),
-                        color: Colors.red,
-                        onPressed: () {
-                          _confirmarExclusao(schedule,
-                              snapshot); // Abre o diálogo de confirmação
-                        },
+                      ),),
+                      
+                      Visibility(
+                        visible: schedule.statusEvento != "CANCELADO",
+                        child: IconButton(
+                          icon: Icon(Icons.delete),
+                          color: Colors.red,
+                          onPressed: () {
+                            _confirmarExclusao(schedule,
+                                snapshot); // Abre o diálogo de confirmação
+                          },
+                        ),
                       ),
                     ],
                   ),

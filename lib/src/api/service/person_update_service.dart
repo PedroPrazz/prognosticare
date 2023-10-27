@@ -15,7 +15,7 @@ class PersonUpdateService {
       final response = await http.put(
         url,
         body: json.encode({
-          'pessoa_id': pessoa.pessoaId,
+          'pessoaId': pessoa.pessoaId,
           'nome': pessoa.nome,
           'cpf': pessoa.cpf,
           'email': pessoa.email,

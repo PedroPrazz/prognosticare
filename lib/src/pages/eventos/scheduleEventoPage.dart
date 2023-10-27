@@ -1,11 +1,6 @@
-import 'dart:convert';
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
-import 'package:http/http.dart' as http;
 import 'package:prognosticare/src/navBar/CustomBottomNavigationBar.dart';
 import 'package:prognosticare/src/pages/eventos/ScheduleEvento.dart';
 

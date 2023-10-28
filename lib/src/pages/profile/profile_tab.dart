@@ -185,7 +185,6 @@ class _ProfileTabState extends State<ProfileTab> {
                 child: DropdownButtonFormField<String>(
                   focusColor: Colors.white,
                   decoration: InputDecoration(
-                    hoverColor: Colors.blue,
                     labelText: 'Tipo Sanguíneo',
                     labelStyle: TextStyle(color: Colors.black),
                     isDense: true,
@@ -228,7 +227,7 @@ class _ProfileTabState extends State<ProfileTab> {
                           Text(
                             value,
                             style: TextStyle(
-                              color: CustomColors.customSwatchColor,
+                              color: Colors.black,
                               fontSize: 12,
                               fontWeight: FontWeight.normal,
                             ),

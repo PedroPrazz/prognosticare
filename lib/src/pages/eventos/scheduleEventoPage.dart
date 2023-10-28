@@ -15,6 +15,7 @@ class ScheduleEventoPage extends StatelessWidget {
       length: 3, // Número de guias
       child: Scaffold(
         appBar: AppBar(
+          foregroundColor: Colors.white,
           title: Text('Eventos'),
           backgroundColor: CustomColors.customSwatchColor,
           bottom: TabBar(

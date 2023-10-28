@@ -166,7 +166,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                             Text(
                               value,
                               style: TextStyle(
-                                color: CustomColors.customSwatchColor,
+                                color: Colors.black,
                                 fontSize: 12,
                                 fontWeight: FontWeight.normal,
                               ),
@@ -236,7 +236,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                             Text(
                               value,
                               style: TextStyle(
-                                color: CustomColors.customSwatchColor,
+                                color: Colors.black,
                                 fontSize: 12,
                                 fontWeight: FontWeight.normal,
                               ),

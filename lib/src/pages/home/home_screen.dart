@@ -159,6 +159,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
       // AppBar
       appBar: AppBar(
+        foregroundColor: Colors.white,
         titleTextStyle: TextStyle(
           color: Colors.white,
           fontSize: 20,

@@ -4,10 +4,11 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:prognosticare/src/config/uri.dart';
 import 'package:prognosticare/src/models/pessoa_model.dart';
 
-final storage = FlutterSecureStorage();
+FlutterSecureStorage storage = FlutterSecureStorage();
 
 class GetFindbyIDService {
   static Future<Pessoa> getFindbyID() async {
+
     String? idPessoa = await storage.read(key: 'user_id');
     String? token = await storage.read(key: 'token');
 

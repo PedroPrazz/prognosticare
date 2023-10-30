@@ -48,10 +48,10 @@ class _ProfileTabState extends State<ProfileTab> {
   @override
   void initState() {
     super.initState();
-    nomeController.text = widget.pessoa.nome;
-    cpfController.text = widget.pessoa.cpf;
-    emailController.text = widget.pessoa.email;
-    dataController.text = widget.pessoa.dataNascimento;
+    nomeController.text = widget.pessoa.nome!;
+    cpfController.text = widget.pessoa.cpf!;
+    emailController.text = widget.pessoa.email ?? '';
+    dataController.text = widget.pessoa.dataNascimento!;
     telefoneController.text = widget.pessoa.contato ?? '';
     cnsController.text = widget.pessoa.cartaoNacional ?? '';
     cpsController.text = widget.pessoa.cartaoPlanoSaude ?? '';
@@ -185,7 +185,6 @@ class _ProfileTabState extends State<ProfileTab> {
                 child: DropdownButtonFormField<String>(
                   focusColor: Colors.white,
                   decoration: InputDecoration(
-                    hoverColor: Colors.blue,
                     labelText: 'Tipo Sanguíneo',
                     labelStyle: TextStyle(color: Colors.black),
                     isDense: true,
@@ -228,7 +227,7 @@ class _ProfileTabState extends State<ProfileTab> {
                           Text(
                             value,
                             style: TextStyle(
-                              color: CustomColors.customSwatchColor,
+                              color: Colors.black,
                               fontSize: 12,
                               fontWeight: FontWeight.normal,
                             ),
@@ -316,12 +315,12 @@ class _ProfileTabState extends State<ProfileTab> {
                       return;
                     }
                     Pessoa pessoaAtualizada = widget.pessoa.copyWith(
-                      pessoaId: widget.pessoa.pessoaId.trim(),
-                      nome: widget.pessoa.nome.trim(),
-                      cpf: widget.pessoa.cpf.trim(),
-                      email: widget.pessoa.email.trim(),
+                      pessoaId: widget.pessoa.pessoaId?.trim(),
+                      nome: widget.pessoa.nome?.trim(),
+                      cpf: widget.pessoa.cpf?.trim(),
+                      email: widget.pessoa.email?.trim(),
                       contato: telefoneController.text.trim(),
-                      dataNascimento: widget.pessoa.dataNascimento.trim(),
+                      dataNascimento: widget.pessoa.dataNascimento?.trim(),
                       tipoSanguineo: tipoSanguineoController.text.trim(),
                       tipoAlergia: tipoAlergiaController.text.trim(),
                       tipoResponsavel: widget.pessoa.tipoResponsavel,
@@ -349,13 +348,13 @@ class _ProfileTabState extends State<ProfileTab> {
                           MaterialPageRoute(builder: (context) => HomeScreen()),
                           (route) => false);
                     } else {
-                      print("id: ${pessoaAtualizada.pessoaId.trim()}");
-                      print("Nome: ${pessoaAtualizada.nome.trim()}");
-                      print("CPF: ${pessoaAtualizada.cpf.trim()}");
-                      print("Email: ${pessoaAtualizada.email.trim()}");
+                      print("id: ${pessoaAtualizada.pessoaId?.trim()}");
+                      print("Nome: ${pessoaAtualizada.nome?.trim()}");
+                      print("CPF: ${pessoaAtualizada.cpf?.trim()}");
+                      print("Email: ${pessoaAtualizada.email?.trim()}");
                       print("Contato: ${pessoaAtualizada.contato}");
                       print(
-                          "Data de Nascimento: ${pessoaAtualizada.dataNascimento.trim()}");
+                          "Data de Nascimento: ${pessoaAtualizada.dataNascimento?.trim()}");
                       print("tipoSanguineo: ${pessoaAtualizada.tipoSanguineo}");
                       print("alergia: ${pessoaAtualizada.alergia}");
                       print('doador:${pessoaAtualizada.doador}');

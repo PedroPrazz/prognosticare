@@ -2,14 +2,20 @@
 
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:prognosticare/components/dialogs/change_password_dialog.dart';
 import 'package:prognosticare/components/dialogs/forgot_password_dialog.dart';
 import 'package:prognosticare/src/api/service/firebase_messaging_service.dart';
 import 'package:prognosticare/src/api/service/login_service.dart';
 import 'package:prognosticare/components/common_widgets/custom_text_field.dart';
+import 'package:prognosticare/src/api/service/profilesService.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
+import 'package:prognosticare/src/models/profilesModel.dart';
+import 'package:prognosticare/src/pages/home/teste.dart';
 import 'package:prognosticare/src/routes/app_pages.dart';
+
+final storage = FlutterSecureStorage();
 
 class SignInScreen extends StatelessWidget {
   SignInScreen({Key? key}) : super(key: key);
@@ -30,8 +36,6 @@ class SignInScreen extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     final emailController = TextEditingController();
     final passwordController = TextEditingController();
-
-    
 
     return Scaffold(
       backgroundColor: CustomColors.customSwatchColor,
@@ -60,9 +64,8 @@ class SignInScreen extends StatelessWidget {
                           TextSpan(
                             text: 'Care',
                             style: TextStyle(
-                              color: Colors.blue,
-                              fontWeight: FontWeight.bold
-                            ),
+                                color: Colors.blue,
+                                fontWeight: FontWeight.bold),
                           )
                         ],
                       ),
@@ -163,13 +166,33 @@ class SignInScreen extends StatelessWidget {
                             }
                             bool loggedIn = await LoginService.getLogin(
                                 emailController.text.trim(),
-                                passwordController.text.trim());
+                                passwordController.text.trim(),
+                                context);
                             if (loggedIn) {
                               if (passwordController.text.trim() ==
                                   'abcdefgh') {
                                 ChangePasswordDialog().updatePassword(context);
                               } else {
-                                Get.offNamed(PagesRoutes.homeRoute);
+                                String? idPessoa = await storage.read(key: 'user_id');
+                                String? nome = await storage.read(key: 'nome');
+
+                                Profile pessoaResponsavel = Profile(pessoaId: idPessoa, nome: nome, ativo: true, tipoResponsavel: true);
+                                List<Profile> profiles = await ProfileService.getProfiles(idPessoa);
+
+                                
+
+                                if (profiles.isNotEmpty) {
+                                  profiles.add(pessoaResponsavel);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => PerfisRow(
+                                              profiles: profiles,
+                                            )),
+                                  );
+                                } else {
+                                  Get.offNamed(PagesRoutes.homeRoute);
+                                }
                               }
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(

@@ -1,10 +1,10 @@
 class Pessoa {
-  String pessoaId;
-  String nome;
-  String cpf;
-  String email;
+  String? pessoaId;
+  String? nome;
+  String? cpf;
+  String? dataNascimento;
+  String? email;
   String? contato;
-  String dataNascimento;
   String? tipoSanguineo;
   bool? alergia;
   String? tipoAlergia;
@@ -17,17 +17,18 @@ class Pessoa {
     required this.pessoaId,
     required this.nome,
     required this.cpf,
-    required this.email,
-    required this.contato,
     required this.dataNascimento,
-    required this.tipoSanguineo,
-    required this.alergia,
-    required this.doador,
-    required this.tipoAlergia,
-    required this.tipoResponsavel,
-    required this.cartaoNacional,
-    required this.cartaoPlanoSaude,
+    this.email,
+    this.contato,
+    this.tipoSanguineo,
+    this.alergia,
+    this.tipoAlergia,
+    this.doador,
+    this.tipoResponsavel,
+    this.cartaoNacional,
+    this.cartaoPlanoSaude,
   });
+
 
   Pessoa copyWith({
     String? pessoaId,
@@ -63,7 +64,7 @@ class Pessoa {
 
   factory Pessoa.fromJson(Map<String, dynamic> json) {
     return Pessoa(
-      pessoaId: json['pessoa_id'],
+      pessoaId: json['pessoaId'],
       nome: json['nome'],
       cpf: json['cpf'],
       email: json['email'],

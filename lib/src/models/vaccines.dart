@@ -3,7 +3,8 @@ List Vacinas = [
     "crianca": [
       {
         "nome": "BCG (Bacilo Calmette-Guerin)",
-        "descricao": "Previne as formas graves de tuberculose, principalmente miliar e meníngea",
+        "descricao":
+            "Previne as formas graves de tuberculose, principalmente miliar e meníngea",
         "dose": "Dose Única",
       },
       {
@@ -13,7 +14,8 @@ List Vacinas = [
       },
       {
         "nome": "Pentavalente (DTP/HB/Hib)",
-        "descricao": "Previne difteria, tétano, coqueluche, hepatite B e meningite e infecções por HiB",
+        "descricao":
+            "Previne difteria, tétano, coqueluche, hepatite B e meningite e infecções por HiB",
         "dose": "1ª dose",
       },
       {
@@ -23,7 +25,8 @@ List Vacinas = [
       },
       {
         "nome": "Pneumocócica 10V",
-        "descricao": "Previne pneumonia, otite, meningite e outras doenças causadas pelo Pneumococo",
+        "descricao":
+            "Previne pneumonia, otite, meningite e outras doenças causadas pelo Pneumococo",
         "dose": "1ª dose",
       },
       {
@@ -38,7 +41,8 @@ List Vacinas = [
       },
       {
         "nome": "Pentavalente (DTP/HB/Hib)",
-        "descricao": "Previne difteria, tétano, coqueluche, hepatite B e meningite e infecções por Haemóphilus influenzae tipo B",
+        "descricao":
+            "Previne difteria, tétano, coqueluche, hepatite B e meningite e infecções por Haemóphilus influenzae tipo B",
         "dose": "2ª dose",
       },
       {
@@ -48,7 +52,8 @@ List Vacinas = [
       },
       {
         "nome": "Pneumocócica 10V",
-        "descricao": "Previne pneumonia, otite, meningite e outras doenças causadas pelo Pneumococo",
+        "descricao":
+            "Previne pneumonia, otite, meningite e outras doenças causadas pelo Pneumococo",
         "dose": "2ª dose",
       },
       {
@@ -63,7 +68,8 @@ List Vacinas = [
       },
       {
         "nome": "Pentavalente (DTP/HB/Hib)",
-        "descricao": "Previne difteria, tétano, coqueluche, hepatite B e meningite e infecções por HiB",
+        "descricao":
+            "Previne difteria, tétano, coqueluche, hepatite B e meningite e infecções por HiB",
         "dose": "3ª dose",
       },
       {
@@ -78,7 +84,8 @@ List Vacinas = [
       },
       {
         "nome": "Pneumocócica 10 Valente",
-        "descricao": "Previne pneumonia, otite, meningite e outras doenças causadas pelo Pneumococo",
+        "descricao":
+            "Previne pneumonia, otite, meningite e outras doenças causadas pelo Pneumococo",
         "dose": "Reforço",
       },
       {
@@ -87,7 +94,7 @@ List Vacinas = [
         "dose": "1ª dose",
       },
       {
-        "nome": "Hepatite A", 
+        "nome": "Hepatite A",
         "descricao": "Dose única",
         "dose": "Dose única",
       },
@@ -117,7 +124,7 @@ List Vacinas = [
         "dose": "2º reforço",
       },
       {
-        "nome": "Varicela atenuada", 
+        "nome": "Varicela atenuada",
         "descricao": "Previne varicela/catapora",
         "dose": "N/A",
       }
@@ -125,17 +132,20 @@ List Vacinas = [
     "adolescente": [
       {
         "nome": "Meninas HPV",
-        "descricao": "Previne o papiloma, vírus humano que causa cânceres e verrugas genitais",
+        "descricao":
+            "Previne o papiloma, vírus humano que causa cânceres e verrugas genitais",
         "dose": "2 doses com seis meses de intervalo",
       },
       {
         "nome": "HPV",
-        "descricao": "Previne o papiloma, vírus humano que causa cânceres e verrugas genitais",
+        "descricao":
+            "Previne o papiloma, vírus humano que causa cânceres e verrugas genitais",
         "dose": "2 doses com seis meses de intervalo",
       },
       {
         "nome": "Meningocócica C",
-        "descricao": "Doença invasiva causada por Neisseria meningitidis do sorogrupo C",
+        "descricao":
+            "Doença invasiva causada por Neisseria meningitidis do sorogrupo C",
         "dose": "Dose única ou reforço",
       },
       {
@@ -160,7 +170,8 @@ List Vacinas = [
       },
       {
         "nome": "Pneumocócica 23 Valente",
-        "descricao": "Previne pneumonia, otite, meningite e outras doenças causadas pelo Pneumococo. A vacina Pneumocócica 23V está indicada para grupos-alvo específicos",
+        "descricao":
+            "Previne pneumonia, otite, meningite e outras doenças causadas pelo Pneumococo. A vacina Pneumocócica 23V está indicada para grupos-alvo específicos",
         "dose": "1 dose a depender da situação vacinal",
       }
     ],
@@ -183,12 +194,15 @@ List Vacinas = [
       {
         "nome": "Tríplice viral",
         "descricao": "Previne sarampo, caxumba e rubéola",
-        "dose": "Se nunca vacinado: 2 doses (20 a 29 anos)\n e 1 dose (30 a 49 anos)",
+        "dose":
+            "Se nunca vacinado: 2 doses (20 a 29 anos)\n e 1 dose (30 a 49 anos)",
       },
       {
         "nome": "Pneumocócica 23 Valente",
-        "descricao": "Previne pneumonia, otite, meningite e outras doenças causadas pelo Pneumococo",
-        "dose": "1 dose é indicada para grupos-alvo específicos\n a depender da situação vacinal",
+        "descricao":
+            "Previne pneumonia, otite, meningite e outras doenças causadas pelo Pneumococo",
+        "dose":
+            "1 dose é indicada para grupos-alvo específicos\n a depender da situação vacinal",
       }
     ],
     "gestante": [
@@ -205,7 +219,8 @@ List Vacinas = [
       {
         "nome": "dTPa (Tríplice bacteriana acelular do tipo adulto)",
         "descricao": "Previne difteria, tétano e coqueluche",
-        "dose": "Uma dose a cada gestação\n a partir da 20ª semana de gestação\n ou no puerpério (até 45 dias após o parto)",
+        "dose":
+            "Uma dose a cada gestação\n a partir da 20ª semana de gestação\n ou no puerpério (até 45 dias após o parto)",
       }
     ],
     "idoso": [
@@ -222,7 +237,8 @@ List Vacinas = [
       {
         "nome": "Tríplice viral",
         "descricao": "Previne sarampo, caxumba e rubéola",
-        "dose": "Se nunca vacinado:\n 2 doses (20 a 29 anos)\n e 1 dose (30 a 49 anos)",
+        "dose":
+            "Se nunca vacinado:\n 2 doses (20 a 29 anos)\n e 1 dose (30 a 49 anos)",
       },
       {
         "nome": "Dupla adulto (DT)",
@@ -231,8 +247,10 @@ List Vacinas = [
       },
       {
         "nome": "Pneumocócica 23 Valente",
-        "descricao": "Previne pneumonia, otite, meningite e outras doenças causadas pelo Pneumococo",
-        "dose": "1 dose é indicada\n para grupos-alvo específicos\n a depender da situação vacinal",
+        "descricao":
+            "Previne pneumonia, otite, meningite e outras doenças causadas pelo Pneumococo",
+        "dose":
+            "1 dose é indicada\n para grupos-alvo específicos\n a depender da situação vacinal",
       }
     ],
   }

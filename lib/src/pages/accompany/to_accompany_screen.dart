@@ -150,7 +150,7 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                           Text(
                             value,
                             style: TextStyle(
-                              color: CustomColors.customSwatchColor,
+                              color: Colors.black,
                               fontSize: 12,
                               fontWeight: FontWeight.normal,
                             ),

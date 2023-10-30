@@ -1,20 +1,21 @@
-// ignore_for_file: unused_local_variable
-
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:prognosticare/src/api/service/findby_id_service.dart';
+import 'package:prognosticare/src/api/service/profilesService.dart';
 import 'package:prognosticare/src/api/service/tokenFCM.dart';
 import 'package:prognosticare/src/config/uri.dart';
+import 'package:prognosticare/src/models/profilesModel.dart';
+import 'package:prognosticare/src/pages/home/home_screen.dart';
+import 'package:prognosticare/src/pages/home/teste.dart';
 import '../../models/pessoa_model.dart';
 
 final storage = FlutterSecureStorage();
 
 class LoginService {
-  static Future<bool> getLogin(String email, String password) async {
-
-
-    final url = Uri.parse(UriServidor.url.toString()+'/login');
+  static Future<bool> getLogin(String email, String password, BuildContext context) async {
+    final url = Uri.parse(UriServidor.url.toString() + '/login');
 
     try {
       final response = await http.post(
@@ -34,14 +35,11 @@ class LoginService {
         await storage.write(key: 'user_id', value: dados['pessoaEntity']);
         await storage.write(key: 'nome', value: dados['nome']);
 
-
-
         String? idPessoa = await storage.read(key: 'user_id');
         String? nome = await storage.read(key: 'nome');
-        Pessoa pessoa = await GetFindbyIDService.getFindbyID();
 
-         Future<bool> token= TokenFCM.postToken();
-         print(token);
+        //Token FCM não mexa aqui
+        Future<bool> token = TokenFCM.postToken();
 
         return true;
       } else {

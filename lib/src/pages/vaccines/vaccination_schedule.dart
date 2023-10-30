@@ -37,6 +37,24 @@ class _VaccinationState extends State<Vaccination> {
     }
   }
 
+  _showFullText(BuildContext context, String title, String content) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(title),
+        content: Text(content),
+        actions: <Widget>[
+          TextButton(
+            child: Text("Fechar"),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -120,8 +138,28 @@ class _VaccinationState extends State<Vaccination> {
                   itemBuilder: (context, index) {
                     return ListTile(
                       title: Text(getVaccineList()[index]['nome']),
-                      subtitle: Text(getVaccineList()[index]['descricao']),
-                      trailing: Text(getVaccineList()[index]['dose']),
+                      subtitle: GestureDetector(
+                        onTap: () => _showFullText(context, "Descrição",
+                            getVaccineList()[index]['descricao']),
+                        child: Text(
+                          getVaccineList()[index]['descricao'],
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                        ),
+                      ),
+                      trailing: GestureDetector(
+                        onTap: () => _showFullText(
+                            context, "Dose", getVaccineList()[index]['dose']),
+                        child: Container(
+                          width: 60,
+                          child: Text(
+                            getVaccineList()[index]['dose'],
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                            style: TextStyle(fontSize: 15),
+                          ),
+                        ),
+                      ),
                     );
                   },
                 ),

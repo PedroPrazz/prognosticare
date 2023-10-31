@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison, body_might_complete_normally_nullable
+
 import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';

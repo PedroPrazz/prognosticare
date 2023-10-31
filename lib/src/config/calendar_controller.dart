@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:prognosticare/src/api/service/accompany_service.dart';
 import 'package:prognosticare/src/api/service/schedule_service.dart';
 import 'package:prognosticare/src/models/schedule_model.dart';

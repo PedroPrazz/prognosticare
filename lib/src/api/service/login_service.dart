@@ -1,15 +1,11 @@
+// ignore_for_file: unused_local_variable
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:prognosticare/src/api/service/findby_id_service.dart';
-import 'package:prognosticare/src/api/service/profilesService.dart';
 import 'package:prognosticare/src/api/service/tokenFCM.dart';
 import 'package:prognosticare/src/config/uri.dart';
-import 'package:prognosticare/src/models/profilesModel.dart';
-import 'package:prognosticare/src/pages/home/home_screen.dart';
-import 'package:prognosticare/src/pages/home/perfisRow.dart';
-import '../../models/pessoa_model.dart';
 
 final storage = FlutterSecureStorage();
 

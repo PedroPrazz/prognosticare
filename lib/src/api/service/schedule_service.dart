@@ -209,7 +209,7 @@ class ScheduleService {
     String formattedDataFinal = DateFormat("dd/MM/yyyy hh:mm:ss a").format(dataFinal);
 
     final url = Uri.parse(
-        UriServidor.url.toString() + '/to-scheduling/between-days/$idPessoa&dataInicial=$formattedDataInicial&dataFinal=$formattedDataFinal');
+        UriServidor.url.toString() + '/to-scheduling/between-days/$idPessoa?dataInicial=$formattedDataInicial&dataFinal=$formattedDataFinal');
     try {
       final response = await http.get(
         url,

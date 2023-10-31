@@ -31,19 +31,23 @@ class PerfisRow extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                for (var profile in profiles)
-                  Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        resetarDadosDoUsuarioENavegar(profile);
-                      },
-                      child: PerfilWidget(nome: profile.nome!),
-                    ),
-                  ),
+            child: Column(
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    for (var profile in profiles)
+                      Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: GestureDetector(
+                          onTap: () {
+                            resetarDadosDoUsuarioENavegar(profile);
+                          },
+                          child: PerfilWidget(nome: profile.nome!),
+                        ),
+                      ),
+                  ],
+                ),
               ],
             ),
           ),

@@ -12,7 +12,7 @@ import 'package:prognosticare/components/common_widgets/custom_text_field.dart';
 import 'package:prognosticare/src/api/service/profilesService.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/models/profilesModel.dart';
-import 'package:prognosticare/src/pages/home/teste.dart';
+import 'package:prognosticare/src/pages/home/perfisRow.dart';
 import 'package:prognosticare/src/routes/app_pages.dart';
 
 final storage = FlutterSecureStorage();

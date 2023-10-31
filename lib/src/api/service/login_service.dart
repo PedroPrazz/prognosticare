@@ -8,7 +8,7 @@ import 'package:prognosticare/src/api/service/tokenFCM.dart';
 import 'package:prognosticare/src/config/uri.dart';
 import 'package:prognosticare/src/models/profilesModel.dart';
 import 'package:prognosticare/src/pages/home/home_screen.dart';
-import 'package:prognosticare/src/pages/home/teste.dart';
+import 'package:prognosticare/src/pages/home/perfisRow.dart';
 import '../../models/pessoa_model.dart';
 
 final storage = FlutterSecureStorage();

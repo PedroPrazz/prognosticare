@@ -37,9 +37,9 @@ class MyApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       initialRoute: PagesRoutes.splashRoute,
-      initialBinding: BindingsBuilder(() { 
-        Get.put(CalendarController());
-      }),
+      // initialBinding: BindingsBuilder(() { 
+      //   Get.put(CalendarController());
+      // }),
       getPages: AppPages.pages,
     );
   }

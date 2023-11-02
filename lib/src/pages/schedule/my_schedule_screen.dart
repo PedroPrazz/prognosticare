@@ -1,135 +1,92 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:prognosticare/src/config/calendar_controller.dart';
-import 'package:prognosticare/src/config/custom_colors.dart';
+import 'package:prognosticare/src/api/service/accompany_service.dart';
+import 'package:prognosticare/src/models/to_accompany_model.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class CalendarScreen extends GetView<CalendarController> {
-  const CalendarScreen({super.key});
+// ... Seu código existente ...
+
+class ToAccompanyScreenEvent extends StatefulWidget {
+  // ... Seu código existente ...
+
+  @override
+  State<ToAccompanyScreenEvent> createState() => _ToAccompanyScreenEventState();
+}
+class _ToAccompanyScreenEventState extends State<ToAccompanyScreenEvent> {
+  CalendarFormat _calendarFormat = CalendarFormat.month;
+  DateTime _focusedDay = DateTime.now();
+  DateTime? _selectedDay;
+  Map<DateTime, List<Accompany>> _events = {};
+
+  @override
+  void initState() {
+    super.initState();
+    final now = DateTime.now();
+    final startOfMonth = DateTime(now.year, now.month, 1);
+    final endOfMonth = DateTime(now.year, now.month + 1, 0);
+    loadAccompaniments(startOfMonth, endOfMonth);
+  }
+
+  Future<void> loadAccompaniments(DateTime startDate, DateTime endDate) async {
+    try {
+      final accompaniments = await AccompanyService.getAccompanyListBetween(startDate, endDate);
+      for (var accompany in accompaniments) {
+        DateFormat apiDateFormat = DateFormat("dd/MM/yyyy HH:mm:ss a");
+        final DateTime accompanyDate = apiDateFormat.parse(accompany.dataAcompanhamento);
+        if (_events[accompanyDate] == null) {
+          _events[accompanyDate] = [accompany];
+        } else {
+          _events[accompanyDate]!.add(accompany);
+        }
+      }
+      setState(() {});
+    } catch (e) {
+      print('Erro ao carregar os acompanhamentos: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _buildCalendar(),
-    );
-  }
-
-  Widget _buildCalendar() {
-    return GetBuilder<CalendarController>(
-      id: 'calendario',
-      builder: (context) {
-        return Column(
-          children: [
-            Container(
-              child: TableCalendar(
-                firstDay: controller.primeiroDia,
-                lastDay: controller.ultimoDia,
-                focusedDay: controller.diaAtual,
-                selectedDayPredicate: (day) =>
-                    isSameDay(day, controller.diaAtual),
-                onDaySelected: (dayInicio, dayFim) async {
-                  controller.getEventosDia(dayInicio);
-                },
-                locale: controller.locale,
-                calendarFormat: controller.calendarFormat,
-                onFormatChanged: (day) => controller.onFormatChanged(day),
-                headerStyle: HeaderStyle(
-                    titleCentered: true,
-                    formatButtonVisible: false,
-                    titleTextStyle: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: CustomColors.customSwatchColor),
-                    titleTextFormatter: (day, locale) =>
-                        DateFormat('MMMM yyyy', locale)
-                            .format(day)
-                            .capitalize!),
-                calendarStyle: CalendarStyle(
-                  defaultTextStyle: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold),
-                  weekendTextStyle: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold),
-                  todayDecoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: CustomColors.customContrastColor),
-                  selectedTextStyle: TextStyle(
-                    color: Colors.white,
-                    fontWeight: isSameDay(DateTime.now(), controller.diaAtual)
-                        ? FontWeight.normal
-                        : FontWeight.bold,
-                    fontSize: isSameDay(DateTime.now(), controller.diaAtual)
-                        ? 16
-                        : 14,
-                  ),
-                  selectedDecoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: CustomColors.customSwatchColor.shade700,
-                  ),
-                ),
-              ),
-            ),
-            Flexible(child: _buildAgenda(controller.diaAtual))
-          ],
-        );
-      },
-    );
-  }
-
-  Widget _buildAgenda(DateTime data) {
-    return GetBuilder<CalendarController>(
-      id: 'agenda',
-      builder: (context) {
-        return controller.eventos.isEmpty
-            ? Container(
-                margin: EdgeInsets.only(top: 20),
-                child: Column(
-                  children: [
-                    Text(
-                      'Você não tem eventos neste dia',
-                      style: TextStyle(fontSize: 30),
-                    ),
-                  ],
-                ),
-              )
-            : Container(
-                padding: EdgeInsets.all(6),
-                child: Column(
-                  children: [
-                    Flexible(
-                      child: SizedBox(
-                        height: 60,
-                        width: 60,
-                        child: CircleAvatar(
-                          backgroundColor: Colors.orange,
-                          child: Text(
-                            data.day.toString(),
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Flexible(
-                      flex: 2,
-                      child: ListView.builder(
-                        itemCount: controller.eventos.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Card(
-                            child: ListTile(
-                              title: Text(
-                                controller.eventos[index] as String,
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
+      appBar: AppBar(),
+      body: Column(
+        children: [
+          TableCalendar(
+            firstDay: DateTime(2000),
+            lastDay: DateTime(2101),
+            focusedDay: _focusedDay,
+            calendarFormat: _calendarFormat,
+            eventLoader: _getEventsForDay,
+            onFormatChanged: (format) {
+              setState(() {
+                _calendarFormat = format;
+              });
+            },
+            onPageChanged: (focusedDay) {
+              // Chama esta função toda vez que o usuário muda de mês
+              final startOfMonth = DateTime(focusedDay.year, focusedDay.month, 1);
+              final endOfMonth = DateTime(focusedDay.year, focusedDay.month + 1, 0);
+              loadAccompaniments(startOfMonth, endOfMonth);
+            },
+            onDaySelected: (selectedDay, focusedDay) {
+              setState(() {
+                _selectedDay = selectedDay;
+              });
+            },
+          ),
+          if (_selectedDay != null)
+            ...(_events[_selectedDay] ?? []).map((accompany) {
+              return ListTile(
+                title: Text(accompany.tipoAcompanhamento),
+                subtitle: Text(accompany.medicacao),
               );
-      },
+            }).toList(),
+        ],
+      ),
     );
+  }
+
+  List<Accompany> _getEventsForDay(DateTime day) {
+    return _events[day] ?? [];
   }
 }

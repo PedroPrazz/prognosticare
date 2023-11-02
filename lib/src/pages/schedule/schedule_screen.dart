@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable, unnecessary_null_comparison, body_might_complete_normally_nullable
 
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:prognosticare/src/api/service/schedule_service.dart';
@@ -24,22 +25,40 @@ class ScheduleScreen extends StatefulWidget {
 
 class _ScheduleScreenState extends State<ScheduleScreen> {
   // Lista de tipos de agendamentos
-  List<String> tiposDeAgendamento = [
-    'Exames',
-    'Consultas',
-    'Internações',
-    'Vacinas',
-    'Cirurgias'
-  ];
 
-  List<String> tiposDeEspecialista = [
-    'Ortopedia',
-    'Clinico Geral',
-    'Cardiologia',
-    'Ginecologia',
-    'Não Possui',
-    'Demartologia'
-  ];
+  String mapTipoAgendamento(String selectedValue) {
+  switch (selectedValue) {
+    case 'EXAME':
+      return 'Exames';
+    case 'CONSULTA':
+      return 'Consultas';
+    case 'INTERNAÇÃO':
+      return 'Internações';
+    case 'VACINA':
+      return 'Vacinas';
+    case 'CIRURGIA':
+      return 'Cirurgias';
+    default:
+      return 'SELECIONE';
+  }
+}
+  String mapTipoEspecialista(String selectedValue) {
+  switch (selectedValue) {
+    case 'ORTOPEDIA':
+      return 'Ortopedista';
+    case 'CLINICO_GERAL':
+      return 'Clinico Geral';
+    case 'GINECOLOGIA':
+      return 'Ginecologista';
+    case 'DERMATOLOGIA':
+      return 'Dermatologista';
+    case 'NAO_POSSUI':
+      return 'Não Possui';
+    default:
+      return 'SELECIONE';
+  }
+}
+
   List<int> intervaloData = [1, 2, 3, 5];
 
   int selectedValue = 1;
@@ -73,8 +92,8 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   void initState() {
     super.initState();
     if (widget.isEditing) {
-      tipoAgendamentoController.text = widget.schedule!.tipoAgendamento;
-      especialistaController.text = widget.schedule!.especialista;
+      tipoAgendamentoController.text = widget.schedule!.tipoAgendamento ?? 'SELECIONE';
+      especialistaController.text = widget.schedule!.especialista ?? 'SELECIONE';
       descricaoController.text = widget.schedule!.descricao;
       localController.text = widget.schedule!.local;
       dataController.text = widget.schedule!.dataAgenda;
@@ -153,7 +172,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                   items: <String>[
                     'EXAME',
                     'CONSULTA',
-                    'INTERNAÇÃO',
+                    'INTERNACAO',
                     'VACINA',
                     'CIRURGIA',
                   ].map<DropdownMenuItem<String>>(
@@ -166,7 +185,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                                 color: CustomColors.customSwatchColor),
                             SizedBox(width: 10),
                             Text(
-                              value,
+                              mapTipoAgendamento(value),
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 12,
@@ -236,7 +255,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                                 color: CustomColors.customSwatchColor),
                             SizedBox(width: 10),
                             Text(
-                              value,
+                              mapTipoEspecialista(value),
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 12,

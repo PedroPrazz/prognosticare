@@ -24,6 +24,29 @@ class _ProfileTabState extends State<ProfileTab> {
     filter: {'#': RegExp(r'[0-9]')},
   );
 
+  String mapTipoSanguineo(String selectedValue) {
+  switch (selectedValue) {
+    case 'A_POSITIVO':
+      return 'A+';
+    case 'A_NEGATIVO':
+      return 'A-';
+    case 'B_POSITIVO':
+      return 'B+';
+    case 'B_NEGATIVO':
+      return 'B-';
+    case 'O_POSITIVO':
+      return 'O+';
+    case 'O_NEGATIVO':
+      return 'O-';
+    case 'AB_POSITIVO':
+      return 'AB+';
+    case 'AB_NEGATIVO':
+      return 'AB-';
+    default:
+      return 'SELECIONE';
+  }
+}
+
   bool telefoneValido = false;
   bool cnsValido = false;
   bool cpsValido = false;
@@ -225,7 +248,7 @@ class _ProfileTabState extends State<ProfileTab> {
                               color: CustomColors.customSwatchColor),
                           SizedBox(width: 10),
                           Text(
-                            value,
+                            mapTipoSanguineo(value),
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 12,

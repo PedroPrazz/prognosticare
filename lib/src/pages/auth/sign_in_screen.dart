@@ -179,8 +179,6 @@ class SignInScreen extends StatelessWidget {
                                 Profile pessoaResponsavel = Profile(pessoaId: idPessoa, nome: nome, ativo: true, tipoResponsavel: true);
                                 List<Profile> profiles = await ProfileService.getProfiles(idPessoa);
 
-                                
-
                                 if (profiles.isNotEmpty) {
                                   profiles.add(pessoaResponsavel);
                                   Navigator.push(

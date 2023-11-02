@@ -11,7 +11,11 @@ class CalendarController extends GetxController {
   late DateTime diaAtual;
   late String filtro;
 
-  Map<DateTime, List<String>> eventos = {}; // Mapeia datas para uma lista de eventos
+  Map<DateTime, List<String>> eventos =
+      {}; // Mapeia datas para uma lista de eventos
+
+  List<Schedule> agendamentos = [];
+  List<Accompany> acompanhamentos = [];
 
   CalendarFormat calendarFormat = CalendarFormat.month;
 
@@ -34,44 +38,51 @@ class CalendarController extends GetxController {
     update(['calendario', 'agenda']);
   }
 
-  void getAgenda(DateTime data) async {
-  eventos.clear();
+  Future<void> getAgenda(DateTime data) async {
+    eventos.clear();
 
-  // Busque os agendamentos para a data especificada
-  DateTime dataInicial = data;
-  DateTime dataFinal = data.add(Duration(days: 1)); // Próximo dia
+    // Busque os agendamentos para a data especificada
+    DateTime dataInicial = data;
+    DateTime dataFinal = data.add(Duration(days: 1)); // Próximo dia
 
-  try {
-    List<Schedule> schedule = await ScheduleService.getScheduleListBetween(dataInicial, dataFinal);
+    try {
+      agendamentos =
+          await ScheduleService.getScheduleListBetween(dataInicial, dataFinal);
 
-    List<String> eventsForTheDay = [];
+      // Busque os acompanhamentos para a data especificada
+      acompanhamentos = await AccompanyService.getAccompanyListBetween(
+          dataInicial, dataFinal);
 
-    // Adicione os agendamentos ao mapa de eventos
-    for (var schedule in schedule) {
-      String evento = '${schedule.dataAgenda} - ${schedule.tipoAgendamento}';
-      eventsForTheDay.add(evento);
+      // Crie uma lista de eventos que combina agendamentos e acompanhamentos
+      List<String> eventsForTheDay = [];
+
+      for (var schedule in agendamentos) {
+        String evento = '${schedule.dataAgenda} - ${schedule.tipoAgendamento}';
+        eventsForTheDay.add(evento);
+      }
+
+      for (var accompany in acompanhamentos) {
+        String evento =
+            '${accompany.dataAcompanhamento} - ${accompany.tipoAcompanhamento}';
+        eventsForTheDay.add(evento);
+      }
+
+      eventos[data] = eventsForTheDay;
+
+      update(['calendario', 'agenda']);
+    } catch (e) {
+      print('Erro ao buscar agendamentos e acompanhamentos: $e');
     }
-
-    // Busque os acompanhamentos para a data especificada
-    List<Accompany> accompany = await AccompanyService.getAccompanyListBetween(dataInicial, dataFinal);
-
-    // Adicione os acompanhamentos ao mapa de eventos
-    for (var accompany in accompany) {
-      String evento = '${accompany.dataAcompanhamento} - ${accompany.tipoAcompanhamento}';
-      eventsForTheDay.add(evento);
-    }
-
-    // Use a data selecionada como chave no mapa de eventos
-    eventos[data] = eventsForTheDay;
-
-    update(['calendario', 'agenda']);
-  } catch (e) {
-    print('Erro ao buscar agendamentos e acompanhamentos: $e');
   }
-}
-  void onFormatChanged(format){
-      calendarFormat = format;
 
-      update(['calendario']);
-    }
+  void onFormatChanged(format) {
+    calendarFormat = format;
+
+    update(['calendario']);
+  }
+
+  void updateEventsForDay(DateTime date, List<String> events) {
+    eventos[date] = events;
+    update(['calendario', 'agenda']);
+  }
 }

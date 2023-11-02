@@ -35,6 +35,29 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
     filter: {'#': RegExp(r'[0-9]')},
   );
 
+  String mapTipoSanguineo(String selectedValue) {
+  switch (selectedValue) {
+    case 'A_POSITIVO':
+      return 'A+';
+    case 'A_NEGATIVO':
+      return 'A-';
+    case 'B_POSITIVO':
+      return 'B+';
+    case 'B_NEGATIVO':
+      return 'B-';
+    case 'O_POSITIVO':
+      return 'O+';
+    case 'O_NEGATIVO':
+      return 'O-';
+    case 'AB_POSITIVO':
+      return 'AB+';
+    case 'AB_NEGATIVO':
+      return 'AB-';
+    default:
+      return 'SELECIONE';
+  }
+}
+
   bool nomeValido = false;
   bool cpfValido = false;
   bool dataValida = false;
@@ -263,9 +286,9 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                               color: CustomColors.customSwatchColor),
                           SizedBox(width: 10),
                           Text(
-                            value,
+                            mapTipoSanguineo(value),
                             style: TextStyle(
-                              color: CustomColors.customSwatchColor,
+                              color: Colors.black,
                               fontSize: 12,
                               fontWeight: FontWeight.normal,
                             ),
@@ -326,20 +349,20 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                     ),
                   ),
                   onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      print('Todos os campos estão válidos');
-                    } else {
-                      print('Campos não válidos');
-                    }
-                    if (!nomeValido ||
-                        !cpfValido ||
-                        !dataValida ||
-                        !cnsValido ||
-                        !cpsValido ||
-                        !tipoSanguineoValido ||
-                        (alergiaMarcada && !tipoAlergiaValido)) {
-                      return;
-                    }
+                    // if (_formKey.currentState!.validate()) {
+                    //   print('Todos os campos estão válidos');
+                    // } else {
+                    //   print('Campos não válidos');
+                    // }
+                    // if (!nomeValido ||
+                    //     !cpfValido ||
+                    //     !dataValida ||
+                    //     !cnsValido ||
+                    //     !cpsValido ||
+                    //     !tipoSanguineoValido ||
+                    //     (alergiaMarcada && !tipoAlergiaValido)) {
+                    //   return;
+                    // }
                     if (widget.isEditing == true) {
                       final dependente = Dependente.editar(
                         ativo: widget.dependente!.ativo,

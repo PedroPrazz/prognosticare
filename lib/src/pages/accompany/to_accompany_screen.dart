@@ -1,6 +1,5 @@
 // ignore_for_file: unnecessary_null_comparison, body_might_complete_normally_nullable
 
-import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -11,6 +10,7 @@ import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/models/to_accompany_model.dart';
 import 'package:prognosticare/src/pages/accompany/to_accompany_list_screen.dart';
 import 'package:prognosticare/src/pages/home/home_screen.dart';
+import 'package:radio_grouped_buttons/radio_grouped_buttons.dart';
 
 class ToAccompanyScreen extends StatefulWidget {
   final Accompany? accompany;
@@ -38,8 +38,7 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
   TextEditingController tipoAcompanhamentoController = TextEditingController();
   TextEditingController medicacaoController = TextEditingController();
   TextEditingController dataAcompanhamentoController = TextEditingController();
-  TextEditingController tipoTemporarioControladoController =
-      TextEditingController();
+  TextEditingController tipoTemporarioControladoController = TextEditingController();
   TextEditingController prescricaoMedicaController = TextEditingController();
 
   bool tipoAcompanhamentoValido = false;
@@ -49,6 +48,13 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
   bool prescricaoValido = false;
   bool notificacaoMarcada = false;
   String? valorInicial;
+  
+
+  void onTipoTemporarioControladoChanged(String value) {
+    setState(() {
+      tipoTemporarioControladoController.text = value;
+    });
+  }
 
   @override
   void initState() {
@@ -74,6 +80,9 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
 
   @override
   Widget build(BuildContext context) {
+    int initialSelection = tipoDeMedicacao.contains(tipoTemporarioControladoController.text)
+        ? tipoDeMedicacao.indexOf(tipoTemporarioControladoController.text)
+        : 0;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -252,24 +261,29 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
               ),
             ),
             // Tipo de Medicação
-            CustomRadioButton(
-              unSelectedColor: Colors.white,
-              autoWidth: true,
-              buttonLables: [
-                "CONTROLADO",
-                "TEMPORARIO",
-              ],
-              buttonValues: [
-                "CONTROLADO",
-                "TEMPORARIO",
-              ],
-              radioButtonValue: (value) {
-                setState(() {
-                  tipoTemporarioControladoController.text = value;
-                });
-              },
-              selectedColor: CustomColors.customSwatchColor,
+            Text('Como será seu acompanhamento:', style: TextStyle(fontSize: 16),),
+            Container(
+              alignment: AlignmentDirectional.center,
+              padding: EdgeInsets.all(10),
+              width: MediaQuery.of(context).size.width,
+              height: 50,
+              child: CustomRadioButton(
+                buttonLables: tipoDeMedicacao,
+                buttonValues: tipoDeMedicacao,
+                radioButtonValue: (tipoTemporarioControladoController, index) {
+                  onTipoTemporarioControladoChanged(tipoTemporarioControladoController);
+                  print("Button value " + tipoTemporarioControladoController);
+                  print("Integer value " + index.toString());
+                },
+                initialSelection: initialSelection,
+                horizontal: true,
+                enableShape: true,
+                buttonSpace: 5,
+                buttonColor: Colors.white,
+                selectedColor: CustomColors.customSwatchColor,
+              ),
             ),
+
             //Notificação
             CheckboxListTile(
               title: Text('Ativar notificações?'),

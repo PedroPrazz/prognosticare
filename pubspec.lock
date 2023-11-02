@@ -81,14 +81,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.5"
-  custom_radio_grouped_button:
-    dependency: "direct main"
-    description:
-      name: custom_radio_grouped_button
-      sha256: b07bd6dec2c1c5d64776a354eb2c01c67a77e4a5700098ae6fbde18cc94ad33d
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.2.1"
   datetime_picker_formfield:
     dependency: "direct main"
     description:
@@ -464,6 +456,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.5"
+  radio_grouped_buttons:
+    dependency: "direct main"
+    description:
+      name: radio_grouped_buttons
+      sha256: "0237e0819faff03b3911c0658b50a81ec490c91c688ddfc1efea8803d2f04187"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
   simple_gesture_detector:
     dependency: transitive
     description:

@@ -1,16 +1,69 @@
-# prognosticare
+# Prognosticare 🏥
 
-A new Flutter project.
+![Flutter](https://img.shields.io/badge/Flutter-Projeto-blue?logo=flutter)
+![Dart](https://img.shields.io/badge/Dart-Linguagem-blue?logo=dart)
+![Firebase](https://img.shields.io/badge/Firebase-banco%20de%20dados-orange?logo=firebase)
 
-## Getting Started
+Prognosticare é uma aplicação moderna de cuidados de saúde projetada para trazer conveniência e eficiência ao atendimento ao paciente e à gestão médica. Construído com Flutter, oferece uma experiência perfeita em plataformas Android e iOS.
 
-This project is a starting point for a Flutter application.
+## Funcionalidades 🚀
 
-A few resources to get you started if this is your first Flutter project:
+-   📅 Agendamento de Consultas
+-   📚 Gerenciamento de Prontuários Médicos
+-   🛎️ Notificações em Tempo Real
+-   🔒 Autenticação Segura
+-   📈 Análises de Saúde
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Primeiros Passos 🌟
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Para começar a usar o Prognosticare, certifique-se de ter o Flutter instalado no seu sistema. Siga estes passos:
+
+1. Clone o repositório:
+    ```bash
+    git clone https://github.com/PedroPrazz/prognosticare.git
+    ```
+2. Navegue até o diretório do projeto:
+    ```bash
+    cd prognosticare
+    ```
+3. Instale as dependências:
+    ```bash
+    flutter pub get
+    ```
+4. Execute a aplicação:
+    ```bash
+    flutter run
+    ```
+
+## Documentação 📖
+
+-   [Documentação do Flutter](https://docs.flutter.dev/)
+-   [Documentação do Dart](https://dart.dev/guides)
+-   [Configuração do Firebase para Flutter](https://firebase.flutter.dev/docs/overview)
+
+## Contribuindo 🤝
+
+Contribuições são o que fazem a comunidade open-source um lugar incrível para aprender, inspirar e criar. Qualquer contribuição que você fizer é **muito apreciada**.
+
+1. Faça um Fork do Projeto
+2. Crie sua Branch de Funcionalidades (`git checkout -b feature/NovaFuncionalidade`)
+3. Faça o Commit das suas Mudanças (`git commit -m 'Adicionar alguma NovaFuncionalidade'`)
+4. Faça o Push para a Branch (`git push origin feature/NovaFuncionalidade`)
+5. Abra um Pull Request
+
+## Licença 📄
+
+Distribuído sob a licença MIT. Veja `LICENSE` para mais informações.
+
+## Contato 📬
+
+-   Link do Projeto: [Prognosticare no GitHub](https://github.com/PedroPrazz/prognosticare)
+
+## Colaboradores ✨
+
+Agradecemos a todos que contribuíram para o crescimento e aprimoramento do Prognosticare! Você pode ver a lista de colaboradores [aqui](https://github.com/PedroPrazz/prognosticare/graphs/contributors).
+
+## Contato 📬
+
+-   Link do Projeto: [Prognosticare no GitHub](https://github.com/PedroPrazz/prognosticare)
+-   Colaboradores: [Contributors](https://github.com/PedroPrazz/prognosticare/graphs/contributors)

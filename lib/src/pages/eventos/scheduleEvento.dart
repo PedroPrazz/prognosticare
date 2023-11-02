@@ -25,51 +25,51 @@ class _CarrinhoPageState extends State<ScheduleEvento> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: FutureBuilder<List<Schedule>>(
-      future: schedulesFuture,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
-        } else if (snapshot.hasError) {
-          return Text('Erro: ${snapshot.error}');
-        } else {
-          List<Schedule> schedules = snapshot.data!;
-          return ListView.builder(
-            itemCount: schedules.length,
-            itemBuilder: (context, index) {
-              final schedule = schedules[index];
-              schedules.sort((a, b) {
-                if (a.statusEvento == "ABERTO" &&
-                    (b.statusEvento == "FINALIZADO" ||
-                        b.statusEvento == "CANCELADO")) {
-                  return -1;
-                } else if (a.statusEvento == "FINALIZADO" &&
-                    b.statusEvento == "CANCELADO") {
-                  return -1;
-                } else if (a.statusEvento == b.statusEvento) {
-                  return 0;
-                } else {
-                  return 1;
-                }
-              });
+      body: FutureBuilder<List<Schedule>>(
+        future: schedulesFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator();
+          } else if (snapshot.hasError) {
+            return Text('Erro: ${snapshot.error}');
+          } else {
+            List<Schedule> schedules = snapshot.data!;
+            return ListView.builder(
+              itemCount: schedules.length,
+              itemBuilder: (context, index) {
+                final schedule = schedules[index];
+                schedules.sort((a, b) {
+                  if (a.statusEvento == "ABERTO" &&
+                      (b.statusEvento == "FINALIZADO" ||
+                          b.statusEvento == "CANCELADO")) {
+                    return -1;
+                  } else if (a.statusEvento == "FINALIZADO" &&
+                      b.statusEvento == "CANCELADO") {
+                    return -1;
+                  } else if (a.statusEvento == b.statusEvento) {
+                    return 0;
+                  } else {
+                    return 1;
+                  }
+                });
 
-              Color statusColor =
-                  schedule.statusEvento == "ABERTO" ? Colors.green : Colors.red;
-              return ListTile(
-                title: Text(
-                    schedule.tipoAgendamento + " " + schedule.especialista),
-                subtitle: Text(
-                  schedule.statusEvento! + " " + schedule.dataAgenda,
-                  style: TextStyle(color: statusColor),
-                ),
-                onTap: () {},
-              );
-            },
-          );
-        }
-      },
-    ),
-
+                Color statusColor = schedule.statusEvento == "ABERTO"
+                    ? Colors.green
+                    : Colors.red;
+                return ListTile(
+                  title: Text(
+                      schedule.tipoAgendamento + " " + schedule.especialista),
+                  subtitle: Text(
+                    schedule.statusEvento! + " " + schedule.dataAgenda,
+                    style: TextStyle(color: statusColor),
+                  ),
+                  onTap: () {},
+                );
+              },
+            );
+          }
+        },
+      ),
     );
   }
 }

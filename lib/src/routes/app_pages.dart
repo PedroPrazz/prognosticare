@@ -32,7 +32,6 @@ abstract class AppPages {
       page: () => PerfisRow(profiles: [],),
       name: PagesRoutes.profiles,
     ),
-    
   ];
 }
 

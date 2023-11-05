@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart'; // Importe o pacote Get
+import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/models/profilesModel.dart';
 import 'package:prognosticare/src/routes/app_pages.dart';
 
@@ -27,31 +28,36 @@ class PerfisRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Expanded(
-            child: Column(
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    for (var profile in profiles)
-                      Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: GestureDetector(
-                          onTap: () {
-                            resetarDadosDoUsuarioENavegar(profile);
-                          },
-                          child: PerfilWidget(nome: profile.nome!),
+      appBar: AppBar(title: Text('Selecione um Perfil')),
+      body: Container(
+        color: CustomColors.customSwatchColor.shade100,
+        padding: EdgeInsets.all(16),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Expanded(
+              child: Column(
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      for (var profile in profiles)
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: GestureDetector(
+                            onTap: () {
+                              resetarDadosDoUsuarioENavegar(profile);
+                            },
+                            child: PerfilWidget(nome: profile.nome!),
+                          ),
                         ),
-                      ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -67,7 +73,7 @@ class PerfilWidget extends StatelessWidget {
     return Container(
       width: 100,
       height: 100,
-      color: Colors.blue,
+      color: CustomColors.customContrastColor,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[

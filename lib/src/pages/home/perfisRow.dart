@@ -16,10 +16,12 @@ class PerfisRow extends StatelessWidget {
     // Redefinir as informações do usuário
     String? idPessoa = perfilSelecionado.pessoaId;
     String? nome = perfilSelecionado.nome;
+    bool? tipoResponsavel = perfilSelecionado.tipoResponsavel;
 
     // Atualize os valores armazenados
     await storage.write(key: 'user_id', value: idPessoa);
     await storage.write(key: 'nome', value: nome);
+    await storage.write(key: 'tipoResponsavel', value: tipoResponsavel.toString());
 
     // Navegue para a homeRoute
     Get.offNamed(PagesRoutes.homeRoute);

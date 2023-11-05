@@ -175,6 +175,8 @@ class SignInScreen extends StatelessWidget {
                               } else {
                                 String? idPessoa = await storage.read(key: 'user_id');
                                 String? nome = await storage.read(key: 'nome');
+                                bool? tipoResponsavel = true;
+                                await storage.write(key: 'tipoResponsavel', value: tipoResponsavel.toString());
 
                                 Profile pessoaResponsavel = Profile(pessoaId: idPessoa, nome: nome, ativo: true, tipoResponsavel: true);
                                 List<Profile> profiles = await ProfileService.getProfiles(idPessoa);

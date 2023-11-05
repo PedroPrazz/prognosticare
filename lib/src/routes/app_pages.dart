@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
 import 'package:prognosticare/src/pages/auth/sign_up_screen.dart';
 import 'package:prognosticare/src/pages/home/home_screen.dart';
+import 'package:prognosticare/src/pages/home/perfisRow.dart';
 import 'package:prognosticare/src/pages/splash/splash_screen.dart';
 import 'package:prognosticare/src/pages/vaccines/vaccination_schedule.dart';
 
@@ -27,6 +28,10 @@ abstract class AppPages {
       page: () => Vaccination(),
       name: PagesRoutes.vaccination,
     ),
+    GetPage(
+      page: () => PerfisRow(profiles: [],),
+      name: PagesRoutes.profiles,
+    ),
     
   ];
 }
@@ -36,6 +41,7 @@ abstract class PagesRoutes {
   static const String signUpRoute = '/signup';
   static const String splashRoute = '/splash';
   static const String vaccination = '/vaccination';
+  static const String profiles= '/profiles';
   static const String homeRoute = '/';
   
 }

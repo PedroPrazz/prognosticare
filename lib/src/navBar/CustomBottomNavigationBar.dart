@@ -63,6 +63,20 @@ class CustomBottomNavigationBar extends StatelessWidget {
             iconSize: 30,
             color: Colors.white,
           ),
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ScheduleEventoPage(),
+                ),
+              );
+            },
+            tooltip: 'Eventos',
+            icon: const Icon(Icons.help_outline_outlined),
+            iconSize: 30,
+            color: Colors.white,
+          ),
         ],
       ),
     );

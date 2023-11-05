@@ -396,7 +396,7 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text(
-                              'Erro no servidor abraço, tente depois',
+                              'Erro no servidor, tente depois',
                             ),
                             backgroundColor: Colors.red,
                           ),

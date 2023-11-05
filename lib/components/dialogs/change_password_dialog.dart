@@ -3,6 +3,16 @@ import 'package:prognosticare/src/pages/auth/sign_in_screen.dart';
 import 'package:prognosticare/components/common_widgets/custom_text_field.dart';
 import '../../src/api/service/change_password_service.dart';
 
+bool contemLetraENumero(String senha) {
+  RegExp letraRegExp = RegExp(r'[a-zA-Z]');
+  RegExp numeroRegExp = RegExp(r'[0-9]');
+
+  bool contemLetra = letraRegExp.hasMatch(senha);
+  bool contemNumero = numeroRegExp.hasMatch(senha);
+
+  return contemLetra && contemNumero;
+}
+
 class ChangePasswordDialog extends StatelessWidget {
   const ChangePasswordDialog({Key? key});
 
@@ -59,6 +69,9 @@ class ChangePasswordDialog extends StatelessWidget {
                           if (newPasswordController.text.trim() !=
                               confirmNewPasswordController.text.trim()) {
                             return 'As senhas não coincidem';
+                          }
+                          if (!contemLetraENumero(senha)) {
+                            return 'A senha deve conter pelo menos uma letra e um número.';
                           }
                           novaSenhaValida = true;
                           return null;

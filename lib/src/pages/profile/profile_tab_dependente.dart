@@ -36,27 +36,27 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
   );
 
   String mapTipoSanguineo(String selectedValue) {
-  switch (selectedValue) {
-    case 'A_POSITIVO':
-      return 'A+';
-    case 'A_NEGATIVO':
-      return 'A-';
-    case 'B_POSITIVO':
-      return 'B+';
-    case 'B_NEGATIVO':
-      return 'B-';
-    case 'O_POSITIVO':
-      return 'O+';
-    case 'O_NEGATIVO':
-      return 'O-';
-    case 'AB_POSITIVO':
-      return 'AB+';
-    case 'AB_NEGATIVO':
-      return 'AB-';
-    default:
-      return 'SELECIONE';
+    switch (selectedValue) {
+      case 'A_POSITIVO':
+        return 'A+';
+      case 'A_NEGATIVO':
+        return 'A-';
+      case 'B_POSITIVO':
+        return 'B+';
+      case 'B_NEGATIVO':
+        return 'B-';
+      case 'O_POSITIVO':
+        return 'O+';
+      case 'O_NEGATIVO':
+        return 'O-';
+      case 'AB_POSITIVO':
+        return 'AB+';
+      case 'AB_NEGATIVO':
+        return 'AB-';
+      default:
+        return 'SELECIONE';
+    }
   }
-}
 
   bool nomeValido = false;
   bool cpfValido = false;
@@ -235,7 +235,7 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                       cpsController.text.trim().length < 18) {
                     return 'Cartão do Plano de Saúde inválido!';
                   }
-                  cpfValido = true;
+                  cpsValido = true;
                   return null;
                 },
               ),
@@ -349,32 +349,32 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                     ),
                   ),
                   onPressed: () async {
-                    // if (_formKey.currentState!.validate()) {
-                    //   print('Todos os campos estão válidos');
-                    // } else {
-                    //   print('Campos não válidos');
-                    // }
-                    // if (!nomeValido ||
-                    //     !cpfValido ||
-                    //     !dataValida ||
-                    //     !cnsValido ||
-                    //     !cpsValido ||
-                    //     !tipoSanguineoValido ||
-                    //     (alergiaMarcada && !tipoAlergiaValido)) {
-                    //   return;
-                    // }
+                    if (_formKey.currentState!.validate()) {
+                      print('Todos os campos estão válidos');
+                    } else {
+                      print('Campos não válidos');
+                    }
+                    if (!nomeValido ||
+                        !cpfValido ||
+                        !dataValida ||
+                        !cnsValido ||
+                        !cpsValido ||
+                        !tipoSanguineoValido ||
+                        (alergiaMarcada && !tipoAlergiaValido)) {
+                      return;
+                    }
                     if (widget.isEditing == true) {
                       final dependente = Dependente.editar(
                         ativo: widget.dependente!.ativo,
                         id: widget.dependente!.id,
-                        nome: nomeController.text,
-                        cpf: cpfController.text,
-                        dataNascimento: dataController.text,
-                        tipoSanguineo: tipoSanguineoController.text,
+                        nome: nomeController.text.trim(),
+                        cpf: cpfController.text.trim(),
+                        dataNascimento: dataController.text.trim(),
+                        tipoSanguineo: tipoSanguineoController.text.trim(),
                         alergia: alergiaMarcada,
-                        tipoAlergia: tipoAlergiaController.text,
-                        cartaoNacional: cnsController.text,
-                        cartaoPlanoSaude: cpsController.text,
+                        tipoAlergia: tipoAlergiaController.text.trim(),
+                        cartaoNacional: cnsController.text.trim(),
+                        cartaoPlanoSaude: cpsController.text.trim(),
                       );
                       bool update =
                           await DependentService.updateDependent(dependente);
@@ -404,14 +404,14 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                       }
                     } else {
                       final dependente = Dependente.cadastrar(
-                        nome: nomeController.text,
-                        cpf: cpfController.text,
-                        dataNascimento: dataController.text,
-                        tipoSanguineo: tipoSanguineoController.text,
+                        nome: nomeController.text.trim(),
+                        cpf: cpfController.text.trim(),
+                        dataNascimento: dataController.text.trim(),
+                        tipoSanguineo: tipoSanguineoController.text.trim(),
                         alergia: alergiaMarcada,
-                        tipoAlergia: tipoAlergiaController.text,
-                        cartaoNacional: cnsController.text,
-                        cartaoPlanoSaude: cpsController.text,
+                        tipoAlergia: tipoAlergiaController.text.trim(),
+                        cartaoNacional: cnsController.text.trim(),
+                        cartaoPlanoSaude: cpsController.text.trim(),
                       );
                       bool register =
                           await DependentService.getRegisterD(dependente);

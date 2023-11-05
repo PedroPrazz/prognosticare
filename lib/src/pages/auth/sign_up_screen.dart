@@ -15,6 +15,16 @@ class SignUpScreen extends StatefulWidget {
   State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
+bool contemLetraENumero(String senha) {
+  RegExp letraRegExp = RegExp(r'[a-zA-Z]');
+  RegExp numeroRegExp = RegExp(r'[0-9]');
+
+  bool contemLetra = letraRegExp.hasMatch(senha);
+  bool contemNumero = numeroRegExp.hasMatch(senha);
+
+  return contemLetra && contemNumero;
+}
+
 class _SignUpScreenState extends State<SignUpScreen> {
   bool nomeValido = false;
   bool cpfValido = false;
@@ -198,6 +208,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               if (passwordController.text.trim() !=
                                   confirmPasswordController.text.trim()) {
                                 return 'As senhas não coincidem';
+                              }
+                              if (!contemLetraENumero(senha)) {
+                                return 'A senha deve conter pelo menos uma letra e um número.';
                               }
                               senhaValida = true;
                               return null;

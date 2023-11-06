@@ -31,7 +31,11 @@ class _CarrinhoPageState extends State<ScheduleEvento> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return CircularProgressIndicator();
           } else if (snapshot.hasError) {
-            return Text('Erro: ${snapshot.error}');
+            return Center(
+                child: Text(
+              'Sem eventos cadastrados.',
+              style: TextStyle(fontSize: 25, color: Colors.blue),
+            ));
           } else {
             List<Schedule> schedules = snapshot.data!;
             return ListView.builder(

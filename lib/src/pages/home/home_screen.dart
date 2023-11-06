@@ -221,64 +221,69 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             SizedBox(height: 20),
 
-            Container(
-              padding: EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(
-                    color: CustomColors.customContrastColor, width: 2),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // Label
-                  Padding(
-                    padding: EdgeInsets.all(double.parse('10.0')),
+            Stack(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(
+                        color: CustomColors.customContrastColor, width: 2),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {},
+                            child: Icon(
+                              CupertinoIcons.heart_solid,
+                              color: Colors.white,
+                              size: 50,
+                            ),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {},
+                            child: Icon(
+                              Icons.medical_information,
+                              color: Colors.white,
+                              size: 50,
+                            ),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {},
+                            child: Icon(
+                              Icons.medication,
+                              color: Colors.white,
+                              size: 50,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.all(10),
+                  child: Center(
                     child: Text(
                       'INFORMAÇÕES',
+                      textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 15,
                         color: Colors.blue,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
-                  SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: Icon(
-                          CupertinoIcons.heart_solid,
-                          color: Colors.white,
-                          size: 50,
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: Icon(
-                          Icons.medical_information,
-                          color: Colors.white,
-                          size: 50,
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: Icon(
-                          Icons.medication,
-                          color: Colors.white,
-                          size: 50,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
             SizedBox(height: 20),
-
             Container(
               padding: EdgeInsets.all(20),
               decoration: BoxDecoration(

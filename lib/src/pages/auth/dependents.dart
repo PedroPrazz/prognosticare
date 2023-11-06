@@ -68,20 +68,15 @@ class _ListDependentsState extends State<ListDependents> {
       appBar: AppBar(
         title: Text('Lista de Dependentes'),
         foregroundColor: Colors.white,
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.pushAndRemoveUntil(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(builder: (context) => HomeScreen()),
                   (route) => false);
-            },
-            icon: const Icon(
-              Icons.home,
-              color: Colors.white,
-            ),
-          ),
-        ],
+          },
+        ),
       ),
       body: FutureBuilder<List<Dependente>>(
         future: dependentsFuture,

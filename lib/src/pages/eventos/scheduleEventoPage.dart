@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/navBar/CustomBottomNavigationBar.dart';
 import 'package:prognosticare/src/pages/eventos/ScheduleEvento.dart';
+import 'package:prognosticare/src/pages/home/home_screen.dart';
 
 class ScheduleEventoPage extends StatelessWidget {
   const ScheduleEventoPage({super.key});
@@ -72,6 +73,15 @@ class ScheduleEventoPage extends StatelessWidget {
           foregroundColor: Colors.white,
           title: Text('Eventos'),
           backgroundColor: CustomColors.customSwatchColor,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                  (route) => false);
+            },
+          ),
           actions: [
             IconButton(
               icon: Icon(Icons.filter_list),

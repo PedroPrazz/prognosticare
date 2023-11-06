@@ -113,10 +113,10 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
           widget.isEditing ? 'Editar Agendamento' : 'Adicionar Agendamento',
         ),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context);
+            },
         ),
         foregroundColor: Colors.white,
         actions: [
@@ -519,11 +519,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                             backgroundColor: Colors.green,
                           ),
                         );
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (c) {
-                            return ScheduleListScreen();
-                          },
-                        ));
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ScheduleListScreen()));
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(

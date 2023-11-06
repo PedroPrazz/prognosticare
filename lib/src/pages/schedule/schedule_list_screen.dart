@@ -115,27 +115,16 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                  (route) => false);
           },
         ),
         title: Text('Agendamentos'),
         centerTitle: true,
         backgroundColor: CustomColors.customSwatchColor,
         foregroundColor: Colors.white,
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()),
-                  (route) => false);
-            },
-            icon: const Icon(
-              Icons.home,
-              color: Colors.white,
-            ),
-          ),
-        ],
       ),
       body: FutureBuilder<List<Schedule>>(
         future: schedulesFuture,

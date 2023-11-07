@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:prognosticare/components/dialogs/change_password_dialog.dart';
+import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/models/profilesModel.dart';
 import 'package:prognosticare/src/navBar/CustomBottomNavigationBar.dart';
 import 'package:prognosticare/src/pages/auth/dependents.dart';
@@ -212,8 +213,7 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 200.0,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage(
-                      'assets/images/medical_prescription.png'), // Coloque o caminho da sua imagem aqui
+                  image: AssetImage('assets/images/medical_prescription.png'),
                   fit: BoxFit.cover,
                 ),
                 borderRadius: BorderRadius.circular(15),
@@ -221,71 +221,87 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             SizedBox(height: 20),
 
-            // 2. Três botões
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+            Stack(
               children: [
-                ElevatedButton(
-                  onPressed: () {},
-                  child: Icon(
-                    CupertinoIcons.heart_solid,
+                Container(
+                  padding: EdgeInsets.all(20),
+                  decoration: BoxDecoration(
                     color: Colors.white,
-                    size: 30,
+                    border: Border.all(
+                        color: CustomColors.customContrastColor, width: 2),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {},
+                            child: Icon(
+                              CupertinoIcons.heart_solid,
+                              color: Colors.white,
+                              size: 50,
+                            ),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {},
+                            child: Icon(
+                              Icons.medical_information,
+                              color: Colors.white,
+                              size: 50,
+                            ),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {},
+                            child: Icon(
+                              Icons.medication,
+                              color: Colors.white,
+                              size: 50,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
-                ElevatedButton(
-                  onPressed: () {},
-                  child: Icon(
-                    Icons.medical_information,
-                    color: Colors.white,
-                    size: 30,
+                Container(
+                  padding: EdgeInsets.all(10),
+                  child: Center(
+                    child: Text(
+                      'INFORMAÇÕES',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.blue,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
-                ElevatedButton(
-                  onPressed: () {},
-                  child: Icon(
-                    Icons.medication,
-                    color: Colors.white,
-                    size: 30,
-                  ),
-                )
               ],
             ),
             SizedBox(height: 20),
-            // 3. Carrossel 1
             Container(
-              height: 150.0,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount:
-                    5, // Aqui você pode definir o número de itens que quer exibir no carrossel
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: EdgeInsets.only(right: 5),
-                    child: Image.asset(
-                        'assets/images/covid$index.png'), // Aqui você pode definir os itens do carrossel
-                  );
-                },
+              padding: EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(
+                    color: CustomColors.customContrastColor, width: 2),
+                borderRadius: BorderRadius.circular(10),
               ),
-            ),
-            SizedBox(height: 20),
-
-            // 4. Carrossel 2
-            Container(
               height: 150.0,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount:
-                    imageNames.length, // Usa a quantidade de nomes na lista
+                itemCount: imageNames.length,
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: EdgeInsets.only(right: 5),
                     child: GestureDetector(
-                      onTap: () {
-                        // Aqui você pode definir o que acontece ao tocar em uma imagem do carrossel
-                      },
-                      child: Image.asset(
-                          'assets/images/${imageNames[index]}'), // Usa os nomes da lista
+                      onTap: () {},
+                      child: Image.asset('assets/images/${imageNames[index]}'),
                     ),
                   );
                 },
@@ -299,7 +315,6 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: CustomBottomNavigationBar(),
     );
   }
-
 
   //Tela do dependente
   Widget _buildDependenteScreen() {

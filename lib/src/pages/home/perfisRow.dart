@@ -5,12 +5,28 @@ import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/models/profilesModel.dart';
 import 'package:prognosticare/src/routes/app_pages.dart';
 
-
 final storage = FlutterSecureStorage();
+
 class PerfisRow extends StatelessWidget {
   final List<Profile> profiles;
 
   PerfisRow({required this.profiles});
+
+  // Função para ordenar os perfis
+  List<Profile> ordenarPerfis(List<Profile> profiles) {
+    List<Profile> sortedProfiles = List<Profile>.from(profiles);
+
+    sortedProfiles.sort((a, b) {
+      if (a.tipoResponsavel! && !b.tipoResponsavel!) {
+        return -1;
+      } else if (!a.tipoResponsavel! && b.tipoResponsavel!) {
+        return 1;
+      }
+      // Se ambos forem responsáveis ou dependentes, ordena alfabeticamente
+      return a.nome?.compareTo(b.nome!) ?? 0;
+    });
+    return sortedProfiles;
+  }
 
   Future<void> resetarDadosDoUsuarioENavegar(Profile perfilSelecionado) async {
     // Redefinir as informações do usuário
@@ -21,7 +37,8 @@ class PerfisRow extends StatelessWidget {
     // Atualize os valores armazenados
     await storage.write(key: 'user_id', value: idPessoa);
     await storage.write(key: 'nome', value: nome);
-    await storage.write(key: 'tipoResponsavel', value: tipoResponsavel.toString());
+    await storage.write(
+        key: 'tipoResponsavel', value: tipoResponsavel.toString());
 
     // Navegue para a homeRoute
     Get.offNamed(PagesRoutes.homeRoute);
@@ -29,34 +46,61 @@ class PerfisRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<Profile> sortedProfiles = ordenarPerfis(profiles);
+
     return Scaffold(
-      appBar: AppBar(title: Text('Selecione um Perfil')),
+      appBar: AppBar(
+        foregroundColor: Colors.white,
+        centerTitle: true,
+        title: Text('Selecione um Perfil'),
+      ),
       body: Container(
         color: CustomColors.customSwatchColor.shade100,
-        padding: EdgeInsets.all(16),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+        padding: EdgeInsets.symmetric(vertical: 50),
+        child: Column(
           children: <Widget>[
             Expanded(
-              child: Column(
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      for (var profile in profiles)
-                        Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: GestureDetector(
-                            onTap: () {
-                              resetarDadosDoUsuarioENavegar(profile);
-                            },
-                            child: PerfilWidget(nome: profile.nome!),
-                          ),
-                        ),
-                    ],
-                  ),
-                ],
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: sortedProfiles.map((profile) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          resetarDadosDoUsuarioENavegar(profile);
+                        },
+                        child: Card(
+                            color: Colors.blue.shade200,
+                            child: Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: Column(
+                                  children: [
+                                    Icon(
+                                      profile.tipoResponsavel!
+                                          ? Icons.person
+                                          : Icons.group,
+                                      size: 40,
+                                      color: Colors.white,
+                                    ),
+                                    Text(profile.nome!,
+                                        style: TextStyle(
+                                            fontSize: 16, color: Colors.white)),
+                                  ],
+                                ))),
+                      ),
+                    );
+                  }).toList(),
+                ),
               ),
+            ),
+            // Logo com tamanho fixo
+            Container(
+              height: 250, // Defina a altura desejada para a logo
+              width:
+                  double.infinity, // A logo ocupará toda a largura disponível
+              child: Image.asset('assets/images/logo.png',
+                  fit: BoxFit.contain), // Substitua pelo caminho do seu logo
             ),
           ],
         ),

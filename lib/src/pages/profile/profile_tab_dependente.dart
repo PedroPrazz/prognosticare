@@ -66,6 +66,7 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
   bool tipoSanguineoValido = false;
   bool alergiaMarcada = false;
   bool tipoAlergiaValido = false;
+  //String? id;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -82,6 +83,7 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
   void initState() {
     super.initState();
     if (widget.isEditing) {
+      //id = widget.dependente!.pessoaId;
       nomeController.text = widget.dependente!.nome;
       cpfController.text = widget.dependente!.cpf;
       if (widget.dependente!.dataNascimento != null) {
@@ -366,7 +368,7 @@ class _ProfileTabDepentendeState extends State<ProfileTabDepentende> {
                     if (widget.isEditing == true) {
                       final dependente = Dependente.editar(
                         ativo: widget.dependente!.ativo,
-                        id: widget.dependente!.id,
+                        pessoaId: widget.dependente!.pessoaId,
                         nome: nomeController.text.trim(),
                         cpf: cpfController.text.trim(),
                         dataNascimento: dataController.text.trim(),

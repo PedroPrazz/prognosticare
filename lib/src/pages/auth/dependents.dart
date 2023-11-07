@@ -46,7 +46,7 @@ class _ListDependentsState extends State<ListDependents> {
               child: Text('Confirmar'),
               onPressed: () async {
                 final deleted = await DependentService.disableDependente(
-                    dependente.id!);
+                    dependente.pessoaId!);
                 if (deleted) {
                   setState(() {
                     // Atualize a lista de dependentes chamando dependentsFuture novamente

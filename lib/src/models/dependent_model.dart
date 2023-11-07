@@ -1,5 +1,5 @@
 class Dependente {
-  String? id;
+  String? pessoaId;
   String nome;
   String cpf;
   String dataNascimento;
@@ -12,7 +12,7 @@ class Dependente {
 
   Dependente({
     required this.ativo,
-    required this.id,
+    required this.pessoaId,
     required this.nome,
     required this.cpf,
     required this.dataNascimento,
@@ -35,7 +35,7 @@ class Dependente {
   });
 
   Dependente.editar({
-    required this.id,
+    required this.pessoaId,
     required this.ativo,
     required this.nome,
     required this.cpf,
@@ -50,7 +50,7 @@ class Dependente {
   factory Dependente.fromJson(Map<String, dynamic> json) {
     return Dependente(
       ativo: json['ativo'],
-      id: json['pessoa_id'],
+      pessoaId: json['pessoaId'],
       nome: json['nome'],
       cpf: json['cpf'],
       dataNascimento: json['dataNascimento'],
@@ -65,7 +65,7 @@ class Dependente {
   Map<String, dynamic> toJson() {
     return {
       'ativo': ativo,
-      'pessoa_id': id,
+      'pessoaId': pessoaId,
       'nome': nome,
       'cpf': cpf,
       'dataNascimento': dataNascimento,

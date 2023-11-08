@@ -71,7 +71,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         'Cadastro',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 35,
+                          fontSize: 60,
                         ),
                       ),
                     ),

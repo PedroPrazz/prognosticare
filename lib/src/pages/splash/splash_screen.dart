@@ -31,10 +31,10 @@ class _SplashScreenState extends State<SplashScreen> {
           children: [
             Image.asset(
               'assets/images/logo.png',
-              width: 250,
-              height: 250,
+              width: 450,
+              height: 450,
             ),
-            SizedBox(height: 30),
+            SizedBox(height: 18),
             CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(Colors.greenAccent),
             ),

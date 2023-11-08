@@ -51,7 +51,7 @@ class SignInScreen extends StatelessWidget {
                     Text.rich(
                       TextSpan(
                         style: const TextStyle(
-                          fontSize: 40,
+                          fontSize: 60,
                         ),
                         children: [
                           const TextSpan(
@@ -71,11 +71,11 @@ class SignInScreen extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      height: 30,
+                      height: 33,
                       child: DefaultTextStyle(
                         style: const TextStyle(
                           color: Colors.white,
-                          fontSize: 25,
+                          fontSize: 30,
                         ),
                         child: AnimatedTextKit(
                           pause: Duration.zero,

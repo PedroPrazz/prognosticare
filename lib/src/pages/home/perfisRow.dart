@@ -55,7 +55,7 @@ class PerfisRow extends StatelessWidget {
         title: Text('Selecione um Perfil'),
       ),
       body: Container(
-        color: CustomColors.customSwatchColor.shade100,
+        color: Colors.white,
         padding: EdgeInsets.symmetric(vertical: 50),
         child: Column(
           children: <Widget>[

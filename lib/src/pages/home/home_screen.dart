@@ -198,6 +198,7 @@ class _HomeScreenState extends State<HomeScreen> {
           SizedBox(width: 5),
         ],
       ),
+
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: ListView(
@@ -384,100 +385,137 @@ class _HomeScreenState extends State<HomeScreen> {
           SizedBox(width: 5),
         ],
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: ListView(
-          children: [
-            // 1. Imagem Tema Saúde
-            Container(
-              height: 200.0,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(
-                      'assets/images/medical_prescription.png'), // Coloque o caminho da sua imagem aqui
-                  fit: BoxFit.cover,
-                ),
-                borderRadius: BorderRadius.circular(15),
-              ),
-            ),
-            SizedBox(height: 20),
-
-            // 2. Três botões
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                ElevatedButton(
-                  onPressed: () {},
-                  child: Icon(
-                    CupertinoIcons.heart_solid,
-                    color: Colors.white,
-                    size: 30,
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () {},
-                  child: Icon(
-                    Icons.medical_information,
-                    color: Colors.white,
-                    size: 30,
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () {},
-                  child: Icon(
-                    Icons.medication,
-                    color: Colors.white,
-                    size: 30,
-                  ),
-                )
-              ],
-            ),
-            SizedBox(height: 20),
-            // 3. Carrossel 1
-            Container(
-              height: 150.0,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount:
-                    5, // Aqui você pode definir o número de itens que quer exibir no carrossel
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: EdgeInsets.only(right: 5),
-                    child: Image.asset(
-                        'assets/images/covid$index.png'), // Aqui você pode definir os itens do carrossel
-                  );
-                },
-              ),
-            ),
-            SizedBox(height: 20),
-
-            // 4. Carrossel 2
-            Container(
-              height: 150.0,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount:
-                    imageNames.length, // Usa a quantidade de nomes na lista
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: EdgeInsets.only(right: 5),
-                    child: GestureDetector(
-                      onTap: () {
-                        // Aqui você pode definir o que acontece ao tocar em uma imagem do carrossel
-                      },
-                      child: Image.asset(
-                          'assets/images/${imageNames[index]}'), // Usa os nomes da lista
-                    ),
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
+      body: GridView.count(
+        shrinkWrap:
+            true, // Usar isso para garantir que o GridView não seja infinito
+        crossAxisCount: 2, // Define a quantidade de itens na horizontal
+        childAspectRatio: 1.5, // Ajusta a proporção dos itens
+        children: [
+          _buildGridItem(iconData: Icons.medication, text: 'Medications'),
+          _buildGridItem(iconData: Icons.access_alarm, text: 'Reminders'),
+          _buildGridItem(iconData: Icons.favorite, text: 'Measurements'),
+          _buildGridItem(iconData: Icons.calendar_today, text: 'Appointments'),
+          _buildGridItem(iconData: Icons.autorenew, text: 'Refills'),
+          _buildGridItem(iconData: Icons.local_hospital, text: 'Doctors'),
+        ],
       ),
+      // body: Padding(
+      //   padding: EdgeInsets.all(16.0),
+      //   child: ListView(
+      //     children: [
+      //       //Imagem Tema Saúde
+      //       Container(
+      //         height: 200.0,
+      //         decoration: BoxDecoration(
+      //           image: DecorationImage(
+      //             image: AssetImage('assets/images/medical_prescription.png'),
+      //             fit: BoxFit.cover,
+      //           ),
+      //           borderRadius: BorderRadius.circular(15),
+      //         ),
+      //       ),
+      //       SizedBox(height: 20),
+
+      //       //Três botões
+      //       Row(
+      //         mainAxisAlignment: MainAxisAlignment.spaceAround,
+      //         children: [
+      //           ElevatedButton(
+      //             onPressed: () {},
+      //             child: Icon(
+      //               CupertinoIcons.heart_solid,
+      //               color: Colors.white,
+      //               size: 30,
+      //             ),
+      //           ),
+      //           ElevatedButton(
+      //             onPressed: () {},
+      //             child: Icon(
+      //               Icons.medical_information,
+      //               color: Colors.white,
+      //               size: 30,
+      //             ),
+      //           ),
+      //           ElevatedButton(
+      //             onPressed: () {},
+      //             child: Icon(
+      //               Icons.medication,
+      //               color: Colors.white,
+      //               size: 30,
+      //             ),
+      //           )
+      //         ],
+      //       ),
+      //       SizedBox(height: 20),
+      //       // 3. Carrossel 1
+      //       Container(
+      //         height: 150.0,
+      //         child: ListView.builder(
+      //           scrollDirection: Axis.horizontal,
+      //           itemCount: 5,
+      //           itemBuilder: (context, index) {
+      //             return Padding(
+      //               padding: EdgeInsets.only(right: 5),
+      //               child: Image.asset('assets/images/covid$index.png'),
+      //             );
+      //           },
+      //         ),
+      //       ),
+      //       SizedBox(height: 20),
+
+      //       // 4. Carrossel 2
+      //       Container(
+      //         height: 150.0,
+      //         child: ListView.builder(
+      //           scrollDirection: Axis.horizontal,
+      //           itemCount:
+      //               imageNames.length, // Usa a quantidade de nomes na lista
+      //           itemBuilder: (context, index) {
+      //             return Padding(
+      //               padding: EdgeInsets.only(right: 5),
+      //               child: GestureDetector(
+      //                 onTap: () {
+      //                   // Aqui você pode definir o que acontece ao tocar em uma imagem do carrossel
+      //                 },
+      //                 child: Image.asset(
+      //                     'assets/images/${imageNames[index]}'), // Usa os nomes da lista
+      //               ),
+      //             );
+      //           },
+      //         ),
+      //       ),
+      //     ],
+      //   ),
+      // ),
 
       //navbar
       bottomNavigationBar: CustomBottomNavigationBar(),
     );
   }
+}
+
+Widget _buildGridItem({required IconData iconData, required String text}) {
+  return Card(
+    elevation: 2.0,
+    child: InkWell(
+      onTap: () {
+        // Defina o que acontece quando o card é tocado
+      },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Icon(iconData, size: 40),
+          SizedBox(height: 8),
+          Text(
+            text,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 16,
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
 }

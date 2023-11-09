@@ -173,13 +173,37 @@ class SignInScreen extends StatelessWidget {
                                   'abcdefgh') {
                                 ChangePasswordDialog().updatePassword(context);
                               } else {
-                                String? idPessoa = await storage.read(key: 'user_id');
+                                String? idPessoa =
+                                    await storage.read(key: 'user_id');
                                 String? nome = await storage.read(key: 'nome');
                                 bool? tipoResponsavel = true;
-                                await storage.write(key: 'tipoResponsavel', value: tipoResponsavel.toString());
+                                await storage.write(
+                                    key: 'tipoResponsavel',
+                                    value: tipoResponsavel.toString());
 
-                                Profile pessoaResponsavel = Profile(pessoaId: idPessoa, nome: nome, ativo: true, tipoResponsavel: true);
-                                List<Profile> profiles = await ProfileService.getProfiles(idPessoa);
+                                // armazenar login por 24 horas
+                                await storage.write(
+                                    key: 'user_logged_in', value: 'true');
+                                await storage.write(
+                                    key: 'user_email',
+                                    value: emailController.text.trim());
+                                await storage.write(
+                                    key: 'user_password',
+                                    value: passwordController.text.trim());
+
+                                Future.delayed(Duration(hours: 24), () async {
+                                  await storage.delete(key: 'user_logged_in');
+                                  await storage.delete(key: 'user_email');
+                                  await storage.delete(key: 'user_password');
+                                });
+
+                                Profile pessoaResponsavel = Profile(
+                                    pessoaId: idPessoa,
+                                    nome: nome,
+                                    ativo: true,
+                                    tipoResponsavel: true);
+                                List<Profile> profiles =
+                                    await ProfileService.getProfiles(idPessoa);
 
                                 if (profiles.isNotEmpty) {
                                   profiles.add(pessoaResponsavel);

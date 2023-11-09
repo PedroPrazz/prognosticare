@@ -66,12 +66,6 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     } else {
       return Scaffold(
-        appBar: AppBar(
-          title: Text('Erro'),
-        ),
-        body: Center(
-          child: Text('O tipo de perfil não foi definido corretamente.'),
-        ),
       );
     }
   }
@@ -332,23 +326,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 style: TextStyle(color: Colors.white),
               ),
               accountEmail: Text(''),
-            ),
-
-            //Meus Dados
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text('Meus Dados'),
-              onTap: () async {
-                if (pessoa == null) {
-                  pessoa = await GetFindbyIDService.getFindbyID();
-                }
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ProfileTab(pessoa: pessoa!),
-                  ),
-                );
-              },
             ),
 
             //Meu pronturário

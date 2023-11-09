@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:get/get.dart'; // Importe o pacote Get
+import 'package:get/get.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/models/profilesModel.dart';
 import 'package:prognosticare/src/routes/app_pages.dart';
@@ -12,7 +12,6 @@ class PerfisRow extends StatelessWidget {
 
   PerfisRow({required this.profiles});
 
-  // Função para ordenar os perfis
   List<Profile> ordenarPerfis(List<Profile> profiles) {
     List<Profile> sortedProfiles = List<Profile>.from(profiles);
 
@@ -22,25 +21,21 @@ class PerfisRow extends StatelessWidget {
       } else if (!a.tipoResponsavel! && b.tipoResponsavel!) {
         return 1;
       }
-      // Se ambos forem responsáveis ou dependentes, ordena alfabeticamente
       return a.nome?.compareTo(b.nome!) ?? 0;
     });
     return sortedProfiles;
   }
 
   Future<void> resetarDadosDoUsuarioENavegar(Profile perfilSelecionado) async {
-    // Redefinir as informações do usuário
     String? idPessoa = perfilSelecionado.pessoaId;
     String? nome = perfilSelecionado.nome;
     bool? tipoResponsavel = perfilSelecionado.tipoResponsavel;
 
-    // Atualize os valores armazenados
     await storage.write(key: 'user_id', value: idPessoa);
     await storage.write(key: 'nome', value: nome);
     await storage.write(
         key: 'tipoResponsavel', value: tipoResponsavel.toString());
 
-    // Navegue para a homeRoute
     Get.offNamed(PagesRoutes.homeRoute);
   }
 
@@ -56,51 +51,106 @@ class PerfisRow extends StatelessWidget {
       ),
       body: Container(
         color: Colors.white,
-        padding: EdgeInsets.symmetric(vertical: 50),
+        padding: EdgeInsets.symmetric(vertical: 40),
         child: Column(
           children: <Widget>[
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: sortedProfiles.map((profile) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
+                  children: [
+                    // Card do Responsável
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
                       child: GestureDetector(
                         onTap: () {
-                          resetarDadosDoUsuarioENavegar(profile);
+                          resetarDadosDoUsuarioENavegar(sortedProfiles.first);
                         },
                         child: Card(
-                            color: Colors.blue.shade200,
-                            child: Padding(
-                                padding: const EdgeInsets.all(15.0),
-                                child: Column(
-                                  children: [
-                                    Icon(
-                                      profile.tipoResponsavel!
-                                          ? Icons.person
-                                          : Icons.group,
-                                      size: 40,
-                                      color: Colors.white,
-                                    ),
-                                    Text(profile.nome!,
-                                        style: TextStyle(
-                                            fontSize: 16, color: Colors.white)),
-                                  ],
-                                ))),
+                          margin: EdgeInsets.only(bottom: 20),
+                          color: CustomColors.customSwatchColor.shade900,
+                          child: Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Column(
+                              children: [
+                                Icon(
+                                  Icons.person,
+                                  size: 40,
+                                  color: Colors.white,
+                                ),
+                                Text(
+                                  sortedProfiles.first.nome!,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                       ),
-                    );
-                  }).toList(),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Seus Dependentes',
+                        style: TextStyle(
+                          color: CustomColors.customContrastColor,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    // Cards dos Dependentes usando Wrap
+                    Wrap(
+                      alignment: WrapAlignment.center,
+                      spacing: 8.0,
+                      children: sortedProfiles
+                          .skip(1)
+                          .map((profile) => GestureDetector(
+                                onTap: () {
+                                  resetarDadosDoUsuarioENavegar(profile);
+                                },
+                                child: SizedBox(
+                                  width: 150,
+                                  child: Card(
+                                    color: CustomColors.customContrastColor,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(15.0),
+                                      child: Column(
+                                        children: [
+                                          Icon(
+                                            Icons.group,
+                                            size: 40,
+                                            color: Colors.white,
+                                          ),
+                                          Text(
+                                            profile.nome!,
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ))
+                          .toList(),
+                    ),
+                  ],
                 ),
               ),
             ),
-            // Logo com tamanho fixo
             Container(
-              height: 250, // Defina a altura desejada para a logo
-              width:
-                  double.infinity, // A logo ocupará toda a largura disponível
-              child: Image.asset('assets/images/logo.png',
-                  fit: BoxFit.contain), // Substitua pelo caminho do seu logo
+              height: 200,
+              width: double.infinity,
+              child: Image.asset(
+                'assets/images/logo.png',
+                fit: BoxFit.contain,
+              ),
             ),
           ],
         ),

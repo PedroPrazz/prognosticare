@@ -10,13 +10,11 @@ import 'package:prognosticare/src/routes/app_pages.dart';
 
 
 final storage = FlutterSecureStorage();
-
 class ProfileService {
 
   static Future<List<Profile>> getProfiles(String? id) async {
 
     String? token = await storage.read(key: 'token');
-
 
     final url = Uri.parse(UriServidor.url.toString()+'/register-person/profiles/$id');
 

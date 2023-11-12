@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:prognosticare/components/dialogs/change_password_dialog.dart';
+import 'package:prognosticare/src/api/service/profilesService.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/models/profilesModel.dart';
 import 'package:prognosticare/src/pages/auth/dependents.dart';
@@ -166,6 +167,31 @@ class _HomeScreenState extends State<HomeScreen> {
                     context,
                     MaterialPageRoute(builder: (context) => SignInScreen()),
                     (route) => false);
+              },
+            ),
+            //Trocar perfil
+            ListTile(
+              leading: const Icon(Icons.subdirectory_arrow_left),
+              title: const Text('Trocar Perfil'),
+              onTap: () async {
+                String? idPessoa = await storage.read(key: 'user_id');
+                List<Profile> profiles =
+                    await ProfileService.getProfiles(idPessoa);
+                Profile? selectedProfile = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PerfisRow(
+                      profiles: profiles,
+                    ),
+                  ),
+                );
+                if (selectedProfile == null) {
+                  storage.write(key: 'user_id', value: idPessoa);
+                }
+                // Lidar com o perfil selecionado se necessário
+                if (selectedProfile != null) {
+                  // Faça algo com o perfil selecionado
+                }
               },
             ),
           ],
@@ -345,6 +371,30 @@ class _HomeScreenState extends State<HomeScreen> {
                     (route) => false);
               },
             ),
+            ListTile(
+              leading: const Icon(Icons.subdirectory_arrow_left),
+              title: const Text('Trocar Perfil'),
+              onTap: () async {
+                String? idPessoa = await storage.read(key: 'user_id');
+                List<Profile> profiles =
+                    await ProfileService.getProfiles(idPessoa);
+                Profile? selectedProfile = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PerfisRow(
+                      profiles: profiles,
+                    ),
+                  ),
+                );
+                if (selectedProfile == null) {
+                  storage.write(key: 'user_id', value: idPessoa);
+                }
+                // Lidar com o perfil selecionado se necessário
+                if (selectedProfile != null) {
+                  // Faça algo com o perfil selecionado
+                }
+              },
+            ),
           ],
         ),
       ),
@@ -430,12 +480,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   _buildGridItem(
                     iconData: Icons.swap_horiz,
                     text: 'Trocar Perfil',
-                    onTap: () {
+                    onTap: () async {
+                      String? idPessoa = await storage.read(key: 'user_id');
+                      List<Profile> profiles =
+                          await ProfileService.getProfiles(idPessoa);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => PerfisRow(
-                            profiles: [],
+                            profiles: profiles,
                           ),
                         ),
                       );

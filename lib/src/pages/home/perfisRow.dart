@@ -33,8 +33,7 @@ class PerfisRow extends StatelessWidget {
 
     await storage.write(key: 'user_id', value: idPessoa);
     await storage.write(key: 'nome', value: nome);
-    await storage.write(
-        key: 'tipoResponsavel', value: tipoResponsavel.toString());
+    await storage.write(key: 'tipoResponsavel', value: tipoResponsavel.toString());
 
     Get.offNamed(PagesRoutes.homeRoute);
   }

@@ -277,7 +277,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => PerfisRow(profiles: []),
+                          builder: (context) => PerfisRow(
+                            profiles: [],
+                          ),
                         ),
                       );
                     },
@@ -432,7 +434,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => PerfisRow(profiles: []),
+                          builder: (context) => PerfisRow(
+                            profiles: [],
+                          ),
                         ),
                       );
                     },

@@ -207,14 +207,6 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         centerTitle: true,
         title: Text("Olá, ${nome?.split(' ')[0]}"),
-        actions: [
-          IconButton(
-            alignment: Alignment.centerRight,
-            icon: Icon(Icons.notifications, color: Colors.white),
-            onPressed: () {},
-          ),
-          SizedBox(width: 5),
-        ],
       ),
 
       body: Padding(
@@ -285,7 +277,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                   ),
                   _buildGridItem(
-                    iconData: Icons.healing,
+                    iconData: Icons.vaccines,
                     text: 'Vacinas',
                     onTap: () {
                       Navigator.push(
@@ -466,7 +458,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                   ),
                   _buildGridItem(
-                    iconData: Icons.healing,
+                    iconData: Icons.vaccines,
                     text: 'Vacinas',
                     onTap: () {
                       Navigator.push(
@@ -513,7 +505,7 @@ Widget _buildGridItem(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10),
       side: BorderSide(
-        color: CustomColors.customContrastColor,
+        color: CustomColors.customSwatchColor.shade200,
         width: 2.0,
       ),
     ),

@@ -1,7 +1,5 @@
 // ignore_for_file: must_be_immutable, unnecessary_null_comparison, body_might_complete_normally_nullable
-
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:prognosticare/src/api/service/schedule_service.dart';
@@ -16,69 +14,29 @@ class ScheduleScreen extends StatefulWidget {
   final Schedule? schedule;
   bool isEditing;
 
-  ScheduleScreen({Key? key, this.schedule, this.isEditing = false})
-      : super(key: key);
+  ScheduleScreen({Key? key, this.schedule, this.isEditing = false}) : super(key: key);
 
   @override
   State<ScheduleScreen> createState() => _ScheduleScreenState();
 }
-
 class _ScheduleScreenState extends State<ScheduleScreen> {
-  // Lista de tipos de agendamentos
-
-  String mapTipoAgendamento(String selectedValue) {
-  switch (selectedValue) {
-    case 'EXAME':
-      return 'Exames';
-    case 'CONSULTA':
-      return 'Consultas';
-    case 'INTERNAÇÃO':
-      return 'Internações';
-    case 'VACINA':
-      return 'Vacinas';
-    case 'CIRURGIA':
-      return 'Cirurgias';
-    default:
-      return 'SELECIONE';
-  }
-}
-  String mapTipoEspecialista(String selectedValue) {
-  switch (selectedValue) {
-    case 'ORTOPEDIA':
-      return 'Ortopedista';
-    case 'CLINICO_GERAL':
-      return 'Clinico Geral';
-    case 'GINECOLOGIA':
-      return 'Ginecologista';
-    case 'DERMATOLOGIA':
-      return 'Dermatologista';
-    case 'NAO_POSSUI':
-      return 'Não Possui';
-    default:
-      return 'SELECIONE';
-  }
-}
 
   List<int> intervaloData = [1, 2, 3, 5];
-
   int selectedValue = 1;
-
-  // Variável para armazenar o valor selecionado na combo box
-  String? tipoSelecionado;
 
   final dataFormatter = MaskTextInputFormatter(
     mask: '##/##/#### ##:##', // Define a máscara como 'dd/MM/yyyy HH:mm'
     filter: {"#": RegExp(r'[0-9]')}, // Define os caracteres permitidos
   );
 
+  final _formKey = GlobalKey<FormState>();
+  
   TextEditingController especialistaController = TextEditingController();
   TextEditingController descricaoController = TextEditingController();
   TextEditingController localController = TextEditingController();
   TextEditingController dataController = TextEditingController();
   TextEditingController obsController = TextEditingController();
   TextEditingController tipoAgendamentoController = TextEditingController();
-
-  final _formKey = GlobalKey<FormState>();
 
   bool tipoAgendamentoValido = false;
   bool especialistaValido = false;
@@ -88,12 +46,29 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   bool obsValido = false;
   bool notificacaoMarcada = false;
 
+  Map<String, String> tipoAgendamentoMap = {
+    'EXAME': 'Exames',
+    'CONSULTA': 'Consulta',
+    'INTERNACAO': 'Internação',
+    'VACINA': 'Vacina',
+    'CIRURGIA': 'Cirurgia',
+  };
+
+  Map<String, String> especialistaMap = {
+    'ORTOPEDIA': 'Ortopedista',
+    'CLINICO_GERAL': 'Clinico Geral',
+    'CARDIOLOGIA': 'Cardiologista',
+    'GINECOLOGIA': 'Ginecologista',
+    'NAO_POSSUI': 'Não possuí',
+    'DERMATOLOGIA': 'Dermatologista',
+  };
+
   @override
   void initState() {
     super.initState();
     if (widget.isEditing) {
-      tipoAgendamentoController.text = widget.schedule!.tipoAgendamento ?? 'SELECIONE';
-      especialistaController.text = widget.schedule!.especialista ?? 'SELECIONE';
+      tipoAgendamentoController.text = widget.schedule!.tipoAgendamento;
+      especialistaController.text = widget.schedule!.especialista;
       descricaoController.text = widget.schedule!.descricao;
       localController.text = widget.schedule!.local;
       dataController.text = widget.schedule!.dataAgenda;
@@ -169,14 +144,8 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                       tipoAgendamentoController.text = newValue!;
                     });
                   },
-                  items: <String>[
-                    'EXAME',
-                    'CONSULTA',
-                    'INTERNACAO',
-                    'VACINA',
-                    'CIRURGIA',
-                  ].map<DropdownMenuItem<String>>(
-                    (String value) {
+                 items: tipoAgendamentoMap.keys.map<DropdownMenuItem<String>>(
+                  (String value) {
                       return DropdownMenuItem<String>(
                         value: value,
                         child: Row(
@@ -185,7 +154,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                                 color: CustomColors.customSwatchColor),
                             SizedBox(width: 10),
                             Text(
-                              mapTipoAgendamento(value),
+                              tipoAgendamentoMap[value]!,
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 12,
@@ -238,14 +207,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                       especialistaController.text = newValue!;
                     });
                   },
-                  items: <String>[
-                    'ORTOPEDIA',
-                    'CLINICO_GERAL',
-                    'CARDIOLOGIA',
-                    'GINECOLOGIA',
-                    'NAO_POSSUI',
-                    'DERMATOLOGIA'
-                  ].map<DropdownMenuItem<String>>(
+                  items: especialistaMap.keys.map<DropdownMenuItem<String>>(
                     (String value) {
                       return DropdownMenuItem<String>(
                         value: value,
@@ -255,7 +217,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                                 color: CustomColors.customSwatchColor),
                             SizedBox(width: 10),
                             Text(
-                              mapTipoEspecialista(value),
+                              especialistaMap[value]!,
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 12,

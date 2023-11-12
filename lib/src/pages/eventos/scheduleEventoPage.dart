@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
-import 'package:prognosticare/src/navBar/CustomBottomNavigationBar.dart';
 import 'package:prognosticare/src/pages/eventos/ScheduleEvento.dart';
 import 'package:prognosticare/src/pages/home/home_screen.dart';
 
@@ -70,6 +69,7 @@ class ScheduleEventoPage extends StatelessWidget {
       length: 3, // Número de guias
       child: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           foregroundColor: Colors.white,
           title: Text('Eventos'),
           backgroundColor: CustomColors.customSwatchColor,
@@ -108,7 +108,6 @@ class ScheduleEventoPage extends StatelessWidget {
             ScheduleEvento(filtro: 'menor'),
           ],
         ),
-        bottomNavigationBar: CustomBottomNavigationBar(),
       ),
     );
   }

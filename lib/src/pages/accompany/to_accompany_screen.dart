@@ -48,6 +48,11 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
   bool prescricaoValido = false;
   bool notificacaoMarcada = false;
   String? valorInicial;
+
+  Map<String, String> tipoAcompanhamentoMap = {
+    'MEDICACAO': 'Medicação',
+    'PROCEDIMENTO': 'Procedimento',
+  };
   
 
   void onTipoTemporarioControladoChanged(String value) {
@@ -149,8 +154,8 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                       tipoAcompanhamentoController.text = newValue!;
                     });
                   },
-                  items: tipoDeAcompanhamento
-                      .map<DropdownMenuItem<String>>((String value) {
+                  items: tipoAcompanhamentoMap.keys.map<DropdownMenuItem<String>>(
+                    (String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Row(
@@ -159,7 +164,7 @@ class _ToAccompanyScreenState extends State<ToAccompanyScreen> {
                               color: CustomColors.customSwatchColor),
                           SizedBox(width: 10),
                           Text(
-                            value,
+                            tipoAcompanhamentoMap[value]!,
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 12,

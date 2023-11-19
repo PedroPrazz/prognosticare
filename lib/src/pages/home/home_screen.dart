@@ -13,7 +13,6 @@ import 'package:prognosticare/src/models/pessoa_model.dart';
 import 'package:prognosticare/src/pages/eventos/scheduleEventoPage.dart';
 import 'package:prognosticare/src/pages/home/perfisRow.dart';
 import 'package:prognosticare/src/pages/profile/profile_tab.dart';
-import 'package:prognosticare/src/pages/schedule/my_schedule_screen.dart';
 import 'package:prognosticare/src/pages/vaccines/vaccination_schedule.dart';
 
 final storage = FlutterSecureStorage();
@@ -116,20 +115,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => ListDependents(),
-                  ),
-                );
-              },
-            ),
-
-            //Minha Agenda
-            ListTile(
-              leading: const Icon(Icons.auto_stories),
-              title: const Text('Minha Agenda'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ToAccompanyScreenEvent(),
                   ),
                 );
               },

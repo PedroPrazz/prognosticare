@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:prognosticare/components/dialogs/change_password_dialog.dart';
@@ -13,7 +15,6 @@ import 'package:prognosticare/src/models/pessoa_model.dart';
 import 'package:prognosticare/src/pages/eventos/scheduleEventoPage.dart';
 import 'package:prognosticare/src/pages/home/perfisRow.dart';
 import 'package:prognosticare/src/pages/profile/profile_tab.dart';
-import 'package:prognosticare/src/pages/schedule/my_schedule_screen.dart';
 import 'package:prognosticare/src/pages/vaccines/vaccination_schedule.dart';
 
 final storage = FlutterSecureStorage();
@@ -32,6 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
   String? nome;
   String? tipoResponsavel;
   Profile? profile;
+  late List<Profile> storedProfiles;
 
   @override
   void initState() {
@@ -121,20 +123,6 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
 
-            //Minha Agenda
-            ListTile(
-              leading: const Icon(Icons.auto_stories),
-              title: const Text('Minha Agenda'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ToAccompanyScreenEvent(),
-                  ),
-                );
-              },
-            ),
-
             //Alterar Senha
             ListTile(
               leading: const Icon(Icons.miscellaneous_services),
@@ -174,24 +162,24 @@ class _HomeScreenState extends State<HomeScreen> {
               leading: const Icon(Icons.subdirectory_arrow_left),
               title: const Text('Trocar Perfil'),
               onTap: () async {
-                String? idPessoa = await storage.read(key: 'user_id');
-                List<Profile> profiles =
-                    await ProfileService.getProfiles(idPessoa);
-                Profile? selectedProfile = await Navigator.push(
+
+              String? profilesJson = await storage.read(key: 'profiles');
+ 
+              if (profilesJson != null) {
+                
+                storedProfiles = (jsonDecode(profilesJson) as List)
+                    .map((item) => Profile.fromJson(item))
+                    .toList();
+}
+                await Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => PerfisRow(
-                      profiles: profiles,
+                      profiles: storedProfiles,
                     ),
                   ),
                 );
-                if (selectedProfile == null) {
-                  storage.write(key: 'user_id', value: idPessoa);
-                }
-                // Lidar com o perfil selecionado se necessário
-                if (selectedProfile != null) {
-                  // Faça algo com o perfil selecionado
-                }
+               
               },
             ),
           ],
@@ -367,24 +355,25 @@ class _HomeScreenState extends State<HomeScreen> {
               leading: const Icon(Icons.subdirectory_arrow_left),
               title: const Text('Trocar Perfil'),
               onTap: () async {
-                String? idPessoa = await storage.read(key: 'user_id');
-                List<Profile> profiles =
-                    await ProfileService.getProfiles(idPessoa);
-                Profile? selectedProfile = await Navigator.push(
+                String? profilesJson = await storage.read(key: 'profiles');
+
+              
+                if (profilesJson != null) {
+                
+                  storedProfiles = (jsonDecode(profilesJson) as List)
+                      .map((item) => Profile.fromJson(item))
+                      .toList();
+                }
+                
+                 await Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => PerfisRow(
-                      profiles: profiles,
+                      profiles: storedProfiles,
                     ),
                   ),
                 );
-                if (selectedProfile == null) {
-                  storage.write(key: 'user_id', value: idPessoa);
-                }
-                // Lidar com o perfil selecionado se necessário
-                if (selectedProfile != null) {
-                  // Faça algo com o perfil selecionado
-                }
+                
               },
             ),
           ],
@@ -473,14 +462,19 @@ class _HomeScreenState extends State<HomeScreen> {
                     iconData: Icons.swap_horiz,
                     text: 'Trocar Perfil',
                     onTap: () async {
-                      String? idPessoa = await storage.read(key: 'user_id');
-                      List<Profile> profiles =
-                          await ProfileService.getProfiles(idPessoa);
+                     String? profilesJson = await storage.read(key: 'profiles');
+
+                      if (profilesJson != null) {
+                      
+                        storedProfiles = (jsonDecode(profilesJson) as List)
+                            .map((item) => Profile.fromJson(item))
+                            .toList();
+                      }
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => PerfisRow(
-                            profiles: profiles,
+                            profiles: storedProfiles,
                           ),
                         ),
                       );

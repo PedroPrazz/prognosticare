@@ -95,10 +95,14 @@ class ScheduleEventoPage extends StatelessWidget {
                   context: context,
                   builder: (BuildContext context) {
                     return Container(
-                      height: 300,
+                      height: 250,
                       child: Column(
                         children: <Widget>[
-                          Text('Filtrar por Tipo e Data'),
+                          Text('Filtrar por Tipo e Data',
+                              style: TextStyle(fontSize: 20)),
+                          Padding(
+                            padding: EdgeInsets.only(top: 20),
+                          ),
                           DropdownButton<String>(
                             value: selectedType,
                             onChanged: (String? newValue) {
@@ -115,7 +119,16 @@ class ScheduleEventoPage extends StatelessWidget {
                           ),
                           // DatePicker para selecionar a data
                           ElevatedButton(
-                            child: Text("Selecionar Data"),
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18),
+                              ),
+                            ),
+                            child: Text("Selecionar Data",
+                                style: TextStyle(
+                                    fontSize: selectedDate == DateTime.now()
+                                        ? 15
+                                        : 20)),
                             onPressed: () async {
                               DateTime? picked = await showDatePicker(
                                 context: context,
@@ -129,7 +142,13 @@ class ScheduleEventoPage extends StatelessWidget {
                             },
                           ),
                           ElevatedButton(
-                            child: Text('Aplicar Filtro'),
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18),
+                              ),
+                            ),
+                            child: Text('Aplicar Filtro',
+                                style: TextStyle(fontSize: 20)),
                             onPressed: () {
                               Navigator.pop(context);
                               // Aplicar o filtro

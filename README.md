@@ -63,6 +63,6 @@ Distribuído sob a licença MIT. Veja `LICENSE` para mais informações.
 
 [Alisson Ferreira Evangelista](https://github.com/AlissonFerreiraEvangelista)  
 [Lauren Lopes Biasi](https://github.com/lauured)  
-[Maurício Cardoso Oliveira](https://github.com/MauricioDevJS)  
+[Mauricio Cardoso Oliveira](https://github.com/MauricioDevJS)  
 [Pedro Gabriel Prazeres](https://github.com/PedroPrazz)  
 [Pedro Paulo de Abreu](https://linktr.ee/pdropaullo)  

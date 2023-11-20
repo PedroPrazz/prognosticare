@@ -1,9 +1,12 @@
 // ignore_for_file: must_be_immutable
 
+import 'dart:convert';
+
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:prognosticare/components/dialogs/change_password_dialog.dart';
 import 'package:prognosticare/components/dialogs/forgot_password_dialog.dart';
 import 'package:prognosticare/src/api/service/firebase_messaging_service.dart';
@@ -207,6 +210,10 @@ class SignInScreen extends StatelessWidget {
 
                                 if (profiles.isNotEmpty) {
                                   profiles.add(pessoaResponsavel);
+                                   String profilesJson = jsonEncode(profiles);
+
+                                  await storage.write(key: 'profiles', value: profilesJson);
+                                  
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(

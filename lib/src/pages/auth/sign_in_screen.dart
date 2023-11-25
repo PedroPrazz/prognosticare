@@ -205,14 +205,19 @@ class SignInScreen extends StatelessWidget {
                                     nome: nome,
                                     ativo: true,
                                     tipoResponsavel: true);
+
+                                String profileJson = jsonEncode(pessoaResponsavel);
+
+                                await storage.write(key: 'profileResponsavel', value: profileJson);
+
+
                                 List<Profile> profiles =
                                     await ProfileService.getProfiles(idPessoa);
 
                                 if (profiles.isNotEmpty) {
                                   profiles.add(pessoaResponsavel);
-                                   String profilesJson = jsonEncode(profiles);
 
-                                  await storage.write(key: 'profiles', value: profilesJson);
+                                 
                                   
                                   Navigator.push(
                                     context,

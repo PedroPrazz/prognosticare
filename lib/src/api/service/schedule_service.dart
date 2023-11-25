@@ -82,7 +82,7 @@ class ScheduleService {
         return schedules;
       } else {
         print('Response Status Code: ${response.statusCode}');
-        throw Exception('Exeption no método find');
+        throw Exception('Exeption no método find do agendamento');
       }
     } catch (e) {
       print('Error: $e');

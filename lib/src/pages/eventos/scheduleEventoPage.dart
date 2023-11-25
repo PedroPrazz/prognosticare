@@ -65,6 +65,11 @@ class ScheduleEventoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Variáveis para o controle do filtro por tipo
+    String selectedType = 'Todos'; // Valor inicial
+    List<String> eventTypes = ['Todos', 'Consultas', 'Exames', 'Vacinas'];
+    DateTime selectedDate = DateTime.now();
+
     return DefaultTabController(
       length: 3, // Número de guias
       child: Scaffold(
@@ -82,10 +87,60 @@ class ScheduleEventoPage extends StatelessWidget {
                   (route) => false);
             },
           ),
-          actions: [
+          actions: <Widget>[
             IconButton(
               icon: Icon(Icons.filter_list),
-              onPressed: () => _showFilterOptions(context),
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Container(
+                      height: 300,
+                      child: Column(
+                        children: <Widget>[
+                          Text('Filtrar por Tipo e Data'),
+                          DropdownButton<String>(
+                            value: selectedType,
+                            onChanged: (String? newValue) {
+                              // Atualizar a lógica de filtragem para incluir o tipo
+                              selectedType = newValue!;
+                            },
+                            items: eventTypes
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                          ),
+                          // DatePicker para selecionar a data
+                          ElevatedButton(
+                            child: Text("Selecionar Data"),
+                            onPressed: () async {
+                              DateTime? picked = await showDatePicker(
+                                context: context,
+                                initialDate: selectedDate,
+                                firstDate: DateTime(2000),
+                                lastDate: DateTime(2025),
+                              );
+                              if (picked != null && picked != selectedDate) {
+                                selectedDate = picked;
+                              }
+                            },
+                          ),
+                          ElevatedButton(
+                            child: Text('Aplicar Filtro'),
+                            onPressed: () {
+                              Navigator.pop(context);
+                              // Aplicar o filtro
+                            },
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              },
             ),
           ],
           bottom: TabBar(

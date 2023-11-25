@@ -1,11 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
+import 'package:prognosticare/src/pages/home/home_screen.dart';
 
 class InfoApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _buildAppBar(),
+      appBar: AppBar(
+      title: Text('Sobre o App'),
+      centerTitle: true,
+      backgroundColor: CustomColors.customSwatchColor,
+      foregroundColor: Colors.white,
+      actions: [
+        IconButton(
+          onPressed: () {
+            Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                  (route) => false);
+          },
+          icon: const Icon(
+            Icons.home,
+            color: Colors.white,
+          ),
+        ),
+      ],
+    ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -31,23 +51,6 @@ class InfoApp extends StatelessWidget {
     );
   }
 
-  AppBar _buildAppBar() {
-    return AppBar(
-      title: Text('Sobre o App'),
-      centerTitle: true,
-      backgroundColor: CustomColors.customSwatchColor,
-      foregroundColor: Colors.white,
-      actions: [
-        IconButton(
-          onPressed: () {},
-          icon: const Icon(
-            Icons.home,
-            color: Colors.white,
-          ),
-        ),
-      ],
-    );
-  }
 
   Container _buildCard(String content) {
     return Container(

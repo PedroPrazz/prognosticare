@@ -5,6 +5,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:prognosticare/components/dialogs/change_password_dialog.dart';
+import 'package:prognosticare/src/api/service/profilesService.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/models/profilesModel.dart';
 import 'package:prognosticare/src/pages/auth/dependents.dart';

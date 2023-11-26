@@ -163,7 +163,7 @@ class _ToAccompanyListScreenState extends State<ToAccompanyListScreen> {
                 isAcompanhamentoConfirmado =
                     toaccompany.statusEvento == "FINALIZADO";
                 return ListTile(
-                  title: Text(toaccompany.medicacao +
+                  title: Text(toaccompany.tipoAcompanhamento +
                       " " +
                       toaccompany.prescricaoMedica),
                   subtitle: Text(

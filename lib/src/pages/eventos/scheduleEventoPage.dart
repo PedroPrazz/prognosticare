@@ -15,57 +15,12 @@ class ScheduleEventoPage extends StatelessWidget {
     );
 
     if (picked != null) {
-      // Aqui você pode usar a data escolhida e o filtro para buscar os eventos
       print('Data escolhida: ${picked.toIso8601String()} com filtro: $filtro');
-      // Atualize seu estado ou faça uma chamada de API para buscar os eventos com o filtro aplicado
     }
-  }
-
-  void _showFilterOptions(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return Container(
-          height: 200,
-          child: Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                ListTile(
-                  leading: Icon(Icons.today),
-                  title: Text('Maior que'),
-                  onTap: () {
-                    Navigator.pop(context);
-                    _selectDate(context, 'maior');
-                  },
-                ),
-                ListTile(
-                  leading: Icon(Icons.today),
-                  title: Text('Igual a'),
-                  onTap: () {
-                    Navigator.pop(context);
-                    _selectDate(context, 'igual');
-                  },
-                ),
-                ListTile(
-                  leading: Icon(Icons.today),
-                  title: Text('Menor que'),
-                  onTap: () {
-                    Navigator.pop(context);
-                    _selectDate(context, 'menor');
-                  },
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
   }
 
   @override
   Widget build(BuildContext context) {
-    // Variáveis para o controle do filtro por tipo
     String selectedType = 'Todos'; // Valor inicial
     List<String> eventTypes = ['Todos', 'Consultas', 'Exames', 'Vacinas'];
     DateTime selectedDate = DateTime.now();
@@ -95,6 +50,7 @@ class ScheduleEventoPage extends StatelessWidget {
                   context: context,
                   builder: (BuildContext context) {
                     return Container(
+                      width: 200,
                       height: 300,
                       child: Column(
                         children: <Widget>[
@@ -102,7 +58,6 @@ class ScheduleEventoPage extends StatelessWidget {
                           DropdownButton<String>(
                             value: selectedType,
                             onChanged: (String? newValue) {
-                              // Atualizar a lógica de filtragem para incluir o tipo
                               selectedType = newValue!;
                             },
                             items: eventTypes

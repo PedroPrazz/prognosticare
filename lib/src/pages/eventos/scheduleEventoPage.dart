@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
-import 'package:prognosticare/src/pages/eventos/ScheduleEvento.dart';
+import 'package:prognosticare/src/pages/eventos/scheduleEvento.dart';
 import 'package:prognosticare/src/pages/home/home_screen.dart';
 
 class ScheduleEventoPage extends StatelessWidget {
@@ -113,9 +113,9 @@ class ScheduleEventoPage extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            ScheduleEvento(filtro: 'maior'),
-            ScheduleEvento(filtro: 'igual'),
-            ScheduleEvento(filtro: 'menor'),
+            Events(filtro: 'maior'),
+            Events(filtro: 'igual'),
+            Events(filtro: 'menor'),
           ],
         ),
       ),

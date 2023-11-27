@@ -11,6 +11,7 @@ class Events extends StatefulWidget {
   @override
   _EventsState createState() => _EventsState();
 }
+
 class _EventsState extends State<Events> {
   late Future<List<Schedule>> schedulesFuture;
   TextEditingController searchController = TextEditingController();
@@ -28,27 +29,25 @@ class _EventsState extends State<Events> {
   }
 
   List<Schedule> getFilteredSchedules(String query, String filtro) {
-    return allSchedules
-        .where((schedule) {
-          final tipoEspecialista =
-              schedule.tipoAgendamento + " " + schedule.especialista;
-          return tipoEspecialista.toLowerCase().contains(query.toLowerCase());
-        })
-        .toList()
-        ..sort((a, b) {
-          if (filtro == 'maior') {
-            return DateTime.parse(b.dataAgenda!)
-                .compareTo(DateTime.parse(a.dataAgenda!));
-          } else if (filtro == 'igual') {
-            return a.statusEvento!.compareTo(b.statusEvento!);
-          } else if (filtro == 'menor') {
-            return DateTime.parse(a.dataAgenda!)
-                .compareTo(DateTime.parse(b.dataAgenda!));
-          } else {
-            // Caso de filtro desconhecido
-            return 0;
-          }
-        });
+    return allSchedules.where((schedule) {
+      final tipoEspecialista =
+          schedule.tipoAgendamento + " " + schedule.especialista;
+      return tipoEspecialista.toLowerCase().contains(query.toLowerCase());
+    }).toList()
+      ..sort((a, b) {
+        if (filtro == 'maior') {
+          return DateTime.parse(b.dataAgenda!)
+              .compareTo(DateTime.parse(a.dataAgenda!));
+        } else if (filtro == 'igual') {
+          return a.statusEvento!.compareTo(b.statusEvento!);
+        } else if (filtro == 'menor') {
+          return DateTime.parse(a.dataAgenda!)
+              .compareTo(DateTime.parse(b.dataAgenda!));
+        } else {
+          // Caso de filtro desconhecido
+          return 0;
+        }
+      });
   }
 
   @override
@@ -62,7 +61,8 @@ class _EventsState extends State<Events> {
               controller: searchController,
               onChanged: (value) {
                 setState(() {
-                  schedulesFuture = Future.value(getFilteredSchedules(value, ''));
+                  schedulesFuture =
+                      Future.value(getFilteredSchedules(value, ''));
                 });
               },
               decoration: InputDecoration(
@@ -75,7 +75,7 @@ class _EventsState extends State<Events> {
               future: schedulesFuture,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
+                  return Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
                   return Center(
                     child: Text(
@@ -98,12 +98,9 @@ class _EventsState extends State<Events> {
                                 " " +
                                 schedule.especialista,
                             style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16)),
+                                fontWeight: FontWeight.bold, fontSize: 16)),
                         subtitle: Text(
-                          schedule.statusEvento! +
-                              " " +
-                              schedule.dataAgenda,
+                          schedule.statusEvento! + " " + schedule.dataAgenda,
                           style: TextStyle(color: statusColor),
                         ),
                         onTap: () {},

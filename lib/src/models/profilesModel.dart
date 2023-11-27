@@ -40,11 +40,13 @@ class Profile {
 
   Map<String, dynamic> toJson() {
     return {
-      'pessoa_id': pessoaId,
+      'pessoaId': pessoaId,
       'nome': nome,
       'ativo': ativo,
       'tipoResponsavel': tipoResponsavel,
       
     };
   }
+
+
 }

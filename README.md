@@ -61,9 +61,8 @@ Distribuído sob a licença MIT. Veja `LICENSE` para mais informações.
 
 ## Colaboradores ✨
 
-Agradecemos a todos que contribuíram para o crescimento e aprimoramento do Prognosticare! Você pode ver a lista de colaboradores [aqui](https://github.com/PedroPrazz/prognosticare/graphs/contributors).
-
-## Contato 📬
-
--   Link do Projeto: [Prognosticare no GitHub](https://github.com/PedroPrazz/prognosticare)
--   Colaboradores: [Contributors](https://github.com/PedroPrazz/prognosticare/graphs/contributors)
+[Alisson Ferreira Evangelista](https://github.com/AlissonFerreiraEvangelista)  
+[Lauren Lopes Biasi](https://github.com/lauured)  
+[Mauricio Cardoso Oliveira](https://github.com/MauricioDevJS)  
+[Pedro Gabriel Prazeres](https://github.com/PedroPrazz)  
+[Pedro Paulo de Abreu](https://linktr.ee/pdropaullo)  

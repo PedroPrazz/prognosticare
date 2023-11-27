@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:prognosticare/components/dialogs/change_password_dialog.dart';
 import 'package:prognosticare/src/api/service/profilesService.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
@@ -16,6 +18,7 @@ import 'package:prognosticare/src/pages/eventos/scheduleEventoPage.dart';
 import 'package:prognosticare/src/pages/home/perfisRow.dart';
 import 'package:prognosticare/src/pages/profile/profile_tab.dart';
 import 'package:prognosticare/src/pages/vaccines/vaccination_schedule.dart';
+import 'package:prognosticare/src/routes/app_pages.dart';
 
 final storage = FlutterSecureStorage();
 
@@ -162,24 +165,38 @@ class _HomeScreenState extends State<HomeScreen> {
               leading: const Icon(Icons.subdirectory_arrow_left),
               title: const Text('Trocar Perfil'),
               onTap: () async {
+                String? profileResponsavel =
+                    await storage.read(key: 'profileResponsavel');
 
-              String? profilesJson = await storage.read(key: 'profiles');
- 
-              if (profilesJson != null) {
-                
-                storedProfiles = (jsonDecode(profilesJson) as List)
-                    .map((item) => Profile.fromJson(item))
-                    .toList();
-}
-                await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => PerfisRow(
-                      profiles: storedProfiles,
-                    ),
-                  ),
-                );
-               
+                if (profileResponsavel != null) {
+                  print('Perfil recuperado: $profileResponsavel');
+                  Map<String, dynamic> jsonData =
+                      json.decode(profileResponsavel);
+                  print('JSON decodificado: $jsonData');
+                  Profile profileR = Profile.fromJson(jsonData);
+
+                  List<Profile> profiles =
+                      await ProfileService.getProfiles(profileR.pessoaId);
+
+                  if (profiles.isNotEmpty) {
+                    profiles.add(profileR);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PerfisRow(
+                          profiles: profiles,
+                        ),
+                      ),
+                    );
+                  } else {
+                    print(
+                        'Nenhum perfil encontrado para a pessoaId: ${profileR.pessoaId}');
+                    Get.offNamed(PagesRoutes.homeRoute);
+                  }
+                } else {
+                  print('Nenhum perfil armazenado.');
+                  Get.offNamed(PagesRoutes.homeRoute);
+                }
               },
             ),
           ],
@@ -279,15 +296,39 @@ class _HomeScreenState extends State<HomeScreen> {
                   _buildGridItem(
                     iconData: Icons.swap_horiz,
                     text: 'Trocar Perfil',
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => PerfisRow(
-                            profiles: [],
-                          ),
-                        ),
-                      );
+                    onTap: () async {
+                      String? profileResponsavel =
+                          await storage.read(key: 'profileResponsavel');
+
+                      if (profileResponsavel != null) {
+                        print('Perfil recuperado: $profileResponsavel');
+                        Map<String, dynamic> jsonData =
+                            json.decode(profileResponsavel);
+                        print('JSON decodificado: $jsonData');
+                        Profile profileR = Profile.fromJson(jsonData);
+
+                        List<Profile> profiles =
+                            await ProfileService.getProfiles(profileR.pessoaId);
+
+                        if (profiles.isNotEmpty) {
+                          profiles.add(profileR);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PerfisRow(
+                                profiles: profiles,
+                              ),
+                            ),
+                          );
+                        } else {
+                          print(
+                              'Nenhum perfil encontrado para a pessoaId: ${profileR.pessoaId}');
+                          Get.offNamed(PagesRoutes.homeRoute);
+                        }
+                      } else {
+                        print('Nenhum perfil armazenado.');
+                        Get.offNamed(PagesRoutes.homeRoute);
+                      }
                     },
                   ),
                 ],
@@ -355,25 +396,38 @@ class _HomeScreenState extends State<HomeScreen> {
               leading: const Icon(Icons.subdirectory_arrow_left),
               title: const Text('Trocar Perfil'),
               onTap: () async {
-                String? profilesJson = await storage.read(key: 'profiles');
+                String? profileResponsavel =
+                    await storage.read(key: 'profileResponsavel');
 
-              
-                if (profilesJson != null) {
-                
-                  storedProfiles = (jsonDecode(profilesJson) as List)
-                      .map((item) => Profile.fromJson(item))
-                      .toList();
+                if (profileResponsavel != null) {
+                  print('Perfil recuperado: $profileResponsavel');
+                  Map<String, dynamic> jsonData =
+                      json.decode(profileResponsavel);
+                  print('JSON decodificado: $jsonData');
+                  Profile profileR = Profile.fromJson(jsonData);
+
+                  List<Profile> profiles =
+                      await ProfileService.getProfiles(profileR.pessoaId);
+
+                  if (profiles.isNotEmpty) {
+                    profiles.add(profileR);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PerfisRow(
+                          profiles: profiles,
+                        ),
+                      ),
+                    );
+                  } else {
+                    print(
+                        'Nenhum perfil encontrado para a pessoaId: ${profileR.pessoaId}');
+                    Get.offNamed(PagesRoutes.homeRoute);
+                  }
+                } else {
+                  print('Nenhum perfil armazenado.');
+                  Get.offNamed(PagesRoutes.homeRoute);
                 }
-                
-                 await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => PerfisRow(
-                      profiles: storedProfiles,
-                    ),
-                  ),
-                );
-                
               },
             ),
           ],
@@ -462,22 +516,38 @@ class _HomeScreenState extends State<HomeScreen> {
                     iconData: Icons.swap_horiz,
                     text: 'Trocar Perfil',
                     onTap: () async {
-                     String? profilesJson = await storage.read(key: 'profiles');
+                      String? profileResponsavel =
+                          await storage.read(key: 'profileResponsavel');
 
-                      if (profilesJson != null) {
-                      
-                        storedProfiles = (jsonDecode(profilesJson) as List)
-                            .map((item) => Profile.fromJson(item))
-                            .toList();
+                      if (profileResponsavel != null) {
+                        print('Perfil recuperado: $profileResponsavel');
+                        Map<String, dynamic> jsonData =
+                            json.decode(profileResponsavel);
+                        print('JSON decodificado: $jsonData');
+                        Profile profileR = Profile.fromJson(jsonData);
+
+                        List<Profile> profiles =
+                            await ProfileService.getProfiles(profileR.pessoaId);
+
+                        if (profiles.isNotEmpty) {
+                          profiles.add(profileR);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PerfisRow(
+                                profiles: profiles,
+                              ),
+                            ),
+                          );
+                        } else {
+                          print(
+                              'Nenhum perfil encontrado para a pessoaId: ${profileR.pessoaId}');
+                          Get.offNamed(PagesRoutes.homeRoute);
+                        }
+                      } else {
+                        print('Nenhum perfil armazenado.');
+                        Get.offNamed(PagesRoutes.homeRoute);
                       }
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => PerfisRow(
-                            profiles: storedProfiles,
-                          ),
-                        ),
-                      );
                     },
                   ),
                 ],

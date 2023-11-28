@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
+import 'package:prognosticare/src/api/service/tokenFcm.dart';
 import 'package:prognosticare/src/config/custom_colors.dart';
 import 'package:prognosticare/src/models/profilesModel.dart';
 import 'package:prognosticare/src/routes/app_pages.dart';
@@ -36,6 +37,8 @@ class PerfisRow extends StatelessWidget {
     await storage.write(key: 'tipoResponsavel', value: tipoResponsavel.toString());
 
     Get.offNamed(PagesRoutes.homeRoute);
+    Future<bool> token = TokenFCM.postToken();
+
   }
 
   @override

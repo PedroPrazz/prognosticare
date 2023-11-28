@@ -6,24 +6,24 @@ import 'package:prognosticare/src/pages/home/home_screen.dart';
 class ScheduleEventoPage extends StatelessWidget {
   const ScheduleEventoPage({super.key});
 
-  Future<void> _selectDate(BuildContext context, String filtro) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
-    );
+  // Future<void> _selectDate(BuildContext context, String filtro) async {
+  //   final DateTime? picked = await showDatePicker(
+  //     context: context,
+  //     initialDate: DateTime.now(),
+  //     firstDate: DateTime(2000),
+  //     lastDate: DateTime(2101),
+  //   );
 
-    if (picked != null) {
-      print('Data escolhida: ${picked.toIso8601String()} com filtro: $filtro');
-    }
-  }
+  //   if (picked != null) {
+  //     print('Data escolhida: ${picked.toIso8601String()} com filtro: $filtro');
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
-    String selectedType = 'Todos'; // Valor inicial
-    List<String> eventTypes = ['Todos', 'Consultas', 'Exames', 'Vacinas'];
-    DateTime selectedDate = DateTime.now();
+    // String selectedType = 'Todos'; // Valor inicial
+    // List<String> eventTypes = ['Todos', 'Consultas', 'Exames', 'Vacinas'];
+    // DateTime selectedDate = DateTime.now();
 
     return DefaultTabController(
       length: 3, // Número de guias

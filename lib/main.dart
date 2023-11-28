@@ -32,37 +32,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       theme: ThemeData(
-        colorScheme: ColorScheme.light().copyWith(primary: CustomColors.customSwatchColor,),
         primarySwatch: CustomColors.customSwatchColor,
-        primaryColor: CustomColors.customSwatchColor,
-        appBarTheme: AppBarTheme(
-          color: CustomColors.customSwatchColor,
-          elevation: 0,
-          iconTheme: IconThemeData(color: Colors.white),
-        ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            primary: CustomColors.customSwatchColor,
-            onPrimary: Colors.white,
-          ),
-        ),
-        floatingActionButtonTheme: FloatingActionButtonThemeData(
-          backgroundColor: CustomColors.customSwatchColor,
-        ),
-        drawerTheme: const DrawerThemeData(
-          elevation: 0,
-          backgroundColor: Colors.white,
-        ),
-        dialogTheme: const DialogTheme(
-          elevation: 0,
-          backgroundColor: Colors.white,
-        ),
-        dataTableTheme: DataTableThemeData(
-          headingRowColor: MaterialStateProperty.all(CustomColors.customSwatchColor,),
-          dataRowColor: MaterialStateProperty.all(Colors.grey[100]),
-        ),
-        datePickerTheme: DatePickerThemeData(backgroundColor: Colors.white, headerBackgroundColor: CustomColors.customSwatchColor, headerForegroundColor: Colors.white, surfaceTintColor: Colors.white),
-        timePickerTheme: TimePickerThemeData(backgroundColor: Colors.white, dialBackgroundColor: Colors.white, hourMinuteColor: Colors.white),
+        useMaterial3: false,
       ),
       debugShowCheckedModeBanner: false,
       initialRoute: PagesRoutes.splashRoute,

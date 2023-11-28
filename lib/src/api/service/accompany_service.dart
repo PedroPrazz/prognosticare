@@ -201,4 +201,40 @@ class AccompanyService {
       throw Exception('Exeption no método find Erro no Try/Catch');
     }
   }
+
+  static Future<List<Accompany>> getAccompanyListByFiltro(String filtro) async {
+    String? idPessoa = await storage.read(key: 'user_id');
+    String? token = await storage.read(key: 'token');
+
+    DateTime now = DateTime.now();
+    String formattedDate = DateFormat("dd/MM/yyyy hh:mm:ss a").format(now);
+
+    final url =
+        Uri.parse(UriServidor.url.toString() + '/to-accompany/list-day/$idPessoa?filtro=$filtro&dataInicial=$formattedDate');
+    try {
+      final response = await http.get(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        List<dynamic> jsonDataList = json.decode(response.body);
+
+        List<Accompany> accompanies = jsonDataList.map((jsonData) {
+          return Accompany.fromJson(jsonData);
+        }).toList();
+
+        return accompanies;
+      } else {
+        print('Response Status Code: ${response.statusCode}');
+        throw Exception('Exeption no método getAccompanyListByFiltro');
+      }
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('Exeption no método find Erro no Try/Catch');
+    }
+}
 }

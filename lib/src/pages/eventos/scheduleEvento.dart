@@ -57,16 +57,18 @@ class _EventsState extends State<Events> {
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: searchController,
-              onChanged: (value) {
-                setState(() {
-                  schedulesFuture =
-                      Future.value(getFilteredSchedules(value, ''));
-                });
-              },
-              decoration: InputDecoration(
-                hintText: 'Digite para pesquisar...',
+            child: Center(
+              child: TextField(
+                controller: searchController,
+                onChanged: (value) {
+                  setState(() {
+                    schedulesFuture =
+                        Future.value(getFilteredSchedules(value, ''));
+                  });
+                },
+                decoration: InputDecoration(
+                  hintText: 'Buscar Agendamento/Acompanhamento...',
+                ),
               ),
             ),
           ),
